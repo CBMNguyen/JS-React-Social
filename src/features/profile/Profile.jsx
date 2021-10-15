@@ -1,12 +1,11 @@
 import React from "react";
 import "./profile.css";
-import Topbar from "../../components/topbar/Topbar";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Feed from "../../components/feed/Feed";
-import Rightbar from "../../components/rightbar/Rightbar";
-import "./profile.css";
 import person1Img from "../../assets/person/1.jpeg";
 import coverImg from "../../assets/post/3.jpeg";
+import Sidebar from "components/sidebar/Sidebar";
+import Topbar from "components/topbar/Topbar";
+import Feed from "components/feed/Feed";
+import Rightbar from "components/rightbar/Rightbar";
 
 function Profile(props) {
   return (
