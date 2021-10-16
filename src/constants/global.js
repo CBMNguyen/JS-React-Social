@@ -11,6 +11,7 @@ import RoomIcon from "@mui/icons-material/Room";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import { Zoom } from "react-toastify";
 
 export const sidebarList = [
   { name: "Feed", icon: <RssFeedIcon className="sidebarIcon" /> },
@@ -39,3 +40,9 @@ export const shareList = [
     icon: <EmojiEmotionsIcon htmlColor="goldenrod" className="shareIcon" />,
   },
 ];
+
+export const PRODUCT_TOAST_OPTIONS = {
+  autoClose: 2000,
+  hideProgressBar: true,
+  transition: Zoom,
+};

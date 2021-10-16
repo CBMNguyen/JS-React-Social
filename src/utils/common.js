@@ -1,20 +1,32 @@
+import { unwrapResult } from "@reduxjs/toolkit";
+import { PRODUCT_TOAST_OPTIONS } from "constants/global";
+import { toast } from "react-toastify";
+
 export const capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
-export const checkEmail = (yup) =>
-  yup
-    .string()
-    .required("This field is required")
-    .matches(
-      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-      "Please enter correct email!"
-    );
+export const pendingState = (state) => {
+  state.loading = true;
+};
 
-export const checkStringRequired = (yup) =>
-  yup.string().required("This field is required");
+export const rejectedState = (state, action) => {
+  state.loading = false;
+  state.error = action.payload.message;
+};
 
-export const checkConfirmPassword = (yup) =>
-  yup
-    .string()
-    .required("This field is required")
-    .oneOf([yup.ref("password"), null], "Passwords must match");
+export const showToastSuccess = async (asyncAction) => {
+  const result = await asyncAction;
+  if (!unwrapResult(result)) return;
+  toast.success(result.payload.message, {
+    ...PRODUCT_TOAST_OPTIONS,
+  });
+  return result.payload;
+};
+
+// Show Toast Error
+
+export const showToastError = (error) => {
+  toast.error(error.message, {
+    ...PRODUCT_TOAST_OPTIONS,
+  });
+};

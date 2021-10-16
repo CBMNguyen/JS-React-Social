@@ -5,10 +5,14 @@ import Typography from "@mui/material/Typography";
 import InputField from "custom-fields/InputField";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { checkEmail, checkStringRequired } from "utils/common";
+import { useDispatch } from "react-redux";
+import { showToastError, showToastSuccess } from "utils/common";
+import { checkEmail, checkStringRequired } from "utils/validate-field";
 import * as yup from "yup";
+import { login } from "../userSlice";
 
 function Login(props) {
+  const dispatch = useDispatch();
   const defaultValues = {
     email: "",
     password: "",
@@ -24,7 +28,13 @@ function Login(props) {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await showToastSuccess(dispatch(login(data)));
+    } catch (error) {
+      showToastError(error);
+    }
+  };
 
   return (
     <Stack

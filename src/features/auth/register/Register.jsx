@@ -5,14 +5,19 @@ import Typography from "@mui/material/Typography";
 import InputField from "custom-fields/InputField";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { showToastError, showToastSuccess } from "utils/common";
 import {
   checkConfirmPassword,
   checkEmail,
+  checkPassWord,
   checkStringRequired,
-} from "utils/common";
+} from "utils/validate-field";
 import * as yup from "yup";
+import { register } from "../userSlice";
 
 function Register(props) {
+  const dispatch = useDispatch();
   const defaultValues = {
     username: "",
     email: "",
@@ -23,7 +28,7 @@ function Register(props) {
   const schema = yup.object().shape({
     username: checkStringRequired(yup),
     email: checkEmail(yup),
-    password: checkStringRequired(yup),
+    password: checkPassWord(yup),
     confirmPassword: checkConfirmPassword(yup),
   });
 
@@ -32,7 +37,15 @@ function Register(props) {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const { confirmPassword, ...other } = data;
+    try {
+      await showToastSuccess(dispatch(register(other)));
+      console.log(data, other);
+    } catch (error) {
+      showToastError(error);
+    }
+  };
 
   return (
     <Stack
@@ -89,7 +102,7 @@ function Register(props) {
                   backgroundColor: "#1775ee !important",
                 }}
               >
-                Login
+                Register
               </Button>
 
               <Typography variant="body1" textAlign="center" color="#1775ee">
