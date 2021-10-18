@@ -2,6 +2,7 @@ import userApi from "api/user";
 import Login from "features/auth/login/Login";
 import Register from "features/auth/register/Register";
 import Home from "features/home/Home";
+import Messenger from "features/messenger/Messenger";
 import Profile from "features/profile/Profile";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
+          <Route path="/messenger" exact component={Messenger} />
           <Route path="/profile/:userId" exact component={Profile} />
         </Switch>
       </BrowserRouter>
