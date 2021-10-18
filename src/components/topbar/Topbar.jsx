@@ -2,11 +2,16 @@ import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
+import Tooltip from "@mui/material/Tooltip";
 import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 import "./topbar.css";
-import person1 from "../../assets/person/1.jpeg";
 
 function Topbar(props) {
+  const { user } = useSelector((state) => state.user);
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -31,20 +36,46 @@ function Topbar(props) {
 
         <div className="topbarIcons">
           <div className="topbarIconItem">
-            <PersonIcon />
-            <span className="topbarIconBadge">1</span>
+            <Tooltip title="Add Friends">
+              <div className="topbarIconWrapper">
+                <PersonIcon />
+                <span className="topbarIconBadge">1</span>
+              </div>
+            </Tooltip>
           </div>
+
           <div className="topbarIconItem">
-            <ChatIcon />
-            <span className="topbarIconBadge">1</span>
+            <Tooltip title="Messenger">
+              <div className="topbarIconWrapper">
+                <ChatIcon />
+                <span className="topbarIconBadge">1</span>
+              </div>
+            </Tooltip>
           </div>
+
           <div className="topbarIconItem">
-            <NotificationsIcon />
-            <span className="topbarIconBadge">1</span>
+            <Tooltip title="Notifications">
+              <div className="topbarIconWrapper">
+                <NotificationsIcon />
+                <span className="topbarIconBadge">1</span>
+              </div>
+            </Tooltip>
           </div>
         </div>
 
-        <img className="topbarImg" src={person1} alt="adadasd" />
+        <Link
+          style={{ textDecoration: "none", color: "#fff" }}
+          to={`/profile/${user?._id}`}
+        >
+          <div className="topbarImgWrapper">
+            <img
+              className="topbarImg"
+              src={user?.profilePicture || noAvatarImg}
+              alt="avatar"
+            />
+            <span className="topbarProfileName">{user?.username}</span>
+          </div>
+        </Link>
       </div>
     </div>
   );

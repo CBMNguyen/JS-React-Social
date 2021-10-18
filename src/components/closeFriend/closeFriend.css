@@ -1,13 +1,14 @@
-.sidebarFriendList {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
 .sidebarFriend {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  padding: 10px 0;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out 0s;
+}
+
+.sidebarFriend:hover {
+  background-color: #f9f9f9;
 }
 
 .sidebarFriendImg {

@@ -6,6 +6,7 @@ import InputField from "custom-fields/InputField";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { showToastError, showToastSuccess } from "utils/common";
 import {
   checkConfirmPassword,
@@ -18,6 +19,8 @@ import { register } from "../userSlice";
 
 function Register(props) {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const defaultValues = {
     username: "",
     email: "",
@@ -41,7 +44,7 @@ function Register(props) {
     const { confirmPassword, ...other } = data;
     try {
       await showToastSuccess(dispatch(register(other)));
-      console.log(data, other);
+      history.push("/login");
     } catch (error) {
       showToastError(error);
     }
@@ -105,10 +108,6 @@ function Register(props) {
                 Register
               </Button>
 
-              <Typography variant="body1" textAlign="center" color="#1775ee">
-                Forgot Password?
-              </Typography>
-
               <Button
                 variant="contained"
                 sx={{
@@ -119,7 +118,16 @@ function Register(props) {
                   backgroundColor: "#42b72a !important",
                 }}
               >
-                Log Into Account
+                <Link
+                  style={{
+                    width: "100%",
+                    textDecoration: "none",
+                    color: "#fff",
+                  }}
+                  to="/login"
+                >
+                  Log Into Account
+                </Link>
               </Button>
             </Stack>
           </form>

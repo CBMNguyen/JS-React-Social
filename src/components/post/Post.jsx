@@ -1,40 +1,65 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import React, { useState } from "react";
-import { Users } from "../../dummyData";
-import "./post.css";
-import person1Img from "../../assets/person/1.jpeg";
-import likeIcon from "../../assets/like.png";
+import userApi from "api/user";
+import React, { useEffect, useState } from "react";
 import heartIcon from "../../assets/heart.png";
-import feedImg from "../../assets/post/3.jpeg";
+import likeIcon from "../../assets/like.png";
+import NoAvatarImg from "../../assets/person/noAvatar.png";
+import "./post.css";
+import { format } from "timeago.js";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { likeAndDislike } from "app/postSlice";
+import { showToastError, showToastSuccess } from "utils/common";
 
 function Post({ post }) {
-  const [like, setLike] = useState(post.like);
-  const [isliked, setIsLiked] = useState(false);
-  const handleLikeClick = () => {
-    setLike(isliked ? like - 1 : like + 1);
-    setIsLiked(!isliked);
+  const dispatch = useDispatch();
+  const [user, setUser] = useState({});
+
+  const [like, setLike] = useState(post.likes.length);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLikeClick = async () => {
+    try {
+      await showToastSuccess(dispatch(likeAndDislike(post._id)));
+    } catch (error) {
+      showToastError(error);
+    }
+    setLike(isLiked ? like - 1 : like + 1);
+    setIsLiked(!isLiked);
   };
+
+  useEffect(() => {
+    setIsLiked(post.likes.includes(user._id));
+  }, [user._id, post.likes]);
+
+  useEffect(() => {
+    const fetchUser = async (id) => {
+      try {
+        const { user } = await userApi.getUserById(id);
+        setUser(user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser(post.userId);
+  }, [post.userId]);
 
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img
-              className="postProfileImg"
-              // src={
-              //   Users.filter((user) => user.id === post.userId)[0]
-              //     .profilePicture
-              // }
-              src={person1Img}
-              alt=""
-            />
+            <Link to={`/profile/${user._id}`}>
+              <img
+                className="postProfileImg"
+                src={user.profilePicture || NoAvatarImg}
+                alt="profilePictureLogo"
+              />
+            </Link>
 
-            <span className="postUserName">
-              {Users.filter((user) => user.id === post.userId)[0].username}
-            </span>
+            <span className="postUserName">{user?.username}</span>
 
-            <span className="postDate">{post.date}</span>
+            <span className="postDate">{format(new Date(post.createdAt))}</span>
           </div>
 
           <div className="postTopRight">
@@ -44,7 +69,13 @@ function Post({ post }) {
 
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
-          <img className="postImg" src={feedImg} alt="" />
+          {post.img && (
+            <img
+              className="postImg"
+              src={`${process.env.REACT_APP_API_URL}/upload/${post.img}`}
+              alt=""
+            />
+          )}
         </div>
 
         <div className="postBottom">

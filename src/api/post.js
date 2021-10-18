@@ -6,6 +6,11 @@ const postApi = {
     return axiosClient.get(url);
   },
 
+  getPostOfMe: (id) => {
+    const url = `/posts/profile/${id}`;
+    return axiosClient.get(url);
+  },
+
   getTimeLine: (id) => {
     const url = `/posts/timeline/${id}`;
     return axiosClient.get(url);
@@ -16,13 +21,13 @@ const postApi = {
     return axiosClient.post(url, data);
   },
 
-  update: (data) => {
+  update: (id, data) => {
     const url = `/posts/${id}`;
     return axiosClient.put(url, data);
   },
 
-  likeAndDislike: (id) => {
-    const url = `/post/${id}/like`;
+  likeAndDislike: (postId) => {
+    const url = `/posts/${postId}/like`;
     return axiosClient.put(url);
   },
 };

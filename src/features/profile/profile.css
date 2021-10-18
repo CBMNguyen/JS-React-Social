@@ -49,3 +49,17 @@
 .profileRightBottom {
   display: flex;
 }
+
+.profileFollowButton {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #1872f2;
+  cursor: pointer;
+}

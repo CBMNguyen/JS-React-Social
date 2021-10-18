@@ -16,7 +16,8 @@
   object-fit: cover;
 }
 
-.rightbarOnline {
+.rightbarOnline,
+.rightbarOffline {
   position: absolute;
   top: -2px;
   right: 0;
@@ -26,6 +27,10 @@
   border: 2px solid white;
   border-radius: 50%;
   background-color: limegreen;
+}
+
+.rightbarOffline {
+  background-color: red;
 }
 
 .rightbarUserName {

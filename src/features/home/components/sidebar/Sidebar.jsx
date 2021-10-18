@@ -1,16 +1,16 @@
+import CloseFriend from "components/closeFriend/CloseFriend";
+import { sidebarList } from "constants/global";
 import React from "react";
-import { sidebarList } from "../../constants/global";
-import { Users } from "../../dummyData";
-import CloseFriend from "../closeFriend/CloseFriend";
+import { Link } from "react-router-dom";
 import "./sidebar.css";
 
-function Sidebar(props) {
+function Sidebar({ friends }) {
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <ul className="sidebarList">
           {sidebarList.map((item) => (
-            <li className="sidebarListItem">
+            <li key={item.name} className="sidebarListItem">
               {item.icon}
               <span className="sidebarListItemText">{item.name}</span>
             </li>
@@ -21,8 +21,14 @@ function Sidebar(props) {
         <hr className="sidebarHr" />
 
         <ul className="sidebarFriendList">
-          {Users.map((user) => (
-            <CloseFriend key={user.id} user={user} />
+          {friends.map((user) => (
+            <Link
+              key={user._id}
+              style={{ color: "#000", textDecoration: "none" }}
+              to={`/profile/${user._id}`}
+            >
+              <CloseFriend user={user} />
+            </Link>
           ))}
         </ul>
       </div>

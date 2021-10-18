@@ -6,12 +6,14 @@ import InputField from "custom-fields/InputField";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { showToastError, showToastSuccess } from "utils/common";
 import { checkEmail, checkStringRequired } from "utils/validate-field";
 import * as yup from "yup";
 import { login } from "../userSlice";
 
 function Login(props) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const defaultValues = {
     email: "",
@@ -31,6 +33,7 @@ function Login(props) {
   const onSubmit = async (data) => {
     try {
       await showToastSuccess(dispatch(login(data)));
+      history.push("/");
     } catch (error) {
       showToastError(error);
     }
@@ -104,7 +107,16 @@ function Login(props) {
                   backgroundColor: "#42b72a !important",
                 }}
               >
-                Create a New Account
+                <Link
+                  style={{
+                    width: "100%",
+                    textDecoration: "none",
+                    color: "#fff",
+                  }}
+                  to="/register"
+                >
+                  Create a New Account
+                </Link>
               </Button>
             </Stack>
           </form>
