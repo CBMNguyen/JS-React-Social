@@ -1,4 +1,5 @@
 import userApi from "api/user";
+import ProtectedRoute from "components/protectedRoute/ProtectedRoute";
 import Login from "features/auth/login/Login";
 import Register from "features/auth/register/Register";
 import Home from "features/home/Home";
@@ -29,11 +30,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <ProtectedRoute path="/" exact component={Home} />
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
-          <Route path="/messenger" exact component={Messenger} />
-          <Route path="/profile/:userId" exact component={Profile} />
+          <ProtectedRoute path="/messenger" exact component={Messenger} />
+          <ProtectedRoute path="/profile/:userId" exact component={Profile} />
         </Switch>
       </BrowserRouter>
 

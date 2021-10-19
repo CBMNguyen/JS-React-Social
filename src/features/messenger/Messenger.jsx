@@ -17,10 +17,10 @@ function Messenger() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { user } = useSelector((state) => state.user);
   const scrollRef = useRef();
-  const socket = useRef(io("ws://localhost:8900"));
+  const socket = useRef(io(process.env.REACT_APP_WS_URL));
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io(process.env.REACT_APP_WS_URL);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         senderId: data.senderId,
@@ -49,7 +49,7 @@ function Messenger() {
     const getConversations = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:2022/api/conversations/" + user._id
+          `${process.env.REACT_APP_API_URL}/conversations/` + user._id
         );
         setConversations(res.data.conversation);
       } catch (error) {
@@ -63,7 +63,7 @@ function Messenger() {
     const getMessages = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:2022/api/messages/" + currentChat._id
+          `${process.env.REACT_APP_API_URL}/messages/` + currentChat._id
         );
         setMessages(res.data.messages);
       } catch (error) {
@@ -97,7 +97,7 @@ function Messenger() {
 
     try {
       const res = await axios.post(
-        "http://localhost:2022/api/messages/",
+        `${process.env.REACT_APP_API_URL}/messages/`,
         message
       );
       setMessages([...messages, res.data.savedMessage]);
