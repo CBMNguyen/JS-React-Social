@@ -17,7 +17,7 @@ function Messenger() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { user } = useSelector((state) => state.user);
   const scrollRef = useRef();
-  const socket = useRef(io(process.env.REACT_APP_WS_URL));
+  const socket = useRef();
 
   useEffect(() => {
     socket.current = io(process.env.REACT_APP_WS_URL);
@@ -32,7 +32,7 @@ function Messenger() {
 
   useEffect(() => {
     arrivalMessage &&
-      currentChat.members.includes(arrivalMessage.senderId) &&
+      currentChat?.members.includes(arrivalMessage.senderId) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
 
@@ -63,7 +63,7 @@ function Messenger() {
     const getMessages = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/messages/` + currentChat._id
+          `${process.env.REACT_APP_API_URL}/messages/` + currentChat?._id
         );
         setMessages(res.data.messages);
       } catch (error) {
@@ -102,7 +102,9 @@ function Messenger() {
       );
       setMessages([...messages, res.data.savedMessage]);
       setNewMessage("");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

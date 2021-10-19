@@ -11,6 +11,9 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   async (config) => {
+    const user = JSON.parse(localStorage.getItem("persist:facebook")).user;
+    const token = JSON.parse(user).token;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {

@@ -27,7 +27,6 @@ export const login = createAsyncThunk(
   async (data, { rejectWithValue, fulfillWithValue, dispatch }) => {
     try {
       const { message, accessToken } = await authApi.login(data);
-      await dispatch(getMe());
       return fulfillWithValue({ message, accessToken });
     } catch (error) {
       return rejectWithValue(error);

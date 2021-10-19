@@ -33,7 +33,7 @@ function Login(props) {
   const onSubmit = async (data) => {
     try {
       await showToastSuccess(dispatch(login(data)));
-      history.push("/messenger");
+      history.push("/");
     } catch (error) {
       showToastError(error);
     }

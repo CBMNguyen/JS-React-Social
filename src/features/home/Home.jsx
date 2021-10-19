@@ -3,17 +3,25 @@ import { getTimeLine } from "app/postSlice";
 import Feed from "components/feed/Feed";
 import Rightbar from "components/rightbar/Rightbar";
 import Topbar from "components/topbar/Topbar";
+import { getMe } from "features/auth/userSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showToastError, showToastSuccess } from "utils/common";
 import Sidebar from "./components/sidebar/Sidebar";
 import "./home.css";
 
-function Home(props) {
+function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { posts } = useSelector((state) => state.posts);
   const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getMe());
+    };
+    fetchUser();
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchPosts = async (id) => {

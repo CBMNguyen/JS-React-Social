@@ -29,6 +29,7 @@ function ChatOnline({ onlineUsers, currentUserId, setCurrentChat }) {
       const res = await axios.get(
         `http://localhost:2022/api/conversations/find/${currentUserId}/${friend._id}`
       );
+      console.log(res);
       setCurrentChat(res.data.conversation);
     } catch (error) {
       console.log(error);
@@ -46,7 +47,7 @@ function ChatOnline({ onlineUsers, currentUserId, setCurrentChat }) {
           <div className="chatOnlineImgContainer">
             <img
               className="chatOnlineImg"
-              src={friend.profilePicture || noAvatarImg}
+              src={friend?.profilePicture || noAvatarImg}
               alt=""
             />
             <div className="chatOnlineBadge"></div>
