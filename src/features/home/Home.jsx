@@ -3,7 +3,7 @@ import { getConversations } from "app/messengerSlice";
 import { getTimeLine } from "app/postSlice";
 import Feed from "components/feed/Feed";
 import Messenger from "components/messenger/Messenger";
-import Rightbar from "components/rightbar/Rightbar";
+import Rightbar from "features/home/components/rightbar/Rightbar";
 import Topbar from "components/topbar/Topbar";
 import { getMe } from "features/auth/userSlice";
 import React, { useEffect, useState } from "react";

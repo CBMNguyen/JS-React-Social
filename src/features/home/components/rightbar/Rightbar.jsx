@@ -1,7 +1,7 @@
 import ChatOnline from "components/chatOnline/ChatOnline";
 import React from "react";
-import adImg from "../../assets/ad.png";
-import giftImg from "../../assets/gift.png";
+import adImg from "../../../../assets/ad.png";
+import giftImg from "../../../../assets/gift.png";
 import "./rightbar.css";
 
 function Rightbar({ onlineUsers, currentUserId }) {
