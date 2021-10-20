@@ -1,10 +1,10 @@
+import ChatOnline from "components/chatOnline/ChatOnline";
 import React from "react";
 import adImg from "../../assets/ad.png";
 import giftImg from "../../assets/gift.png";
-import Online from "../onlineFriend/Online";
 import "./rightbar.css";
 
-function Rightbar({ friends }) {
+function Rightbar({ onlineUsers, currentUserId }) {
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
@@ -19,11 +19,7 @@ function Rightbar({ friends }) {
 
         <h4 className="rightbarTitle">Online Friends</h4>
 
-        <ul className="rightbarFriendList">
-          {friends.map((user) => (
-            <Online key={user._id} user={user} />
-          ))}
-        </ul>
+        <ChatOnline onlineUsers={onlineUsers} currentUserId={currentUserId} />
       </div>
     </div>
   );

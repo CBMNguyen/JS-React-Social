@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./chatOnline.css";
-import noAvatarImg from "../../../../assets/person/noAvatar.png";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 import userApi from "api/user";
 import axios from "axios";
+import { setCurrentChat } from "app/messengerSlice";
+import { useDispatch } from "react-redux";
 
-function ChatOnline({ onlineUsers, currentUserId, setCurrentChat }) {
+function ChatOnline({ onlineUsers, currentUserId }) {
+  const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
 
@@ -27,10 +30,9 @@ function ChatOnline({ onlineUsers, currentUserId, setCurrentChat }) {
   const handleClick = async (friend) => {
     try {
       const res = await axios.get(
-        `http://localhost:2022/api/conversations/find/${currentUserId}/${friend._id}`
+        `${process.env.REACT_APP_API_URL}/conversations/find/${currentUserId}/${friend._id}`
       );
-      console.log(res);
-      setCurrentChat(res.data.conversation);
+      dispatch(setCurrentChat(res.data.conversation));
     } catch (error) {
       console.log(error);
     }

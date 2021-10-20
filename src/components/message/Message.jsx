@@ -1,6 +1,6 @@
 import React from "react";
 import "./message.css";
-import noAvatarImg from "../../../../assets/person/noAvatar.png";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 import classNames from "classnames";
 import { format } from "timeago.js";
 

@@ -14,6 +14,7 @@ import {
 
 import userReducer from "../features/auth/userSlice";
 import postReducer from "./postSlice";
+import messengerReducer from "./messengerSlice";
 
 const persistConfig = {
   key: "facebook",
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   posts: postReducer,
+  messenger: messengerReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

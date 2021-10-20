@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./conversation.css";
-import noAvatarImg from "../../../../assets/person/noAvatar.png";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 import userApi from "api/user";
 function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState({});

@@ -1,0 +1,136 @@
+.messenger {
+  position: fixed;
+  bottom: 0;
+  right: 5px;
+  padding-bottom: 100px;
+
+  width: 340px;
+  height: 320px;
+  display: flex;
+
+  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+}
+
+.chatBox {
+  flex: 1;
+}
+
+.chatBoxWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 10px;
+  padding-right: 5px;
+  padding-top: 0;
+  height: 100%;
+  background-color: #fff;
+}
+
+.chatBoxTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 40px;
+  padding: 5px 10px;
+  border-bottom: 1px solid #0008;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: #1877f2;
+}
+
+.chatBoxTopClose {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+  color: white;
+  transition: all 0.2s ease-in-out 0s;
+}
+
+.chatBoxTopClose:hover {
+  cursor: pointer;
+  background-color: #fff4;
+}
+
+.chatBoxTopInfo {
+  display: flex;
+  align-items: center;
+}
+
+.chatBoxTopName {
+  margin-left: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.chatBoxTopImg {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.chatBoxTopBadge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  bottom: 0;
+  right: -1px;
+}
+
+.offline {
+  background-color: orange;
+}
+
+.chatBoxBottom {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  padding: 0px 10px 5px 10px;
+  bottom: 2px;
+  background-color: #fff;
+}
+
+.chatMessageInput {
+  padding: 10px;
+  width: 80%;
+  border-radius: 20px;
+  border: 1px solid lightgray;
+}
+
+.chatMessageInput:focus {
+  outline: none;
+}
+
+.chatSubmitButton {
+  margin-left: 10px;
+  width: 60px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #1877f2;
+  color: white;
+}
+
+.chatBoxText {
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 10px;
+}
+
+.chatOnline {
+  flex: 3;
+}
