@@ -140,11 +140,7 @@ function Messenger() {
                   src={arrivalUser?.profilePicture || noAvatarImg}
                   alt=""
                 ></img>
-                <div
-                  className={classNames("chatBoxTopBadge", {
-                    offline: !arrivalUserOnline,
-                  })}
-                ></div>
+                {arrivalUserOnline && <div className="chatBoxTopBadge"></div>}
               </div>
               <div className="chatBoxTopName">{arrivalUser?.username}</div>
             </div>

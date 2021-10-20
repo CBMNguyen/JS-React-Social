@@ -21,4 +21,15 @@
 
 .conversationName {
   font-weight: 500;
+  margin-left: 10px;
+}
+
+.conversationBadge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  bottom: 0;
+  right: -1px;
 }

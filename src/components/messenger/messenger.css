@@ -88,10 +88,6 @@
   right: -1px;
 }
 
-.offline {
-  background-color: orange;
-}
-
 .chatBoxBottom {
   position: absolute;
   display: flex;
