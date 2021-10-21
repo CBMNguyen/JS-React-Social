@@ -3,17 +3,30 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
 import Tooltip from "@mui/material/Tooltip";
+import { getConversations } from "app/messengerSlice";
 import ShowConversations from "components/showConversations/ShowConversations";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import "./topbar.css";
 
 function Topbar(props) {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { conversations } = useSelector((state) => state.messenger);
   const [showConversations, setShowConversations] = useState(false);
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        await dispatch(getConversations(user._id));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    user._id && fetchConversations();
+  }, [user._id, dispatch]);
 
   return (
     <div className="topbarContainer">

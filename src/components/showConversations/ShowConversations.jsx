@@ -24,12 +24,9 @@ function ShowConversations({
             dispatch(setCurrentChat(conversation));
             setShowConversations(!showConversations);
           }}
+          key={conversation._id}
         >
-          <Conversation
-            key={conversation._id}
-            currentUser={currentUser}
-            conversation={conversation}
-          />
+          <Conversation currentUser={currentUser} conversation={conversation} />
         </div>
       ))}
     </div>

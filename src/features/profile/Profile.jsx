@@ -10,6 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import postApi from "api/post";
 import userApi from "api/user";
 import Feed from "components/feed/Feed";
+import Messenger from "components/messenger/Messenger";
 import Share from "components/share/Share";
 import Topbar from "components/topbar/Topbar";
 import { follow, unFollow } from "features/auth/userSlice";
@@ -126,11 +127,9 @@ function Profile(props) {
                     "Tham gia vào tháng 12 năm 2014",
                     "Có 211 người theo dỗi"
                   ).map((item) => (
-                    <ListItem key={item.name} disablePadding>
-                      <ListItem sx={{ paddingLeft: 0 }}>
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.name} />
-                      </ListItem>
+                    <ListItem sx={{ paddingLeft: 0 }} key={item.name}>
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.name} />
                     </ListItem>
                   ))}
                 </List>
@@ -148,9 +147,9 @@ function Profile(props) {
                   }}
                 >
                   <h2 className="profileBottomLeftImagesTitle">Ảnh</h2>
-                  <a style={{ textDecoration: "none", color: "blue" }} href="/">
+                  <div style={{ textDecoration: "none", color: "blue" }}>
                     Xem tất cả hình ảnh
-                  </a>
+                  </div>
                 </div>
                 <ImageList
                   sx={{
@@ -183,9 +182,9 @@ function Profile(props) {
                   }}
                 >
                   <h2 className="profileBottomLeftFriendsTitle">Friends</h2>
-                  <a href="/" style={{ textDecoration: "none", color: "blue" }}>
+                  <div style={{ textDecoration: "none", color: "blue" }}>
                     Xem tất bạn bè
-                  </a>
+                  </div>
                 </div>
                 <div>{friends.length}người bạn</div>
                 <ImageList
@@ -199,6 +198,7 @@ function Profile(props) {
                 >
                   {friends.slice(0, 9).map((friend) => (
                     <Link
+                      key={friend._id}
                       to={`/profile/${friend._id}`}
                       style={{ textDecoration: "none", color: "#000" }}
                     >
@@ -233,6 +233,8 @@ function Profile(props) {
           </div>
         </div>
       </div>
+
+      <Messenger />
     </>
   );
 }
