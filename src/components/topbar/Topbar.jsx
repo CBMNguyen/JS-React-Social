@@ -18,7 +18,11 @@ function Topbar(props) {
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
-        <div className="logo">Facebook</div>
+        <div className="logo">
+          <Link className="link" to="/">
+            Facebook
+          </Link>
+        </div>
       </div>
 
       <div className="topbarCenter">
@@ -69,10 +73,7 @@ function Topbar(props) {
           </div>
         </div>
 
-        <Link
-          style={{ textDecoration: "none", color: "#fff" }}
-          to={`/profile/${user?._id}`}
-        >
+        <Link className="link" to={`/profile/${user?._id}`}>
           <div className="topbarImgWrapper">
             <img
               className="topbarImg"
@@ -83,6 +84,7 @@ function Topbar(props) {
           </div>
         </Link>
       </div>
+
       {showConversations && (
         <ShowConversations
           currentUser={user}
