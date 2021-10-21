@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import LinearProgress from "@mui/material/LinearProgress";
+import NotFound from "./components/notFound/NotFound";
 
 function App() {
   const Register = React.lazy(() => import("features/auth/register/Register"));
@@ -16,9 +17,10 @@ function App() {
         <BrowserRouter>
           <Switch>
             <ProtectedRoute path="/" exact component={Home} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
             <ProtectedRoute path="/profile/:userId" exact component={Profile} />
+            <Route component={NotFound} />
           </Switch>
         </BrowserRouter>
         <ToastContainer theme="dark" />

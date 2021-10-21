@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import NoAvatarImg from "../../assets/person/noAvatar.png";
-import coverImg from "../../assets/post/3.jpeg";
+import coverImg from "../../assets/post/9.jpeg";
 import { ItemData, PersonalInformation } from "../../constants/global";
 import "./profile.css";
 

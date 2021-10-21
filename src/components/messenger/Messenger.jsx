@@ -8,7 +8,6 @@ import {
   setOnlineUsers,
 } from "app/messengerSlice";
 import axios from "axios";
-import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
