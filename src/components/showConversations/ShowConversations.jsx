@@ -12,24 +12,34 @@ function ShowConversations({
 }) {
   const dispatch = useDispatch();
   return (
-    <div className="showConversation">
-      <h2 className="showConversationTitle">Messenger</h2>
-      <input
-        className="showConversationInput"
-        placeholder="Search friend on messenger"
-      />
-      {conversations.map((conversation) => (
-        <div
-          onClick={() => {
-            dispatch(setCurrentChat(conversation));
-            setShowConversations(!showConversations);
-          }}
-          key={conversation._id}
-        >
-          <Conversation currentUser={currentUser} conversation={conversation} />
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="showConversation">
+        <h2 className="showConversationTitle">Messenger</h2>
+        <input
+          className="showConversationInput"
+          placeholder="Search friend on messenger"
+        />
+        {conversations.map((conversation) => (
+          <div
+            onClick={() => {
+              dispatch(setCurrentChat(conversation));
+              setShowConversations(!showConversations);
+            }}
+            key={conversation._id}
+          >
+            <Conversation
+              currentUser={currentUser}
+              conversation={conversation}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div
+        className="closeConversation"
+        onClick={() => setShowConversations(false)}
+      ></div>
+    </>
   );
 }
 

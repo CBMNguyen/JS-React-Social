@@ -102,16 +102,30 @@
   background-color: #f0f2f5;
 }
 
-.profileFollowButton {
+.profileFollowButton,
+.profileEditButton {
   display: flex;
+  margin: 0 8px;
   align-items: center;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 2px 16px;
+  padding-right: 20px;
 
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #fff;
   background-color: #1872f2;
   cursor: pointer;
+}
+
+.profileEditButton {
+  background-color: #f0f2f5;
+  color: black;
+}
+
+.profileEditIcon {
+  font-size: 16px;
+  padding: 5px 0;
+  padding-right: 8px;
 }

@@ -7,6 +7,8 @@ import {
   setMessages,
   setOnlineUsers,
 } from "app/messengerSlice";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import Picker from "emoji-picker-react";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,11 +16,23 @@ import { io } from "socket.io-client";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import Message from "../message/Message";
 import "./messenger.css";
+import { Grow, IconButton, Tooltip } from "@mui/material";
+import PhoneIcon from "@mui/icons-material/Phone";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import PhotoIcon from "@mui/icons-material/Photo";
+import GifIcon from "@mui/icons-material/Gif";
+import SendIcon from "@mui/icons-material/Send";
 
 function Messenger() {
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [message, setMessage] = useState("");
+  const [cursorPosition, setCursorPosition] = useState();
+
+  const inputRef = useRef();
   const socket = useRef();
   const scrollRef = useRef();
-  const inputRef = useRef();
   const dispatch = useDispatch();
 
   // =====================================
@@ -93,6 +107,20 @@ function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const handlePickEmoji = (e, { emoji }) => {
+    const ref = inputRef.current;
+    ref.focus();
+    const start = message.substring(0, ref.selectionStart);
+    const end = message.substring(ref.selectionStart);
+    const text = start + emoji + end;
+    setMessage(text);
+    setCursorPosition(start.length + emoji.length);
+  };
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.selectionEnd = cursorPosition;
+  }, [cursorPosition]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newMessage = inputRef.current.value;
@@ -127,56 +155,128 @@ function Messenger() {
 
   return (
     currentChat && (
-      <div className="messenger">
-        <div className="chatBox">
-          <div className="chatBoxTop">
-            <div className="chatBoxTopInfo">
-              <div
-                style={{ position: "relative", width: "32px", height: "32px" }}
-              >
-                <img
-                  className="chatBoxTopImg"
-                  src={arrivalUser?.profilePicture || noAvatarImg}
-                  alt=""
-                ></img>
-                {arrivalUserOnline && <div className="chatBoxTopBadge"></div>}
-              </div>
-              <div className="chatBoxTopName">{arrivalUser?.username}</div>
-            </div>
-
-            <div
-              onClick={() => dispatch(setCurrentChat(null))}
-              className="chatBoxTopClose"
-            >
-              <CloseIcon />
-            </div>
-          </div>
-
-          <div className="chatBoxWrapper">
-            <div className="chatBoxText">
-              {messages.map((message) => (
-                <div key={message._id} ref={scrollRef}>
-                  <Message
-                    message={message}
-                    own={message.senderId === user._id}
-                  />
+      <Grow in={!!currentChat}>
+        <div className="messenger">
+          <div className="chatBox">
+            <div className="chatBoxTop">
+              <div className="chatBoxTopInfo">
+                <div
+                  style={{
+                    position: "relative",
+                    width: "32px",
+                    height: "32px",
+                  }}
+                >
+                  <img
+                    className="chatBoxTopImg"
+                    src={arrivalUser?.profilePicture || noAvatarImg}
+                    alt=""
+                  ></img>
+                  {arrivalUserOnline && <div className="chatBoxTopBadge"></div>}
                 </div>
-              ))}
+                <div className="chatBoxTopName">{arrivalUser?.username}</div>
+              </div>
+
+              <div>
+                <Tooltip
+                  title={`Bắt đầu chat video với ${arrivalUser?.username}`}
+                >
+                  <IconButton>
+                    <VideocamIcon color="primary" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip
+                  title={`Bắt đầu cuộc hoại thoại với ${arrivalUser?.username}`}
+                >
+                  <IconButton>
+                    <PhoneIcon color="primary" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Thu nhỏ đoạn chat">
+                  <IconButton>
+                    <HorizontalRuleIcon color="primary" />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Đóng đoạn chat">
+                  <IconButton onClick={() => dispatch(setCurrentChat(null))}>
+                    <CloseIcon color="primary" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </div>
+
+            <div className="chatBoxWrapper">
+              <div className="chatBoxText">
+                {messages.map((message) => (
+                  <div key={message._id} ref={scrollRef}>
+                    <Message
+                      message={message}
+                      own={message.senderId === user._id}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="chatBoxBottom">
-          <input
-            ref={inputRef}
-            className="chatMessageInput"
-            placeholder="write something ..."
-          ></input>
-          <button onClick={handleSubmit} className="chatSubmitButton">
-            Send
-          </button>
+          <div className="chatBoxBottom">
+            <Tooltip title="Mở một hành động khác">
+              <IconButton>
+                <AddCircleIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Đính kèm một hình ảnh  hoặc video">
+              <IconButton>
+                <PhotoIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Chọn file gif">
+              <IconButton>
+                <GifIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+
+            <div style={{ position: "relative" }}>
+              <div
+                style={{ position: "absolute", top: "-325px", left: "-220px" }}
+              >
+                {showEmoji && <Picker onEmojiClick={handlePickEmoji} />}
+              </div>
+
+              <Tooltip title="Chọn biểu tượng cảm xúc">
+                <IconButton
+                  onClick={() => {
+                    setShowEmoji(!showEmoji);
+                    inputRef.current.focus();
+                  }}
+                >
+                  <InsertEmoticonIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <input
+                onClick={() => setShowEmoji(false)}
+                onChange={(e) => setMessage(e.target.value)}
+                ref={inputRef}
+                value={message}
+                className="chatMessageInput"
+                placeholder="write something ..."
+              />
+            </form>
+
+            <Tooltip title="Gửi tin nhắn">
+              <IconButton>
+                <SendIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+          </div>
         </div>
-      </div>
+      </Grow>
     )
   );
 }

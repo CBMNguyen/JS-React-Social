@@ -43,6 +43,10 @@
   margin-top: 8px;
 }
 
+.postText {
+  margin-left: 4px;
+}
+
 .postImg {
   width: 100%;
   margin: 10px 0;
@@ -54,6 +58,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .postBottomLeft {

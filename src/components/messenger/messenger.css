@@ -2,10 +2,10 @@
   position: fixed;
   bottom: 0;
   right: 5px;
-  padding-bottom: 100px;
+  padding-bottom: 105px;
 
-  width: 340px;
-  height: 320px;
+  width: 350px;
+  height: 340px;
   display: flex;
 
   -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
@@ -36,39 +36,24 @@
 
   height: 40px;
   padding: 5px 10px;
-  border-bottom: 1px solid #0008;
+  border-bottom: 2px solid #0003;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: #1877f2;
-}
-
-.chatBoxTopClose {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
-
-  border-radius: 50%;
-  color: white;
-  transition: all 0.2s ease-in-out 0s;
-}
-
-.chatBoxTopClose:hover {
-  cursor: pointer;
-  background-color: #fff4;
+  background-color: #fff;
 }
 
 .chatBoxTopInfo {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .chatBoxTopName {
   margin-left: 10px;
-  color: white;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
+  color: rgb(53, 52, 52);
+  text-transform: capitalize;
 }
 
 .chatBoxTopImg {
@@ -90,20 +75,22 @@
 
 .chatBoxBottom {
   position: absolute;
+  bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 90%;
-  padding: 0px 10px 5px 10px;
-  bottom: 2px;
+  width: 95%;
+
+  margin: 0 2.5%;
   background-color: #fff;
+  border-radius: 20px;
+  border: 1px solid lightgray;
 }
 
 .chatMessageInput {
-  padding: 10px;
   width: 80%;
-  border-radius: 20px;
-  border: 1px solid lightgray;
+  padding: 0 10px;
+  border: none;
 }
 
 .chatMessageInput:focus {

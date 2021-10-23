@@ -1,4 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
+import CreateIcon from "@mui/icons-material/Create";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -22,6 +24,9 @@ import NoAvatarImg from "../../assets/person/noAvatar.png";
 import coverImg from "../../assets/post/9.jpeg";
 import { ItemData, PersonalInformation } from "../../constants/global";
 import "./profile.css";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import { Stack } from "@mui/material";
 
 function Profile(props) {
   const dispatch = useDispatch();
@@ -82,6 +87,12 @@ function Profile(props) {
     }
   };
 
+  const [value, setValue] = React.useState("one");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <>
       <Topbar />
@@ -102,16 +113,45 @@ function Profile(props) {
               <h1 className="profileInfoName">{user?.username}</h1>
               <span className="profileInfoDesc">{user?.desc || "..."}</span>
               <span className="profileInfoDesc">Chỉnh sữa</span>
-              {currentUser?.user?._id !== userId && (
-                <button
-                  onClick={handleFollowClick}
-                  className="profileFollowButton"
-                >
-                  {followed ? "Unfollow" : "Follow"}
-                  {followed ? <RemoveIcon /> : <AddIcon />}
-                </button>
-              )}
             </div>
+            <Stack direction="row" alignItems="center" sx={{ width: "100%" }}>
+              <Tabs
+                textColor="primary"
+                indicatorColor="primary"
+                value={value}
+                onChange={handleChange}
+              >
+                <Tab value="one" label="Bài Viết" />
+                <Tab value="two" label="Giới thiệu" />
+                <Tab value="three" label="Bạn bè" />
+                <Tab value="four" label="Ảnh" />
+                <Tab value="five" label="Xem thêm" />
+              </Tabs>
+              {currentUser?.user?._id !== userId && (
+                <div>
+                  <button
+                    onClick={handleFollowClick}
+                    className="profileFollowButton"
+                  >
+                    {followed ? <RemoveIcon /> : <AddIcon />}
+                    {followed ? "Unfollow" : "Follow"}
+                  </button>
+                </div>
+              )}
+
+              <div>
+                <button className="profileEditButton">
+                  <CreateIcon className="profileEditIcon" />
+                  Chỉnh sữa trang cá nhân
+                </button>
+              </div>
+
+              <div>
+                <button className="profileEditButton">
+                  <MoreHorizIcon />
+                </button>
+              </div>
+            </Stack>
           </div>
         </div>
         <div className="profileBottomWrapper">
@@ -121,11 +161,17 @@ function Profile(props) {
                 <h2 className="profileBottomLeftInfoTitle">Giới Thiệu</h2>
                 <List>
                   {PersonalInformation(
-                    "Sống tại Vĩnh Long",
-                    "Đến từ Bình Minh",
-                    "Độc thân",
-                    "Tham gia vào tháng 12 năm 2014",
-                    "Có 211 người theo dỗi"
+                    user?.city || "un know",
+                    user?.from || "un know",
+                    user?.relationship?.length === 1
+                      ? "Độc thân"
+                      : user?.relationship?.length === 2
+                      ? "Married"
+                      : "un know",
+                    `Tham gia vào tháng ${
+                      new Date(user?.createdAt).getMonth() + 1
+                    } năm ${new Date(new Date(user?.createdAt)).getFullYear()}`,
+                    `Có ${user?.followers?.length} người theo dỗi`
                   ).map((item) => (
                     <ListItem sx={{ paddingLeft: 0 }} key={item.name}>
                       <ListItemIcon>{item.icon}</ListItemIcon>
