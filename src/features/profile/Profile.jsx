@@ -2,6 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import CreateIcon from "@mui/icons-material/Create";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { Button, Divider, Paper, Stack } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -9,6 +10,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import { Box } from "@mui/system";
 import postApi from "api/post";
 import userApi from "api/user";
 import Feed from "components/feed/Feed";
@@ -23,10 +27,6 @@ import { Link } from "react-router-dom";
 import NoAvatarImg from "../../assets/person/noAvatar.png";
 import coverImg from "../../assets/post/9.jpeg";
 import { ItemData, PersonalInformation } from "../../constants/global";
-import "./profile.css";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import { Stack } from "@mui/material";
 
 function Profile(props) {
   const dispatch = useDispatch();
@@ -95,25 +95,87 @@ function Profile(props) {
 
   return (
     <>
+      {/* This is Top Bar */}
       <Topbar />
-      <div className="profile">
-        <div className="profileTopWrapper">
-          <div className="profileTop">
-            <div className="profileCover">
-              <div className="profileCoverContainer">
-                <img className="profileCoverImg" src={coverImg} alt="" />
-              </div>
-              <img
-                className="profileUserImg"
+
+      <Box sx={{ backgroundColor: "#f0f2f5" }}>
+        {/* Profile Top */}
+        <Box
+          sx={{
+            background:
+              "linear-gradient(180deg,rgba(170, 167, 168, 1) 0%,rgba(227, 224, 224, 1) 19%,rgba(255, 255, 255, 1) 39%)",
+          }}
+        >
+          <Box
+            sx={{
+              width: "970px",
+              margin: "0 auto",
+            }}
+          >
+            {/* Profile Top Cover Img & Profile Picture */}
+            <Box
+              sx={{
+                height: "340px",
+                position: "relative",
+              }}
+            >
+              <Box
+                component="img"
+                sx={{
+                  width: "100%",
+                  height: "320px",
+                  objectFit: "cover",
+                  borderBottomLeftRadius: "8px",
+                  borderBottomRightRadius: "8px",
+                }}
+                src={coverImg}
+                alt=""
+              />
+
+              <Box
+                component="img"
+                sx={{
+                  position: "absolute",
+                  top: "180px",
+                  left: 0,
+                  right: 0,
+
+                  width: "150px",
+                  height: "150px",
+                  margin: "auto",
+                  border: "4px solid white",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
                 src={user.profilePicture || NoAvatarImg}
                 alt=""
               />
-            </div>
-            <div className="profileInfo">
-              <h1 className="profileInfoName">{user?.username}</h1>
-              <span className="profileInfoDesc">{user?.desc || "..."}</span>
-              <span className="profileInfoDesc">Chỉnh sữa</span>
-            </div>
+            </Box>
+            {/* Profile Top User Info */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                component="h1"
+                sx={{ mt: "8px", textTransform: "capitalize" }}
+              >
+                {user?.username}
+              </Box>
+              <Box component="span" sx={{ fontWeight: 300 }}>
+                {user?.desc || "..."}
+              </Box>
+              <Box component="span" sx={{ fontWeight: 400, color: "blue" }}>
+                Chỉnh sửa
+              </Box>
+            </Box>
+
+            <Divider sx={{ mt: 1 }} />
+            {/* Profile Top Tabs  */}
             <Stack direction="row" alignItems="center" sx={{ width: "100%" }}>
               <Tabs
                 textColor="primary"
@@ -121,44 +183,91 @@ function Profile(props) {
                 value={value}
                 onChange={handleChange}
               >
-                <Tab value="one" label="Bài Viết" />
-                <Tab value="two" label="Giới thiệu" />
-                <Tab value="three" label="Bạn bè" />
-                <Tab value="four" label="Ảnh" />
-                <Tab value="five" label="Xem thêm" />
+                <Tab disableRipple value="one" label="Bài Viết" />
+                <Tab disableRipple value="two" label="Giới thiệu" />
+                <Tab disableRipple value="three" label="Bạn bè" />
+                <Tab disableRipple value="four" label="Ảnh" />
+                <Tab disableRipple value="five" label="Xem thêm" />
               </Tabs>
+              {/* Profile Top Follow & Unfollow Button */}
               {currentUser?.user?._id !== userId && (
-                <div>
-                  <button
-                    onClick={handleFollowClick}
-                    className="profileFollowButton"
-                  >
-                    {followed ? <RemoveIcon /> : <AddIcon />}
-                    {followed ? "Unfollow" : "Follow"}
-                  </button>
-                </div>
+                <Button
+                  sx={{
+                    padding: "2px 16px",
+                    pr: "20px",
+                    margin: "0 8px",
+                    textTransform: "capitalize",
+                  }}
+                  onClick={handleFollowClick}
+                  color="primary"
+                  variant="contained"
+                  disableElevation
+                  startIcon={followed ? <RemoveIcon /> : <AddIcon />}
+                >
+                  {followed ? "Unfollow" : "Follow"}
+                </Button>
               )}
-
-              <div>
-                <button className="profileEditButton">
-                  <CreateIcon className="profileEditIcon" />
-                  Chỉnh sữa trang cá nhân
-                </button>
-              </div>
-
-              <div>
-                <button className="profileEditButton">
-                  <MoreHorizIcon />
-                </button>
-              </div>
+              {/* Profile Top Edit Button */}
+              <Button
+                sx={{
+                  margin: "0 8px",
+                  padding: "2px 16px",
+                  pr: "20px",
+                  textTransform: "capitalize",
+                }}
+                disableElevation
+                variant="contained"
+                color="inherit"
+                startIcon={<CreateIcon />}
+              >
+                Chỉnh sửa trang cá nhân
+              </Button>
+              {/* Profile Top More Button */}
+              <Button
+                sx={{
+                  margin: "0 8px",
+                  padding: "2px 16px",
+                  pr: "20px",
+                }}
+                color="inherit"
+                disableElevation
+                variant="contained"
+              >
+                <MoreHorizIcon />
+              </Button>
             </Stack>
-          </div>
-        </div>
-        <div className="profileBottomWrapper">
-          <div className="profileBottom">
-            <div className="profileBottomLeft">
-              <div className="profileBottomLeftInfo">
-                <h2 className="profileBottomLeftInfoTitle">Giới Thiệu</h2>
+          </Box>
+        </Box>
+
+        {/* Profile Bottom */}
+        <Box sx={{ width: "970px", margin: "0 auto" }}>
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            {/* Profile Left Bottom */}
+            <Box
+              sx={{
+                flex: 4,
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "wrap",
+
+                marginTop: "20px",
+              }}
+            >
+              {/* Profile Left Bottom Info */}
+              <Paper
+                elevation={2}
+                sx={{
+                  padding: "16px",
+                  mb: "16px",
+                  borderRadius: "8px",
+                }}
+              >
+                <Box component="h2">Giới Thiệu</Box>
+
                 <List>
                   {PersonalInformation(
                     user?.city || "un know",
@@ -172,31 +281,57 @@ function Profile(props) {
                       new Date(user?.createdAt).getMonth() + 1
                     } năm ${new Date(new Date(user?.createdAt)).getFullYear()}`,
                     `Có ${user?.followers?.length} người theo dỗi`
-                  ).map((item) => (
-                    <ListItem sx={{ paddingLeft: 0 }} key={item.name}>
+                  ).map((item, index) => (
+                    <ListItem sx={{ paddingLeft: 0 }} key={index}>
                       <ListItemIcon>{item.icon}</ListItemIcon>
                       <ListItemText primary={item.name} />
                     </ListItem>
                   ))}
                 </List>
-                <button className="profileBottomLeftInfoButton">
+                {/* Profile Left Bottom Info Button */}
+                <Box
+                  component="button"
+                  sx={{
+                    width: "100%",
+                    marginTop: "10px",
+                    padding: "10px",
+                    border: "none",
+                    borderRadius: "8px",
+                    fontWeight: 500,
+                    fontSize: "15px",
+                    backgroundColor: "#f0f2f5",
+                    transition: "all 0.4s easy-in-out 0s",
+                    "&:hover": {
+                      backgroundColor: "#e0e4e7",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
                   Chỉnh sửa chi tiết
-                </button>
-              </div>
-
-              <div className="profileBottomLeftInfoImages">
-                <div
-                  style={{
+                </Box>
+              </Paper>
+              {/* Profile Left Bottom Images */}
+              <Paper
+                elevation={2}
+                sx={{
+                  padding: "16px",
+                  mb: "16px",
+                  borderRadius: "8px",
+                }}
+              >
+                <Box
+                  sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
-                  <h2 className="profileBottomLeftImagesTitle">Ảnh</h2>
-                  <div style={{ textDecoration: "none", color: "blue" }}>
+                  <Box component="h2">Ảnh</Box>
+                  <Box sx={{ textDecoration: "none", color: "blue" }}>
                     Xem tất cả hình ảnh
-                  </div>
-                </div>
+                  </Box>
+                </Box>
+                {/* Images List */}
                 <ImageList
                   sx={{
                     width: "100%",
@@ -206,8 +341,8 @@ function Profile(props) {
                   }}
                   cols={3}
                 >
-                  {ItemData.map((item) => (
-                    <ImageListItem key={item.img}>
+                  {ItemData.map((item, index) => (
+                    <ImageListItem key={index.toString()}>
                       <img
                         src={`${item.img}`}
                         srcSet={`${item.img}`}
@@ -217,22 +352,29 @@ function Profile(props) {
                     </ImageListItem>
                   ))}
                 </ImageList>
-              </div>
-
-              <div className="profileBottomLeftInfoFriends">
-                <div
-                  style={{
+              </Paper>
+              {/* Profile Left Bottom Friends */}
+              <Paper
+                elevation={2}
+                sx={{
+                  padding: "16px",
+                  mb: "16px",
+                  borderRadius: "8px",
+                }}
+              >
+                <Box
+                  sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
-                  <h2 className="profileBottomLeftFriendsTitle">Friends</h2>
-                  <div style={{ textDecoration: "none", color: "blue" }}>
+                  <Box component="h2">Friends</Box>
+                  <Box sx={{ textDecoration: "none", color: "blue" }}>
                     Xem tất bạn bè
-                  </div>
-                </div>
-                <div>{friends.length}người bạn</div>
+                  </Box>
+                </Box>
+                <Box component="span">{friends.length} người bạn</Box>
                 <ImageList
                   sx={{
                     width: "100%",
@@ -248,7 +390,7 @@ function Profile(props) {
                       to={`/profile/${friend._id}`}
                       style={{ textDecoration: "none", color: "#000" }}
                     >
-                      <ImageListItem sx={{ m: "4px" }} key={friend?.name}>
+                      <ImageListItem sx={{ m: "4px" }}>
                         <img
                           src={`${friend?.profilePicture || NoAvatarImg}`}
                           srcSet={`${friend?.profilePicture || NoAvatarImg}`}
@@ -268,17 +410,18 @@ function Profile(props) {
                     </Link>
                   ))}
                 </ImageList>
-              </div>
-            </div>
-            <div className="profileBottomFeed">
-              <div style={{ padding: "0 20px" }}>
+              </Paper>
+            </Box>
+            {/* Profile Right Bottom Post */}
+            <Box sx={{ flex: 6 }}>
+              <Box style={{ padding: "0 20px" }}>
                 <Share />
-              </div>
+              </Box>
               <Feed posts={posts} />
-            </div>
-          </div>
-        </div>
-      </div>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
 
       <Messenger />
     </>
