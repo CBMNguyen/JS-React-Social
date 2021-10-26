@@ -30,3 +30,16 @@ export const showToastError = (error) => {
     ...PRODUCT_TOAST_OPTIONS,
   });
 };
+
+// format date full VN
+
+export const formatDateFull = (date) => {
+  const thu = date.getDay() + 1;
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+
+  return `Thứ ${thu}, ${day} Tháng ${month}, ${year} lúc ${hour}:${minute}`;
+};

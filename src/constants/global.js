@@ -1,46 +1,84 @@
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import ChatIcon from "@mui/icons-material/Chat";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import EventIcon from "@mui/icons-material/Event";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import GroupIcon from "@mui/icons-material/Group";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import HouseIcon from "@mui/icons-material/House";
-import LabelIcon from "@mui/icons-material/Label";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
-import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
-import RoomIcon from "@mui/icons-material/Room";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
-import SchoolIcon from "@mui/icons-material/School";
+import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import { Zoom } from "react-toastify";
+import BackPackImg from "../assets/backpack.png";
+import CalendarImg from "../assets/calendar.png";
+import ClockImg from "../assets/clock.png";
+import FlagImg from "../assets/flag.png";
+import FlowerImg from "../assets/flower.png";
+import FriendImg from "../assets/friend.png";
+import GImg from "../assets/g.png";
+import gameImg from "../assets/game.png";
+import MessengerGreenImg from "../assets/greenMessenger.png";
+import GroupImg from "../assets/group.png";
+import HearthImg from "../assets/hearth.png";
+import LabelImg from "../assets/label.png";
+import LatestImg from "../assets/latest.png";
+import liveImg from "../assets/live.png";
+import MessengerImg from "../assets/messenger.png";
+import payImg from "../assets/pay.png";
+import VideoImg from "../assets/playVideo.png";
+import PriestImg from "../assets/priest.png";
+import PromoteImg from "../assets/promote.png";
+import StarImg from "../assets/star.png";
+import MarketImg from "../assets/store.png";
+import VolumeImg from "../assets/volume.png";
+import WeatherImg from "../assets/weather.png";
+import WifiImg from "../assets/wifi.png";
 
 export const sidebarList = [
-  { name: "Feed", icon: <RssFeedIcon className="sidebarIcon" /> },
-  { name: "Chat", icon: <ChatIcon className="sidebarIcon" /> },
-  { name: "Videos", icon: <PlayCircleFilledIcon className="sidebarIcon" /> },
-  { name: "Groups", icon: <GroupIcon className="sidebarIcon" /> },
-  { name: "Bookmarks", icon: <BookmarkIcon className="sidebarIcon" /> },
-  { name: "Questions", icon: <HelpOutlineIcon className="sidebarIcon" /> },
-  { name: "Jobs", icon: <WorkOutlineIcon className="sidebarIcon" /> },
-  { name: "events", icon: <EventIcon className="sidebarIcon" /> },
-  { name: "Coures", icon: <SchoolIcon className="sidebarIcon" /> },
+  { name: "Bạn bè", img: FriendImg },
+  { name: "Nhóm", img: GroupImg },
+  {
+    name: "Marketplace",
+    img: MarketImg,
+  },
+  { name: "Watch", img: VideoImg },
+  { name: "Kỷ niệm", img: ClockImg },
+  { name: "Đã lưu", img: LabelImg },
+  { name: "Trang", img: FlagImg },
+  { name: "Sự kiện", img: CalendarImg },
+  { name: "Việc làm", img: BackPackImg },
+  { name: "Chiến dịch gây quỹ", img: HearthImg },
+  { name: "Chơi game", img: gameImg },
+  { name: "Facebook Pay", img: payImg },
+  { name: "Gần đây nhất", img: LatestImg },
+  {
+    name: "Hoạt động quản cáo gần đây",
+    img: PromoteImg,
+  },
+  { name: "Messenger", img: MessengerImg },
+  { name: "Messenger nhí", img: MessengerGreenImg },
+  { name: "Sức khỏe cảm xúc", img: FlowerImg },
+  { name: "Thời tiết", img: WeatherImg },
+  {
+    name: "Trình quản lý quản cáo",
+    img: WifiImg,
+  },
+  { name: "Trung tâm quản cáo", img: VolumeImg },
+  { name: "Ứng phó khẩn cấp", img: PriestImg },
+  { name: "Video chơi game", img: GImg },
+  { name: "Video trực tiếp", img: liveImg },
+  { name: "Yêu thích", img: StarImg },
 ];
 
 export const shareList = [
   {
-    name: "Photo or Video",
-    icon: <PermMediaIcon htmlColor="tomato" className="shareIcon" />,
-  },
-  { name: "Tag", icon: <LabelIcon htmlColor="blue" className="shareIcon" /> },
-  {
-    name: "Location",
-    icon: <RoomIcon htmlColor="green" className="shareIcon" />,
+    name: "Video trực tiếp",
+    icon: <VideoCameraFrontIcon htmlColor="red" className="shareIcon" />,
   },
   {
-    name: "Feelings",
+    name: "Ảnh/Video",
+    icon: <PermMediaIcon htmlColor="green" className="shareIcon" />,
+  },
+  {
+    name: "Cảm xúc/Hoạt động",
     icon: <EmojiEmotionsIcon htmlColor="goldenrod" className="shareIcon" />,
   },
 ];

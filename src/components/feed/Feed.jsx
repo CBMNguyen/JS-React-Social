@@ -1,17 +1,17 @@
+import { Box } from "@mui/system";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import Post from "../post/Post";
 import Share from "../share/Share";
-import "./feed.css";
 
 function Feed({ posts }) {
   const { userId } = useParams();
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="feed">
-      <div className="feedWrapper">
+    <Box sx={{ flex: 6 }}>
+      <Box sx={{ padding: "0 20px" }}>
         {!(userId || userId === user._id) && <Share />}
         {posts
           .slice()
@@ -19,8 +19,8 @@ function Feed({ posts }) {
           .map((post) => (
             <Post key={post._id} post={post} />
           ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

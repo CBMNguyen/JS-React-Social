@@ -5,10 +5,15 @@ import noAvatarImg from "../../assets/person/noAvatar.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useRef } from "react";
-import { showToastError, showToastSuccess } from "utils/common";
+import {
+  capitalizeFirstLetter,
+  showToastError,
+  showToastSuccess,
+} from "utils/common";
 import { createPost } from "app/postSlice";
 import axios from "axios";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { IconButton, Paper } from "@mui/material";
 
 function Share(props) {
   const { user } = useSelector((state) => state.user);
@@ -44,7 +49,7 @@ function Share(props) {
   };
 
   return (
-    <div className="share">
+    <Paper elevation={1} sx={{ mb: "25px", mt: "20px", borderRadius: "8px" }}>
       <div className="shareWrapper">
         <div className="shareTop">
           <img
@@ -52,22 +57,35 @@ function Share(props) {
             src={user?.profilePicture || noAvatarImg}
             alt="avatar"
           />
+
           <input
             ref={desc}
             type="text"
-            placeholder={`What's in your mind ${user?.username}?`}
+            placeholder={`${capitalizeFirstLetter(
+              user?.username || ""
+            )} ơi bạn đang nghĩ gì thế ?`}
             className="shareInput"
           />
         </div>
 
-        <hr className="shareHr" />
+        <div className="shareHr" />
+
         {file && (
           <div className="shareImgContainer">
             <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
-            <CancelIcon
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "5px",
+                right: "25px",
+                color: "#fff",
+                opacity: 0.6,
+                transition: "all 0.2s ease-in-out 0s",
+              }}
               onClick={() => setFile(null)}
-              className="shareCancelImg"
-            />
+            >
+              <CancelIcon />
+            </IconButton>
           </div>
         )}
         <form
@@ -78,7 +96,7 @@ function Share(props) {
           <div className="shareOptions">
             {shareList.map((item, index) => (
               <label
-                htmlFor={index === 0 ? "file" : ""}
+                htmlFor={index === 1 ? "file" : ""}
                 key={item.name}
                 className="shareOption"
               >
@@ -100,7 +118,7 @@ function Share(props) {
           </button>
         </form>
       </div>
-    </div>
+    </Paper>
   );
 }
 

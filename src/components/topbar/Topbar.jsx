@@ -1,33 +1,28 @@
+import AppsIcon from "@mui/icons-material/Apps";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ChatIcon from "@mui/icons-material/Chat";
+import GroupsIcon from "@mui/icons-material/Groups";
+import HomeIcon from "@mui/icons-material/Home";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import PersonIcon from "@mui/icons-material/Person";
+import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import SearchIcon from "@mui/icons-material/Search";
-import Tooltip from "@mui/material/Tooltip";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import StoreIcon from "@mui/icons-material/Store";
+import { Avatar, Badge } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Toolbar from "@mui/material/Toolbar";
 import { getConversations } from "app/messengerSlice";
 import ShowConversations from "components/showConversations/ShowConversations";
+import { BlackTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import noAvatarImg from "../../assets/person/noAvatar.png";
-import "./topbar.css";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Avatar, Badge } from "@mui/material";
 import logo from "../../assets/logo.png";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import HomeIcon from "@mui/icons-material/Home";
-import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
-import StoreIcon from "@mui/icons-material/Store";
-import GroupsIcon from "@mui/icons-material/Groups";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import AppsIcon from "@mui/icons-material/Apps";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 
 function Topbar(props) {
   const dispatch = useDispatch();
@@ -54,21 +49,23 @@ function Topbar(props) {
 
   return (
     <AppBar
-      elevation={1}
       position="sticky"
       sx={{
-        backgroundColor: "#fff !important",
         top: 0,
-        height: "64px",
+        height: "62px",
+        backgroundColor: "#fff !important",
+        boxShadow: "0px 0px 14px -8px rgba(0, 0, 0, 0.68)",
       }}
     >
       <Toolbar>
         <Box sx={{ flex: 2.5, display: "flex", alignItems: "center" }}>
-          <Avatar
-            sx={{ mr: 2, width: 38, height: 38, objectFit: "cover" }}
-            src={logo}
-            alt="logo"
-          />
+          <Link to="/">
+            <Avatar
+              sx={{ mr: 2, width: 38, height: 38, objectFit: "cover" }}
+              src={logo}
+              alt="logo"
+            />
+          </Link>
 
           <Box
             component="div"
@@ -77,8 +74,8 @@ function Topbar(props) {
               alignItems: "center",
               width: "100%",
               height: "38px",
-              backgroundColor: "#f1f2f5",
               borderRadius: "30px",
+              backgroundColor: "#f0f2f5",
             }}
           >
             <SearchIcon sx={{ fontSize: "20px", ml: "10px", color: "#0008" }} />
@@ -116,50 +113,75 @@ function Topbar(props) {
             <Tab
               disableRipple
               value="one"
-              label={<HomeIcon sx={{ fontSize: "28px", marginY: "4px" }} />}
-            ></Tab>
+              label={
+                <BlackTooltip title="Trang chủ">
+                  <Badge>
+                    <HomeIcon sx={{ fontSize: "28px", marginY: "2px" }} />
+                  </Badge>
+                </BlackTooltip>
+              }
+            />
 
             <Tab
               disableRipple
               value="two"
               label={
-                <Badge
-                  sx={{ marginY: "2px" }}
-                  badgeContent={99}
-                  max={10}
-                  color="error"
-                >
-                  <OndemandVideoIcon
-                    sx={{ fontSize: "28px", marginY: "4px" }}
-                  />
-                </Badge>
+                <BlackTooltip title="Watch">
+                  <Badge
+                    sx={{ marginY: "1px" }}
+                    badgeContent={99}
+                    max={10}
+                    color="error"
+                  >
+                    <OndemandVideoIcon
+                      sx={{ fontSize: "28px", marginY: "2px" }}
+                    />
+                  </Badge>
+                </BlackTooltip>
               }
             />
 
             <Tab
               disableRipple
               value="three"
-              label={<StoreIcon sx={{ fontSize: "28px", marginY: "4px" }} />}
+              label={
+                <BlackTooltip title="MarketPlace">
+                  <Badge
+                    sx={{ marginY: "1px" }}
+                    badgeContent={1}
+                    max={10}
+                    color="error"
+                  >
+                    <StoreIcon sx={{ fontSize: "28px", marginY: "4px" }} />
+                  </Badge>
+                </BlackTooltip>
+              }
             />
 
             <Tab
               disableRipple
               value="four"
-              label={<GroupsIcon sx={{ fontSize: "28px", marginY: "4px" }} />}
+              label={
+                <BlackTooltip title="Nhóm">
+                  <GroupsIcon sx={{ fontSize: "28px", marginY: "4px" }} />
+                </BlackTooltip>
+              }
             />
 
             <Tab
               disableRipple
               value="five"
               label={
-                <Badge
-                  sx={{ marginY: "2px" }}
-                  badgeContent={99}
-                  max={10}
-                  color="error"
-                >
-                  <SportsEsportsIcon sx={{ fontSize: "28px" }} />
-                </Badge>
+                <BlackTooltip title="Trò Chơi">
+                  <Badge
+                    sx={{ marginY: "2px" }}
+                    badgeContent={99}
+                    max={10}
+                    color="error"
+                  >
+                    <SportsEsportsIcon sx={{ fontSize: "28px" }} />
+                  </Badge>
+                </BlackTooltip>
               }
             />
           </Tabs>
@@ -210,13 +232,13 @@ function Topbar(props) {
               </Box>
             </Link>
 
-            <Tooltip title="Menu">
+            <BlackTooltip title="Menu">
               <IconButton sx={{ backgroundColor: "#f0f2f5" }}>
                 <AppsIcon sx={{ color: "#000" }} />
               </IconButton>
-            </Tooltip>
+            </BlackTooltip>
 
-            <Tooltip title="Messenger">
+            <BlackTooltip title="Messenger">
               <IconButton
                 onClick={() => setShowConversations(!showConversations)}
                 sx={{ backgroundColor: "#f0f2f5", mx: 2 }}
@@ -228,26 +250,26 @@ function Topbar(props) {
                   />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </BlackTooltip>
 
-            <Tooltip title="Notifications">
+            <BlackTooltip title="Notifications">
               <IconButton sx={{ backgroundColor: "#f0f2f5" }}>
                 <NotificationsIcon sx={{ color: "#000" }} />
               </IconButton>
-            </Tooltip>
+            </BlackTooltip>
 
-            <Tooltip title="Account">
-              <IconButton sx={{ backgroundColor: "#f0f2f5", mx: 2 }}>
+            <BlackTooltip title="Account">
+              <IconButton sx={{ backgroundColor: "#f0f2f5", ml: 2 }}>
                 <Badge variant="dot" color="error">
                   <ArrowDropDownIcon sx={{ color: "#000" }} />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </BlackTooltip>
           </Box>
         </Box>
       </Toolbar>
 
-      <Box component="div">
+      <Box>
         {showConversations && (
           <ShowConversations
             currentUser={user}

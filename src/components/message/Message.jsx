@@ -1,18 +1,50 @@
+import { Avatar, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
-import "./message.css";
-import noAvatarImg from "../../assets/person/noAvatar.png";
-import classNames from "classnames";
 import { format } from "timeago.js";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 
 function Message({ own, message }) {
   return (
-    <div className={classNames("message", { own: !own })}>
-      <div className="messageTop">
-        <img className="messageImg" src={noAvatarImg} alt="" />
-        <p className="messageText">{message.text}</p>
-      </div>
-      <div className="messageBottom">{format(message.createdAt)}</div>
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "20px",
+        alignItems: own ? "flex-start" : "flex-end",
+      }}
+    >
+      <Box sx={{ display: "flex" }}>
+        <Avatar
+          sx={{ width: "32px", height: "32px", mr: "10px" }}
+          src={noAvatarImg}
+          alt="avatar"
+        />
+        <Typography
+          sx={{
+            padding: "8px",
+            borderRadius: "16px",
+            backgroundColor: own ? "#1877f2" : "#e6e0e0",
+            color: own ? "#fff" : "#000",
+            maxWidth: "300px",
+          }}
+          variant="body1"
+        >
+          {message.text}
+        </Typography>
+      </Box>
+      <Box
+        component="span"
+        sx={{
+          fontSize: "10px",
+          marginTop: "8px",
+          color: "#0008",
+          fontWeight: 500,
+        }}
+      >
+        {format(message.createdAt)}
+      </Box>
+    </Box>
   );
 }
 

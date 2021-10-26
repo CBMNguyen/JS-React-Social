@@ -1,4 +1,15 @@
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
+import GifIcon from "@mui/icons-material/Gif";
+import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import PhoneIcon from "@mui/icons-material/Phone";
+import PhotoIcon from "@mui/icons-material/Photo";
+import SendIcon from "@mui/icons-material/Send";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import { Avatar, Badge, Grow, IconButton, Paper } from "@mui/material";
+import { Box } from "@mui/system";
 import userApi from "api/user";
 import {
   getMessages,
@@ -7,23 +18,14 @@ import {
   setMessages,
   setOnlineUsers,
 } from "app/messengerSlice";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import Picker from "emoji-picker-react";
 import axios from "axios";
+import { BlackTooltip } from "constants/mui";
+import Picker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import Message from "../message/Message";
-import "./messenger.css";
-import { Grow, IconButton, Tooltip } from "@mui/material";
-import PhoneIcon from "@mui/icons-material/Phone";
-import VideocamIcon from "@mui/icons-material/Videocam";
-import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import PhotoIcon from "@mui/icons-material/Photo";
-import GifIcon from "@mui/icons-material/Gif";
-import SendIcon from "@mui/icons-material/Send";
 
 function Messenger() {
   const [showEmoji, setShowEmoji] = useState(false);
@@ -148,6 +150,7 @@ function Messenger() {
       );
       dispatch(setMessages(res.data.savedMessage));
       inputRef.current.value = "";
+      setMessage("");
     } catch (error) {
       console.log(error);
     }
@@ -155,128 +158,254 @@ function Messenger() {
 
   return (
     currentChat && (
-      <Grow in={!!currentChat}>
-        <div className="messenger">
-          <div className="chatBox">
-            <div className="chatBoxTop">
-              <div className="chatBoxTopInfo">
-                <div
-                  style={{
-                    position: "relative",
-                    width: "32px",
-                    height: "32px",
-                  }}
-                >
-                  <img
-                    className="chatBoxTopImg"
-                    src={arrivalUser?.profilePicture || noAvatarImg}
-                    alt=""
-                  ></img>
-                  {arrivalUserOnline && <div className="chatBoxTopBadge"></div>}
-                </div>
-                <div className="chatBoxTopName">{arrivalUser?.username}</div>
-              </div>
+      <>
+        <Grow in={!!currentChat}>
+          <Paper
+            elevation={2}
+            sx={{
+              position: "fixed",
+              bottom: 0,
+              right: "5px",
+              zIndex: 99,
+              paddingBottom: "90px",
 
-              <div>
-                <Tooltip
-                  title={`Bắt đầu chat video với ${arrivalUser?.username}`}
-                >
-                  <IconButton>
-                    <VideocamIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip
-                  title={`Bắt đầu cuộc hoại thoại với ${arrivalUser?.username}`}
-                >
-                  <IconButton>
-                    <PhoneIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Thu nhỏ đoạn chat">
-                  <IconButton>
-                    <HorizontalRuleIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
+              width: "350px",
+              height: "420px",
+              display: "flex",
+            }}
+          >
+            <Box sx={{ flex: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
 
-                <Tooltip title="Đóng đoạn chat">
-                  <IconButton onClick={() => dispatch(setCurrentChat(null))}>
-                    <CloseIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
-              </div>
-            </div>
-
-            <div className="chatBoxWrapper">
-              <div className="chatBoxText">
-                {messages.map((message) => (
-                  <div key={message._id} ref={scrollRef}>
-                    <Message
-                      message={message}
-                      own={message.senderId === user._id}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="chatBoxBottom">
-            <Tooltip title="Mở một hành động khác">
-              <IconButton>
-                <AddCircleIcon color="primary" />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Đính kèm một hình ảnh  hoặc video">
-              <IconButton>
-                <PhotoIcon color="primary" />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Chọn file gif">
-              <IconButton>
-                <GifIcon color="primary" />
-              </IconButton>
-            </Tooltip>
-
-            <div style={{ position: "relative" }}>
-              <div
-                style={{ position: "absolute", top: "-325px", left: "-220px" }}
+                  height: "48px",
+                  padding: "5px 10px",
+                  borderBottom: "2px solid #0002",
+                  borderTopLeftRadius: "8px",
+                  borderTopRightRadius: "8px",
+                }}
               >
-                {showEmoji && <Picker onEmojiClick={handlePickEmoji} />}
-              </div>
-
-              <Tooltip title="Chọn biểu tượng cảm xúc">
-                <IconButton
-                  onClick={() => {
-                    setShowEmoji(!showEmoji);
-                    inputRef.current.focus();
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  <InsertEmoticonIcon />
+                  <Badge
+                    variant="dot"
+                    color={arrivalUserOnline ? "success" : "default"}
+                    overlap="circular"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                  >
+                    <Avatar
+                      sx={{ width: "32px", height: "32px" }}
+                      src={arrivalUser?.profilePicture || noAvatarImg}
+                      alt=""
+                    ></Avatar>
+                  </Badge>
+
+                  <Box
+                    sx={{
+                      marginLeft: "10px",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        fontWeight: 500,
+                        color: "rgb(53, 52, 52)",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {arrivalUser?.username}
+                    </Box>
+
+                    {arrivalUserOnline && (
+                      <Box
+                        sx={{
+                          fontSize: "12px",
+                        }}
+                        component="span"
+                      >
+                        đang hoạt động
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+
+                <Box>
+                  <BlackTooltip
+                    title={`Bắt đầu chat video với ${arrivalUser?.username}`}
+                  >
+                    <IconButton>
+                      <VideocamIcon color="primary" />
+                    </IconButton>
+                  </BlackTooltip>
+                  <BlackTooltip
+                    title={`Bắt đầu cuộc hoại thoại với ${arrivalUser?.username}`}
+                  >
+                    <IconButton>
+                      <PhoneIcon color="primary" />
+                    </IconButton>
+                  </BlackTooltip>
+
+                  <BlackTooltip title="Thu nhỏ đoạn chat">
+                    <IconButton>
+                      <HorizontalRuleIcon color="primary" />
+                    </IconButton>
+                  </BlackTooltip>
+
+                  <BlackTooltip title="Đóng đoạn chat">
+                    <IconButton onClick={() => dispatch(setCurrentChat(null))}>
+                      <CloseIcon color="primary" />
+                    </IconButton>
+                  </BlackTooltip>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+
+                  padding: "10px",
+                  paddingRight: "5px",
+                  paddingTop: 0,
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    height: "100%",
+                    overflowY: "scroll",
+                    paddingRight: "10px",
+                  }}
+                >
+                  {messages.map((message) => (
+                    <div key={message._id} ref={scrollRef}>
+                      <Message
+                        message={message}
+                        own={message.senderId === user._id}
+                      />
+                    </div>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "95%",
+
+                margin: "0 2.5%",
+                borderRadius: "20px",
+                border: "1px solid lightgray",
+              }}
+            >
+              <BlackTooltip title="Mở một hành động khác">
+                <IconButton sx={{ paddingLeft: "5px", paddingRight: 0 }}>
+                  <AddCircleIcon color="primary" />
                 </IconButton>
-              </Tooltip>
-            </div>
+              </BlackTooltip>
 
-            <form onSubmit={handleSubmit}>
-              <input
-                onClick={() => setShowEmoji(false)}
-                onChange={(e) => setMessage(e.target.value)}
-                ref={inputRef}
-                value={message}
-                className="chatMessageInput"
-                placeholder="write something ..."
-              />
-            </form>
+              <BlackTooltip title="Đính kèm một hình ảnh  hoặc video">
+                <IconButton>
+                  <PhotoIcon color="primary" />
+                </IconButton>
+              </BlackTooltip>
 
-            <Tooltip title="Gửi tin nhắn">
-              <IconButton>
-                <SendIcon color="primary" />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </div>
-      </Grow>
+              <BlackTooltip title="Chọn nhãn dán">
+                <IconButton sx={{ paddingX: 0 }}>
+                  <StickyNote2Icon color="primary" />
+                </IconButton>
+              </BlackTooltip>
+
+              <BlackTooltip title="Chọn file gif">
+                <IconButton>
+                  <GifIcon color="primary" />
+                </IconButton>
+              </BlackTooltip>
+
+              <Box sx={{ position: "relative" }}>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "-325px",
+                    left: "-220px",
+                  }}
+                >
+                  {showEmoji && <Picker onEmojiClick={handlePickEmoji} />}
+                </Box>
+
+                <BlackTooltip title="Chọn biểu tượng cảm xúc">
+                  <IconButton
+                    sx={{ paddingX: 0 }}
+                    onClick={() => {
+                      setShowEmoji(!showEmoji);
+                      inputRef.current.focus();
+                    }}
+                  >
+                    <InsertEmoticonIcon />
+                  </IconButton>
+                </BlackTooltip>
+              </Box>
+
+              <Box component="form" onSubmit={message ? handleSubmit : null}>
+                <Box
+                  component="input"
+                  onClick={() => setShowEmoji(false)}
+                  onChange={(e) => setMessage(e.target.value)}
+                  ref={inputRef}
+                  value={message}
+                  className="chatMessageInput"
+                  placeholder="write something ..."
+                  sx={{
+                    border: "none",
+                    width: "80%",
+                    "&:focus": {
+                      outline: "none",
+                    },
+                  }}
+                />
+              </Box>
+
+              <BlackTooltip title="Gửi tin nhắn">
+                <IconButton onClick={message ? handleSubmit : null}>
+                  <SendIcon color="primary" />
+                </IconButton>
+              </BlackTooltip>
+            </Box>
+          </Paper>
+        </Grow>
+
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "100%",
+            zIndex: 0,
+          }}
+          onClick={() => setShowEmoji(false)}
+        />
+      </>
     )
   );
 }
