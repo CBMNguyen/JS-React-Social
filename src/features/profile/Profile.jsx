@@ -13,8 +13,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
-import postApi from "api/post";
 import userApi from "api/user";
+import { getPostOfMe } from "app/postSlice";
 import Feed from "components/feed/Feed";
 import Messenger from "components/messenger/Messenger";
 import Share from "components/share/Share";
@@ -32,7 +32,7 @@ function Profile(props) {
   const dispatch = useDispatch();
   const { userId } = useParams();
   const [user, setUser] = useState({});
-  const [posts, setPosts] = useState([]);
+  const { posts } = useSelector((state) => state.posts);
   const currentUser = useSelector((state) => state.user);
   const [followed, setFollowed] = useState(false);
   const [friends, setFriends] = useState([]);
@@ -52,8 +52,7 @@ function Profile(props) {
   useEffect(() => {
     const fetchPosts = async (id) => {
       try {
-        const { posts } = await postApi.getPostOfMe(id);
-        setPosts(posts);
+        await dispatch(getPostOfMe(id));
       } catch (error) {
         console.log(error);
       }
@@ -71,7 +70,7 @@ function Profile(props) {
         const { friendList } = await userApi.getFriends(userId);
         setFriends(friendList);
       } catch (error) {
-        console(error);
+        console.log(error);
       }
     };
     fetchFriends(userId);

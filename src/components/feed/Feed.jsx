@@ -17,7 +17,7 @@ function Feed({ posts }) {
           .slice()
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((post) => (
-            <Post key={post._id} post={post} />
+            <Post key={post._id} post={post} currentUser={user} />
           ))}
       </Box>
     </Box>

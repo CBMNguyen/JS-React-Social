@@ -3,12 +3,19 @@ import CloseIcon from "@mui/icons-material/Close";
 import GifIcon from "@mui/icons-material/Gif";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PhotoIcon from "@mui/icons-material/Photo";
 import SendIcon from "@mui/icons-material/Send";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import { Avatar, Badge, Grow, IconButton, Paper } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import { Box } from "@mui/system";
 import userApi from "api/user";
 import {
@@ -19,10 +26,12 @@ import {
   setOnlineUsers,
 } from "app/messengerSlice";
 import axios from "axios";
-import { BlackTooltip } from "constants/mui";
+import { messengerToolTip } from "constants/global";
+import { BlackTooltip, LightTooltip } from "constants/mui";
 import Picker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import Message from "../message/Message";
@@ -31,6 +40,7 @@ function Messenger() {
   const [showEmoji, setShowEmoji] = useState(false);
   const [message, setMessage] = useState("");
   const [cursorPosition, setCursorPosition] = useState();
+  const [openMessengerOptions, setOpenMessengerOptions] = useState(false);
 
   const inputRef = useRef();
   const socket = useRef();
@@ -170,7 +180,7 @@ function Messenger() {
               paddingBottom: "90px",
 
               width: "350px",
-              height: "420px",
+              height: "440px",
               display: "flex",
             }}
           >
@@ -180,66 +190,144 @@ function Messenger() {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  padding: "4px",
 
                   height: "48px",
-                  padding: "5px 10px",
                   borderBottom: "2px solid #0002",
                   borderTopLeftRadius: "8px",
                   borderTopRightRadius: "8px",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+                <LightTooltip
+                  open={openMessengerOptions}
+                  placement="left-start"
+                  arrow
+                  title={
+                    <List sx={{ width: "320px", padding: "2px" }}>
+                      {messengerToolTip.map((item, index) => {
+                        let divider = <span />;
+                        if (
+                          index === 1 ||
+                          index === 4 ||
+                          index === 5 ||
+                          index === 8
+                        )
+                          divider = <Divider sx={{ marginY: 1 }} />;
+                        return (
+                          <Link
+                            to={
+                              index === 1 ? `/profile/${arrivalUser?._id}` : "/"
+                            }
+                            style={{ color: "#333", textDecoration: "none" }}
+                            key={item.name}
+                          >
+                            <ListItem disablePadding>
+                              <ListItemButton sx={{ padding: 0 }}>
+                                <ListItemIcon
+                                  sx={{
+                                    paddingLeft: "8px",
+                                  }}
+                                >
+                                  {item.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                  primary={
+                                    <Box
+                                      sx={{ fontWeight: "500", color: "#333" }}
+                                    >
+                                      <Box>{item.name}</Box>
+                                      {index ===
+                                        messengerToolTip.length - 1 && (
+                                        <Box
+                                          sx={{
+                                            fontSize: "12px",
+                                            color: "#555",
+                                          }}
+                                        >
+                                          Đóng góp ý kiến và báo cáo cuộc trò
+                                          chuyện
+                                        </Box>
+                                      )}
+                                    </Box>
+                                  }
+                                />
+                              </ListItemButton>
+                            </ListItem>
+                            {divider}
+                          </Link>
+                        );
+                      })}
+                    </List>
+                  }
                 >
-                  <Badge
-                    variant="dot"
-                    color={arrivalUserOnline ? "success" : "default"}
-                    overlap="circular"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                  >
-                    <Avatar
-                      sx={{ width: "32px", height: "32px" }}
-                      src={arrivalUser?.profilePicture || noAvatarImg}
-                      alt=""
-                    ></Avatar>
-                  </Badge>
-
                   <Box
                     sx={{
-                      marginLeft: "10px",
                       display: "flex",
-                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "2px",
+                      borderRadius: "4px",
+                      transition: "all 0.5s easy-in-out 0s",
+                      "&:hover": {
+                        cursor: "pointer",
+                        backgroundColor: "#f0f2f5",
+                      },
                     }}
+                    onClick={() =>
+                      setOpenMessengerOptions(!openMessengerOptions)
+                    }
                   >
-                    <Box
-                      sx={{
-                        fontWeight: 500,
-                        color: "rgb(53, 52, 52)",
-                        textTransform: "capitalize",
+                    <Badge
+                      variant="dot"
+                      color={arrivalUserOnline ? "success" : "default"}
+                      overlap="circular"
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
                       }}
                     >
-                      {arrivalUser?.username}
-                    </Box>
+                      <Avatar
+                        sx={{ width: "32px", height: "32px" }}
+                        src={arrivalUser?.profilePicture || noAvatarImg}
+                        alt=""
+                      ></Avatar>
+                    </Badge>
 
-                    {arrivalUserOnline && (
+                    <Box
+                      sx={{
+                        marginLeft: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
                       <Box
                         sx={{
-                          fontSize: "12px",
+                          display: "flex",
+                          alignItems: "center",
+                          fontWeight: 500,
+                          color: "rgb(53, 52, 52)",
+                          textTransform: "capitalize",
                         }}
-                        component="span"
                       >
-                        đang hoạt động
+                        {arrivalUser?.username}
+                        <KeyboardArrowDownOutlinedIcon
+                          sx={{ fontSize: "18px", ml: "2px" }}
+                        />
                       </Box>
-                    )}
+
+                      {arrivalUserOnline && (
+                        <Box
+                          sx={{
+                            fontSize: "12px",
+                          }}
+                          component="span"
+                        >
+                          đang hoạt động
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
-                </Box>
+                </LightTooltip>
 
                 <Box>
                   <BlackTooltip
@@ -403,7 +491,10 @@ function Messenger() {
             width: "100%",
             zIndex: 0,
           }}
-          onClick={() => setShowEmoji(false)}
+          onClick={() => {
+            setShowEmoji(false);
+            setOpenMessengerOptions(false);
+          }}
         />
       </>
     )

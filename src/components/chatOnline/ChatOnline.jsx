@@ -1,33 +1,20 @@
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
-import { Avatar, Badge, Stack, Tooltip, tooltipClasses } from "@mui/material";
+import { Avatar, Badge, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { styled } from "@mui/material/styles";
 import userApi from "api/user";
 import { setCurrentChat } from "app/messengerSlice";
 import axios from "axios";
+import { LightTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { capitalizeFirstLetter } from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
-
-const LightTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[2],
-    fontSize: 11,
-    maxWidth: 380,
-    borderRadius: "8px",
-  },
-}));
 
 function ChatOnline({ onlineUsers, currentUserId }) {
   const dispatch = useDispatch();

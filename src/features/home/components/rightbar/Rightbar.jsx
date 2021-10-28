@@ -67,9 +67,12 @@ function Rightbar({ onlineUsers, currentUserId }) {
           rel="noopener noreferrer"
           target="blank"
         >
-          <Box
+          <Paper
+            elevation={2}
             sx={{
               display: "flex",
+              padding: 1,
+              borderRadius: "8px",
             }}
           >
             <Box
@@ -79,7 +82,7 @@ function Rightbar({ onlineUsers, currentUserId }) {
                 height: "80px",
                 borderRadius: "8px",
                 objectFit: "cover",
-                border: "2px solid deeppink",
+                boxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.1)",
               }}
               src={sponsorImg}
               alt="sponsorImg"
@@ -99,7 +102,7 @@ function Rightbar({ onlineUsers, currentUserId }) {
                 shoestore-7857c.web.app
               </Box>
             </Box>
-          </Box>
+          </Paper>
         </Box>
 
         <Divider sx={{ mb: 1 }} />

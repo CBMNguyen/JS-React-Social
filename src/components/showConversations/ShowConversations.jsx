@@ -121,27 +121,26 @@ function ShowConversations({
             />
           </div>
         ))}
-        <Box>
-          <Box
-            sx={{
-              display: "block",
-              padding: "12px 0",
-              borderTop: "2px solid #f0f2f5",
 
-              color: "#1877f2",
-              textAlign: "center",
-              textDecoration: "none",
-              fontSize: "14px",
-              transition: "all 0.2s ease-in-out 0s",
+        <Box
+          sx={{
+            display: "block",
+            padding: "12px 0",
+            borderTop: "2px solid #f0f2f5",
 
-              "&:hover": {
-                cursor: "pointer",
-                textDecoration: "underline",
-              },
-            }}
-          >
-            Xem tất cả trong Messenger
-          </Box>
+            color: "#1877f2",
+            textAlign: "center",
+            textDecoration: "none",
+            fontSize: "14px",
+            transition: "all 0.2s ease-in-out 0s",
+
+            "&:hover": {
+              cursor: "pointer",
+              textDecoration: "underline",
+            },
+          }}
+        >
+          Xem tất cả trong Messenger
         </Box>
       </Paper>
 

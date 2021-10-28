@@ -18,8 +18,13 @@ import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import userApi from "api/user";
-import { likeAndDislike } from "app/postSlice";
-import { BlackTooltip } from "constants/mui";
+import {
+  createComment,
+  likeAndDislike,
+  likeAndDislikeComment,
+} from "app/postSlice";
+import { states } from "constants/global";
+import { BlackTooltip, TransparentTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -31,10 +36,12 @@ import {
   showToastSuccess,
 } from "utils/common";
 import NoAvatarImg from "../../assets/person/noAvatar.png";
+import Comment from "../../components/comment/Comment";
 
-function Post({ post }) {
+function Post({ post, currentUser }) {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
+  const [text, setText] = useState("");
 
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
@@ -47,6 +54,30 @@ function Post({ post }) {
     }
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
+  };
+
+  const handleCommentClick = async (state, commentId, userId) => {
+    try {
+      await showToastSuccess(
+        dispatch(
+          likeAndDislikeComment({ postId: post._id, state, commentId, userId })
+        )
+      );
+    } catch (error) {
+      showToastError(error);
+    }
+  };
+
+  const handleCreateComment = async (e) => {
+    e.preventDefault();
+    try {
+      await showToastSuccess(
+        dispatch(createComment({ postId: post._id, text }))
+      );
+      setText("");
+    } catch (error) {
+      showToastError(error);
+    }
   };
 
   useEffect(() => {
@@ -132,8 +163,8 @@ function Post({ post }) {
             alignItems: "center",
           }}
         >
-          <Box>Hiếu và 100k người khác</Box>
-          <Box>1k bình luận 167 lượt chia sẻ</Box>
+          <Box>{`Hiếu và ${like} người khác`}</Box>
+          <Box>{`${post.comments.length} bình luận 0 lượt chia sẻ`}</Box>
         </Stack>
       </CardContent>
 
@@ -159,7 +190,36 @@ function Post({ post }) {
           >
             <ThumbUpOffAltIcon />
 
-            <Box sx={{ pl: 1 }}>Thích</Box>
+            <TransparentTooltip
+              placement="top"
+              title={
+                <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+                  {states.map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        width: "34px",
+                        height: "34px",
+                        paddingX: "4px",
+                        mt: "2px",
+
+                        transition: "all 0.5s easy-in-out 0s",
+                        "&:hover": {
+                          cursor: "pointer",
+                          transform: "scale(1.1)",
+                        },
+                      }}
+                      component="img"
+                      src={item}
+                    />
+                  ))}
+                </Stack>
+              }
+            >
+              <Box onClick={handleLikeClick} sx={{ pl: 1 }}>
+                Thích
+              </Box>
+            </TransparentTooltip>
           </Button>
 
           <Button
@@ -233,7 +293,7 @@ function Post({ post }) {
                 overlap="circular"
               >
                 <Avatar
-                  sx={{ width: 32, height: 32 }}
+                  sx={{ width: 28, height: 28 }}
                   src={user?.profilePicture || NoAvatarImg}
                 />
               </Badge>
@@ -244,7 +304,7 @@ function Post({ post }) {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                width: "92%",
+                width: "95%",
                 backgroundColor: "#f0f2f5",
                 borderRadius: "20px",
               }}
@@ -252,18 +312,31 @@ function Post({ post }) {
               <Box
                 sx={{
                   flexGrow: 1,
-                  height: 32,
+                  height: 28,
                   pl: 2,
                   border: "none",
                   backgroundColor: "inherit",
                   borderRadius: "20px",
-                  "&:focus": {
-                    outline: "none",
-                  },
                 }}
-                component="input"
-                placeholder="Viết bình luận"
-              />
+                component="form"
+                onSubmit={handleCreateComment}
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: 28,
+                    border: "none",
+                    backgroundColor: "inherit",
+                    "&:focus": {
+                      outline: "none",
+                    },
+                  }}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  component="input"
+                  placeholder="Viết bình luận"
+                />
+              </Box>
 
               <Box>
                 <BlackTooltip title="Chèn một biểu tượng cảm xúc">
@@ -291,6 +364,15 @@ function Post({ post }) {
               </Box>
             </Box>
           </Box>
+          {post.comments.length > 0 &&
+            post.comments.map((comment) => (
+              <Comment
+                key={comment._id}
+                onCommentClick={handleCommentClick}
+                comment={comment}
+                currentUser={currentUser}
+              />
+            ))}
         </CardContent>
       </Collapse>
     </Card>

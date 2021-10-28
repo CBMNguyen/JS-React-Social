@@ -30,6 +30,16 @@ const postApi = {
     const url = `/posts/${postId}/like`;
     return axiosClient.put(url);
   },
+
+  likeAndDislikeComment: (postId, state, commentId) => {
+    const url = `/posts/${postId}/comment/like`;
+    return axiosClient.put(url, { state, commentId });
+  },
+
+  createComment: (postId, text) => {
+    const url = `/posts/${postId}/comment`;
+    return axiosClient.put(url, { text });
+  },
 };
 
 export default postApi;

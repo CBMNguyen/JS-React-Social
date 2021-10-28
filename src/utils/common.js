@@ -43,3 +43,30 @@ export const formatDateFull = (date) => {
 
   return `Thứ ${thu}, ${day} Tháng ${month}, ${year} lúc ${hour}:${minute}`;
 };
+
+const color = " rgb(247, 177, 37)";
+
+export const currentState = (state) => {
+  switch (state) {
+    case 0:
+      return { name: "Thích", color: "rgb(32, 120, 244)" };
+    case 1:
+      return { name: "Yêu thích", color: "red" };
+    case 2:
+      return { name: "Thương Thương", color };
+    case 3:
+      return { name: "HaHa", color };
+    case 4:
+      return { name: "Wow", color };
+    case 5:
+      return { name: "Buồn", color: "rgb(243, 62, 88)" };
+    case 6:
+      return { name: "Phẫn nộ", color: "rgb(233, 113, 15)" };
+    default:
+      return { name: "Thích", color: "#555" };
+  }
+};
+
+export const countState = (likes, state) => {
+  return likes.filter((item) => item.state === state).length;
+};

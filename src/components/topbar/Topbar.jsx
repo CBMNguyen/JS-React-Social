@@ -246,7 +246,7 @@ function Topbar(props) {
                 <Badge badgeContent={1} max={10} color="error">
                   <ChatIcon
                     color="primary"
-                    sx={!showConversations && { color: "#000" }}
+                    sx={!showConversations ? { color: "#000" } : {}}
                   />
                 </Badge>
               </IconButton>
@@ -269,16 +269,14 @@ function Topbar(props) {
         </Box>
       </Toolbar>
 
-      <Box>
-        {showConversations && (
-          <ShowConversations
-            currentUser={user}
-            conversations={conversations}
-            showConversations={true}
-            setShowConversations={setShowConversations}
-          />
-        )}
-      </Box>
+      {showConversations && (
+        <ShowConversations
+          currentUser={user}
+          conversations={conversations}
+          showConversations={true}
+          setShowConversations={setShowConversations}
+        />
+      )}
     </AppBar>
   );
 }
