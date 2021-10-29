@@ -1,10 +1,17 @@
+import LinearProgress from "@mui/material/LinearProgress";
+import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
+import userApi from "api/user";
 import ProtectedRoute from "components/protectedRoute/ProtectedRoute";
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import LinearProgress from "@mui/material/LinearProgress";
 import NotFound from "./components/notFound/NotFound";
-import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
+
+window.addEventListener("beforeunload", async () => {
+  const user = JSON.parse(localStorage.getItem("persist:facebook")).user;
+  const userId = JSON.parse(user).user._id;
+  if (userId) userApi.update(userId, { latestOnline: new Date() });
+});
 
 function App() {
   const Register = React.lazy(() => import("features/auth/register/Register"));

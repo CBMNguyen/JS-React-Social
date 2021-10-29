@@ -13,6 +13,7 @@ import axios from "axios";
 import { LightTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { format } from "timeago.js";
 import { capitalizeFirstLetter } from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
@@ -30,7 +31,7 @@ function ChatOnline({ onlineUsers, currentUserId }) {
       }
     };
     getFriends();
-  }, [currentUserId]);
+  }, [currentUserId, onlineUsers]);
 
   const handleClick = async (friend) => {
     try {
@@ -118,6 +119,30 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                 <ListItemText
                   primary={capitalizeFirstLetter(friend.username)}
                 />
+                {!onlineUsers.includes(friend._id) && (
+                  <ListItemText
+                    sx={{ position: "absolute", left: "16px", bottom: 0 }}
+                    primary={
+                      <Box
+                        sx={{
+                          padding: "1px",
+                          fontSize: "9px",
+                          fontWeight: "bold",
+                          color: "green",
+                          backgroundColor: "rgb(226, 250, 226)",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        {format(new Date(friend.latestOnline)).toString()
+                          .length > 8
+                          ? format(new Date(friend.latestOnline))
+                              .toString()
+                              .slice(0, -3)
+                          : format(new Date(friend.latestOnline)).toString()}
+                      </Box>
+                    }
+                  />
+                )}
               </ListItemButton>
             </ListItem>
           </LightTooltip>

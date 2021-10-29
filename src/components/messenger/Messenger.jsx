@@ -37,6 +37,9 @@ import noAvatarImg from "../../assets/person/noAvatar.png";
 import Message from "../message/Message";
 
 function Messenger() {
+  const { user } = useSelector((state) => state.user);
+
+  const [arrivalUser, setArrivalUser] = useState(null);
   const [showEmoji, setShowEmoji] = useState(false);
   const [message, setMessage] = useState("");
   const [cursorPosition, setCursorPosition] = useState();
@@ -47,20 +50,10 @@ function Messenger() {
   const scrollRef = useRef();
   const dispatch = useDispatch();
 
-  // =====================================
-  const { user } = useSelector((state) => state.user);
   const { currentChat, messages, arrivalMessage, onlineUsers } = useSelector(
     (state) => state.messenger
   );
-
-  const [arrivalUser, setArrivalUser] = useState(null);
-  const [arrivalUserOnline, setArrivalUserOnline] = useState(false);
-
-  useEffect(() => {
-    const isOnline = onlineUsers?.includes(arrivalUser?._id);
-    setArrivalUserOnline(isOnline);
-  }, [onlineUsers, arrivalUser]);
-
+  // get current messenger User
   useEffect(() => {
     const getArrivalUser = async () => {
       const arrivalUserId = currentChat.members.find(
@@ -71,7 +64,7 @@ function Messenger() {
     };
     currentChat && getArrivalUser();
   }, [currentChat, user]);
-
+  // handle bind socket and get Message
   useEffect(() => {
     socket.current = io(process.env.REACT_APP_WS_URL);
     socket.current.on("getMessage", (data) => {
@@ -84,7 +77,7 @@ function Messenger() {
       );
     });
   }, [dispatch]);
-
+  // handle update arrival Message
   useEffect(() => {
     arrivalMessage &&
       currentChat?.members.includes(arrivalMessage.senderId) &&
@@ -112,8 +105,6 @@ function Messenger() {
     };
     currentChat && fetchMessages();
   }, [currentChat, dispatch]);
-
-  // =====================================
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -279,7 +270,11 @@ function Messenger() {
                   >
                     <Badge
                       variant="dot"
-                      color={arrivalUserOnline ? "success" : "default"}
+                      color={
+                        onlineUsers.includes(arrivalUser?._id)
+                          ? "success"
+                          : "default"
+                      }
                       overlap="circular"
                       anchorOrigin={{
                         vertical: "bottom",
@@ -315,7 +310,7 @@ function Messenger() {
                         />
                       </Box>
 
-                      {arrivalUserOnline && (
+                      {onlineUsers.includes(arrivalUser?._id) && (
                         <Box
                           sx={{
                             fontSize: "12px",
