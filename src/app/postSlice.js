@@ -34,10 +34,10 @@ export const getPostOfMe = createAsyncThunk(
 
 export const likeAndDislike = createAsyncThunk(
   "post/likeAndDislike",
-  async (postId, { rejectWithValue, fulfillWithValue }) => {
+  async ({ postId, state, userId }, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const { message } = await postApi.likeAndDislike(postId);
-      return fulfillWithValue({ message });
+      const { message } = await postApi.likeAndDislike(postId, state);
+      return fulfillWithValue({ message, postId, state, userId });
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -125,10 +125,38 @@ const postSlice = createSlice({
       state.error = "";
     },
 
+    [likeAndDislike.pending]: pendingState,
+    [likeAndDislike.rejected]: rejectedState,
+    [likeAndDislike.fulfilled]: (State, action) => {
+      const { postId, state, userId } = action.payload;
+      const postIndex = State.posts.findIndex((post) => post._id === postId);
+      const currentPost = State.posts[postIndex];
+
+      if (!currentPost.likes.some((like) => like.userId === userId)) {
+        currentPost.likes.push({ userId, state });
+      } else {
+        if (
+          currentPost.likes.some(
+            (like) => like.userId === userId && like.state === state
+          )
+        ) {
+          currentPost.likes = currentPost.likes.filter(
+            (like) => like.userId !== userId
+          );
+        } else {
+          currentPost.likes = currentPost.likes.map((like) => {
+            if (like.userId === userId) return { ...like, state: state };
+            return like;
+          });
+        }
+      }
+      State.loading = false;
+      State.error = "";
+    },
+
     [likeAndDislikeComment.pending]: pendingState,
     [likeAndDislikeComment.rejected]: rejectedState,
     [likeAndDislikeComment.fulfilled]: (State, action) => {
-      State.loading = false;
       const { postId, state, commentId, userId } = action.payload;
       const postIndex = State.posts.findIndex((post) => post._id === postId);
       const commentIndex = State.posts[postIndex].comments.findIndex(
@@ -158,6 +186,7 @@ const postSlice = createSlice({
         }
       }
 
+      State.loading = false;
       State.error = "";
     },
   },

@@ -1,6 +1,12 @@
 import { unwrapResult } from "@reduxjs/toolkit";
 import { PRODUCT_TOAST_OPTIONS } from "constants/global";
 import { toast } from "react-toastify";
+import DanderImg from "../assets/dander.svg";
+import FavouriteImg from "../assets/favourite.svg";
+import HahaImg from "../assets/haha.svg";
+import LoveImg from "../assets/love.svg";
+import SadImg from "../assets/sad.svg";
+import WowImg from "../assets/wow.svg";
 
 export const capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
@@ -51,7 +57,7 @@ export const currentState = (state) => {
     case 0:
       return { name: "Thích", color: "rgb(32, 120, 244)" };
     case 1:
-      return { name: "Yêu thích", color: "red" };
+      return { name: "Yêu thích", color: "rgb(243, 62, 88)" };
     case 2:
       return { name: "Thương Thương", color };
     case 3:
@@ -59,11 +65,34 @@ export const currentState = (state) => {
     case 4:
       return { name: "Wow", color };
     case 5:
-      return { name: "Buồn", color: "rgb(243, 62, 88)" };
+      return { name: "Buồn", color };
     case 6:
       return { name: "Phẫn nộ", color: "rgb(233, 113, 15)" };
     default:
       return { name: "Thích", color: "#555" };
+  }
+};
+
+export const currentStateAvatar = (state) => {
+  switch (state) {
+    case 1:
+      return {
+        name: "Yêu thích",
+        img: FavouriteImg,
+        color: "rgb(243, 62, 88)",
+      };
+    case 2:
+      return { name: "Thương Thương", img: LoveImg, color };
+    case 3:
+      return { name: "HaHa", img: HahaImg, color };
+    case 4:
+      return { name: "Wow", img: WowImg, color };
+    case 5:
+      return { name: "Buồn", img: SadImg, color };
+    case 6:
+      return { name: "Phẫn nộ", img: DanderImg, color: "rgb(233, 113, 15)" };
+    default:
+      return { name: "Thích", img: "", color: "inherit" };
   }
 };
 

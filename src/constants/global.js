@@ -21,6 +21,7 @@ import { Zoom } from "react-toastify";
 import BackPackImg from "../assets/backpack.png";
 import CalendarImg from "../assets/calendar.png";
 import ClockImg from "../assets/clock.png";
+import DanderImg from "../assets/dander.svg";
 import FavouriteImg from "../assets/favourite.svg";
 import FlagImg from "../assets/flag.png";
 import FlowerImg from "../assets/flower.png";
@@ -172,7 +173,15 @@ export const ItemData = [
   },
 ];
 
-export const states = [LikeImg, FavouriteImg, LoveImg, HahaImg, WowImg, SadImg];
+export const states = [
+  LikeImg,
+  FavouriteImg,
+  LoveImg,
+  HahaImg,
+  WowImg,
+  SadImg,
+  DanderImg,
+];
 
 export const messengerToolTip = [
   { name: "Mở bằng Messenger", icon: <ChatBubbleOutlineOutlinedIcon /> },

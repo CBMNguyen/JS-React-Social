@@ -7,7 +7,14 @@ import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ShareIcon from "@mui/icons-material/Share";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import { Badge, Button, Divider, IconButton, Stack } from "@mui/material";
+import {
+  AvatarGroup,
+  Badge,
+  Button,
+  Divider,
+  IconButton,
+  Stack,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -25,35 +32,83 @@ import {
 } from "app/postSlice";
 import { states } from "constants/global";
 import { BlackTooltip, TransparentTooltip } from "constants/mui";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { format } from "timeago.js";
 import {
   capitalizeFirstLetter,
+  countState,
+  currentState,
+  currentStateAvatar,
   formatDateFull,
   showToastError,
   showToastSuccess,
 } from "utils/common";
 import NoAvatarImg from "../../assets/person/noAvatar.png";
 import Comment from "../../components/comment/Comment";
+import Picker from "emoji-picker-react";
 
 function Post({ post, currentUser }) {
   const dispatch = useDispatch();
+  const inputRef = useRef();
+
   const [user, setUser] = useState({});
-  const [text, setText] = useState("");
+  const [openStates, setOpenStates] = useState(false);
+  const [userNamelikePost, setUsernameLikePost] = useState([]);
+  const [textComment, setTextComment] = useState("");
+  const [expanded, setExpanded] = React.useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState();
 
-  const [like, setLike] = useState(post.likes.length);
-  const [isLiked, setIsLiked] = useState(false);
+  useEffect(() => {
+    const fetchUser = async (id) => {
+      try {
+        const { user } = await userApi.getUserById(id);
+        setUser(user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser(post.userId);
+  }, [post.userId]);
 
-  const handleLikeClick = async () => {
+  useEffect(() => {
+    const fetchUserLikeBox = async () => {
+      try {
+        const data = await Promise.all(
+          post.likes.map((like) => userApi.getUserById(like.userId))
+        );
+        const usernames = data.map((user, index) => ({
+          username: user.user.username,
+          state: post.likes[index].state,
+        }));
+        setUsernameLikePost(usernames);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUserLikeBox();
+  }, [post.likes]);
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.selectionEnd = cursorPosition;
+  }, [cursorPosition]);
+
+  const handleLikeClick = async (postId, state, userId) => {
     try {
-      await showToastSuccess(dispatch(likeAndDislike(post._id)));
+      await showToastSuccess(
+        dispatch(
+          likeAndDislike({
+            postId,
+            state,
+            userId,
+          })
+        )
+      );
     } catch (error) {
       showToastError(error);
     }
-    setLike(isLiked ? like - 1 : like + 1);
-    setIsLiked(!isLiked);
   };
 
   const handleCommentClick = async (state, commentId, userId) => {
@@ -68,38 +123,30 @@ function Post({ post, currentUser }) {
     }
   };
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const handlePickEmoji = (e, { emoji }) => {
+    const ref = inputRef.current;
+    ref.focus();
+    const start = textComment.substring(0, ref.selectionStart);
+    const end = textComment.substring(ref.selectionStart);
+    const text = start + emoji + end;
+    setTextComment(text);
+    setCursorPosition(start.length + emoji.length);
+  };
+
   const handleCreateComment = async (e) => {
     e.preventDefault();
     try {
       await showToastSuccess(
-        dispatch(createComment({ postId: post._id, text }))
+        dispatch(createComment({ postId: post._id, text: textComment }))
       );
-      setText("");
+      setTextComment("");
     } catch (error) {
       showToastError(error);
     }
-  };
-
-  useEffect(() => {
-    setIsLiked(post.likes.includes(user._id));
-  }, [user._id, post.likes]);
-
-  useEffect(() => {
-    const fetchUser = async (id) => {
-      try {
-        const { user } = await userApi.getUserById(id);
-        setUser(user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUser(post.userId);
-  }, [post.userId]);
-
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
   };
 
   return (
@@ -119,8 +166,11 @@ function Post({ post, currentUser }) {
           </IconButton>
         }
         title={
-          <Typography sx={{ fontWeight: "bold" }} component="span">
-            {capitalizeFirstLetter(user?.username || "")}
+          <Typography
+            sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+            component="span"
+          >
+            {user?.username || ""}
           </Typography>
         }
         subheader={
@@ -163,8 +213,89 @@ function Post({ post, currentUser }) {
             alignItems: "center",
           }}
         >
-          <Box>{`Hiếu và ${like} người khác`}</Box>
-          <Box>{`${post.comments.length} bình luận 0 lượt chia sẻ`}</Box>
+          {
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <AvatarGroup sx={{ "&:hover": { cursor: "pointer" } }} max={10}>
+                {states.map((item, index) => {
+                  return (
+                    <BlackTooltip
+                      key={index}
+                      title={
+                        <Box>
+                          <Box sx={{ fontSize: "14px", mb: 1 }}>
+                            {currentState(index).name}
+                          </Box>
+                          {userNamelikePost.map((user, i) => {
+                            if (user.state === index) {
+                              return (
+                                <Box
+                                  key={i}
+                                  sx={{ textTransform: "capitalize" }}
+                                >
+                                  {user.username}
+                                </Box>
+                              );
+                            }
+
+                            return <Box key={i} sx={{ display: "none" }} />;
+                          })}
+                        </Box>
+                      }
+                    >
+                      <Avatar
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                          display:
+                            countState(post.likes, index) > 0 ? "flex" : "none",
+                        }}
+                        key={index}
+                        src={item}
+                      />
+                    </BlackTooltip>
+                  );
+                })}
+              </AvatarGroup>
+
+              <BlackTooltip
+                title={userNamelikePost.slice(0, 21).map((user, index) => {
+                  return (
+                    <Box sx={{ maxWidth: "100px" }} key={index}>
+                      {index > 19
+                        ? `và ${userNamelikePost.length - 19} người khác...`
+                        : capitalizeFirstLetter(user.username || "")}
+                    </Box>
+                  );
+                })}
+              >
+                <Box
+                  sx={{
+                    ml: 1,
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  {post.likes.some((like) => like.userId === currentUser._id) &&
+                  post.likes.length > 1
+                    ? `Bạn và ${post.likes.length - 1} người khác`
+                    : ""}
+                </Box>
+              </BlackTooltip>
+            </Box>
+          }
+          <Box sx={{ display: "flex", alignItem: "center" }}>
+            <Box
+              onClick={handleExpandClick}
+              component="span"
+              sx={{
+                mr: 1 / 2,
+                "&:hover": { cursor: "pointer", textDecoration: "underline" },
+              }}
+            >{`${post.comments.length} bình luận `}</Box>
+            <Box component="span">0 lượt chia sẻ</Box>
+          </Box>
         </Stack>
       </CardContent>
 
@@ -172,55 +303,110 @@ function Post({ post, currentUser }) {
 
       <CardActions sx={{ py: 0.5 }} disableSpacing>
         <Stack
+          onMouseLeave={() => setOpenStates(false)}
           sx={{
             flexDirection: "row",
             justifyContent: "space-around",
             width: "100%",
           }}
         >
-          <Button
-            sx={{
-              width: 1 / 3,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "38px",
-            }}
-            color="inherit"
+          <TransparentTooltip
+            open={openStates}
+            placement="top"
+            title={
+              <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+                {states.map((item, index) => (
+                  <Box
+                    onClick={() => {
+                      handleLikeClick(post._id, index, currentUser._id);
+                      setOpenStates(false);
+                    }}
+                    key={index}
+                    sx={{
+                      width: "34px",
+                      height: "34px",
+                      paddingX: "4px",
+                      mt: "2px",
+
+                      transition: "all 0.5s easy-in-out 0s",
+                      "&:hover": {
+                        cursor: "pointer",
+                        transform: "scale(1.1)",
+                      },
+                    }}
+                    component="img"
+                    src={item}
+                  />
+                ))}
+              </Stack>
+            }
           >
-            <ThumbUpOffAltIcon />
-
-            <TransparentTooltip
-              placement="top"
-              title={
-                <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-                  {states.map((item, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        width: "34px",
-                        height: "34px",
-                        paddingX: "4px",
-                        mt: "2px",
-
-                        transition: "all 0.5s easy-in-out 0s",
-                        "&:hover": {
-                          cursor: "pointer",
-                          transform: "scale(1.1)",
-                        },
-                      }}
-                      component="img"
-                      src={item}
-                    />
-                  ))}
-                </Stack>
-              }
+            <Button
+              sx={{
+                width: 1 / 3,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "38px",
+              }}
+              onClick={() => handleLikeClick(post._id, 0, currentUser._id)}
+              onMouseEnter={() => setOpenStates(true)}
+              color="inherit"
             >
-              <Box onClick={handleLikeClick} sx={{ pl: 1 }}>
-                Thích
+              {!currentStateAvatar(
+                post.likes.find((like) => like.userId === currentUser._id)
+                  ?.state || -1
+              ).img ? (
+                <ThumbUpOffAltIcon
+                  color={
+                    post.likes.find((like) => like.userId === currentUser._id)
+                      ?.state === 0
+                      ? "info"
+                      : "inherit"
+                  }
+                />
+              ) : (
+                <Avatar
+                  sx={{ width: "20px", height: "20px" }}
+                  src={
+                    currentStateAvatar(
+                      post.likes.find((like) => like.userId === currentUser._id)
+                        ?.state || -1
+                    ).img
+                  }
+                ></Avatar>
+              )}
+
+              <Box
+                sx={{
+                  pl: 1,
+                  fontSize:
+                    currentStateAvatar(
+                      post.likes.find((like) => like.userId === currentUser._id)
+                        ?.state || -1
+                    ).name === "Thương Thương"
+                      ? "12px"
+                      : "14px",
+                  color:
+                    post.likes.find((like) => like.userId === currentUser._id)
+                      ?.state === 0
+                      ? "rgb(32, 120, 244)"
+                      : currentStateAvatar(
+                          post.likes.find(
+                            (like) => like.userId === currentUser._id
+                          )?.state || -1
+                        ).color,
+                }}
+              >
+                {
+                  currentStateAvatar(
+                    post.likes.find((like) => like.userId === currentUser._id)
+                      ?.state || -1
+                  ).name
+                }
               </Box>
-            </TransparentTooltip>
-          </Button>
+            </Button>
+          </TransparentTooltip>
 
           <Button
             sx={{
@@ -301,6 +487,7 @@ function Post({ post, currentUser }) {
 
             <Box
               sx={{
+                position: "relative",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -331,16 +518,47 @@ function Post({ post, currentUser }) {
                       outline: "none",
                     },
                   }}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  ref={inputRef}
+                  value={textComment}
+                  onChange={(e) => setTextComment(e.target.value)}
+                  onClick={() => setShowEmoji(false)}
                   component="input"
                   placeholder="Viết bình luận"
                 />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    zIndex: 2000,
+                    bottom: "42px",
+                    right: 0,
+                  }}
+                >
+                  {showEmoji && <Picker onEmojiClick={handlePickEmoji} />}
+                </Box>
+                {showEmoji && (
+                  <Box
+                    onClick={() => setShowEmoji(false)}
+                    sx={{
+                      zIndex: 1999,
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100vh",
+                      backgroundColor: "transparent",
+                    }}
+                  />
+                )}
               </Box>
 
               <Box>
                 <BlackTooltip title="Chèn một biểu tượng cảm xúc">
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      setShowEmoji(!showEmoji);
+                      inputRef.current.focus();
+                    }}
+                  >
                     <EmojiEmotions fontSize="small" />
                   </IconButton>
                 </BlackTooltip>

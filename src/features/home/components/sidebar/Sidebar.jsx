@@ -60,7 +60,7 @@ function Sidebar({ user }) {
     <Box
       sx={{
         position: "sticky",
-        top: "64px",
+        top: "62px",
         flex: 3,
         height: "calc(100vh - 62px)",
         overflowY: "scroll",

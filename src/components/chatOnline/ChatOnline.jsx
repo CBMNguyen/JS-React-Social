@@ -19,7 +19,6 @@ import noAvatarImg from "../../assets/person/noAvatar.png";
 function ChatOnline({ onlineUsers, currentUserId }) {
   const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
-  const [onlineFriends, setOnlineFriends] = useState([]);
 
   useEffect(() => {
     const getFriends = async () => {
@@ -32,10 +31,6 @@ function ChatOnline({ onlineUsers, currentUserId }) {
     };
     getFriends();
   }, [currentUserId]);
-
-  useEffect(() => {
-    setOnlineFriends(friends.filter((f) => onlineUsers.includes(f._id)));
-  }, [friends, onlineUsers]);
 
   const handleClick = async (friend) => {
     try {
@@ -51,7 +46,7 @@ function ChatOnline({ onlineUsers, currentUserId }) {
   return (
     <Box sx={{ width: "100%" }}>
       <List>
-        {onlineFriends.map((friend) => (
+        {friends.map((friend) => (
           <LightTooltip
             placement="left-start"
             title={
@@ -65,7 +60,9 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                 <Badge
                   sx={{ alignSelf: "flex-start" }}
                   badgeContent=" "
-                  color="success"
+                  color={
+                    onlineUsers.includes(friend._id) ? "success" : "default"
+                  }
                   overlap="circular"
                   anchorOrigin={{
                     vertical: "bottom",
@@ -106,7 +103,9 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                 <ListItemIcon>
                   <Badge
                     variant="dot"
-                    color="success"
+                    color={
+                      onlineUsers.includes(friend._id) ? "success" : "default"
+                    }
                     overlap="circular"
                     anchorOrigin={{
                       vertical: "bottom",

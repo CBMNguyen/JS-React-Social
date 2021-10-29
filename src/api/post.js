@@ -26,9 +26,9 @@ const postApi = {
     return axiosClient.put(url, data);
   },
 
-  likeAndDislike: (postId) => {
+  likeAndDislike: (postId, state) => {
     const url = `/posts/${postId}/like`;
-    return axiosClient.put(url);
+    return axiosClient.put(url, { state });
   },
 
   likeAndDislikeComment: (postId, state, commentId) => {
