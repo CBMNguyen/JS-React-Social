@@ -120,9 +120,16 @@ function Comment({ comment, onCommentClick, currentUser }) {
             open={openStates}
             placement="top"
             title={
-              <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+              <Stack
+                sx={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  maxHeight: "34px",
+                }}
+              >
                 {states.map((item, index) => (
                   <Box
+                    className="animate__animated animate__pulse animate__infinite	infinite"
                     onClick={() => {
                       handleLikeStateClick(index, comment._id, currentUser._id);
                       setOpenStates(false);
@@ -137,8 +144,9 @@ function Comment({ comment, onCommentClick, currentUser }) {
                       objectFit: "cover",
                       transition: "all 0.5s easy-in-out 0s",
                       "&:hover": {
+                        position: "relative",
+                        marginTop: "-10px",
                         cursor: "pointer",
-                        transform: "scale(1.1)",
                       },
                     }}
                     component="img"

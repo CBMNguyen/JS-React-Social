@@ -14,7 +14,7 @@ import { LightTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { format } from "timeago.js";
-import { capitalizeFirstLetter } from "utils/common";
+import { capitalizeFirstLetter, StyledBadge } from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
 function ChatOnline({ onlineUsers, currentUserId }) {
@@ -100,10 +100,10 @@ function ChatOnline({ onlineUsers, currentUserId }) {
             key={friend._id}
           >
             <ListItem onClick={() => handleClick(friend)} disablePadding>
-              <ListItemButton>
+              <ListItemButton sx={{ borderRadius: "8px" }}>
                 <ListItemIcon>
-                  <Badge
-                    variant="dot"
+                  <StyledBadge
+                    variant={onlineUsers.includes(friend._id) ? "dot" : ""}
                     color={
                       onlineUsers.includes(friend._id) ? "success" : "default"
                     }
@@ -114,7 +114,7 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                     }}
                   >
                     <Avatar src={friend?.profilePicture || noAvatarImg} />
-                  </Badge>
+                  </StyledBadge>
                 </ListItemIcon>
                 <ListItemText
                   primary={capitalizeFirstLetter(friend.username)}

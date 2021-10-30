@@ -6,7 +6,6 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./components/notFound/NotFound";
-
 window.addEventListener("beforeunload", async () => {
   const user = JSON.parse(localStorage.getItem("persist:facebook")).user;
   const userId = JSON.parse(user).user._id;

@@ -1,3 +1,5 @@
+import { Badge } from "@mui/material";
+import { styled } from "@mui/system";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { PRODUCT_TOAST_OPTIONS } from "constants/global";
 import { toast } from "react-toastify";
@@ -99,3 +101,12 @@ export const currentStateAvatar = (state) => {
 export const countState = (likes, state) => {
   return likes.filter((item) => item.state === state).length;
 };
+
+export const StyledBadge = styled(Badge)({
+  "& .MuiBadge-badge": {
+    width: "12px",
+    height: "12px",
+    border: "2px solid #fff",
+    borderRadius: "50%",
+  },
+});

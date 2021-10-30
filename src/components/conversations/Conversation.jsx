@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import "./conversation.css";
-import noAvatarImg from "../../assets/person/noAvatar.png";
-import userApi from "api/user";
-import { useSelector } from "react-redux";
+import { Avatar } from "@mui/material";
+import { Box } from "@mui/system";
 import messengerApi from "api/messenger";
+import userApi from "api/user";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { format } from "timeago.js";
+import { StyledBadge } from "utils/common";
+import noAvatarImg from "../../assets/person/noAvatar.png";
 function Conversation({ conversation, currentUser }) {
   const { onlineUsers } = useSelector((state) => state.messenger);
-
   const [user, setUser] = useState({});
-  const [online, setOnline] = useState(false);
 
   const [lastMessage, setLastMessage] = useState({});
   const [userNameSendMessage, setUserNameSendMessage] = useState("");
@@ -44,33 +44,59 @@ function Conversation({ conversation, currentUser }) {
     getUser();
   }, [conversation.members, currentUser._id]);
 
-  useEffect(() => {
-    const isOnline = onlineUsers?.includes(user?._id);
-    setOnline(isOnline);
-  }, [onlineUsers, user]);
-
   return (
-    <div className="conversation">
-      <div style={{ position: "relative", width: "40px", height: "40px" }}>
-        <img
-          className="conversationImg"
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        padding: "10px",
+        borderRadius: "10px",
+        cursor: "pointer",
+        "&:hover": { backgroundColor: "rgb(231, 228, 228)" },
+      }}
+    >
+      <StyledBadge
+        variant={onlineUsers.includes(user?._id) ? "dot" : ""}
+        color={onlineUsers.includes(user?._id) ? "success" : "default"}
+        overlap="circular"
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
+        <Avatar
           src={user?.profilePicture || noAvatarImg}
-          alt=""
+          sx={{ width: "42px", height: "42px" }}
         />
-        {online && <div className="conversationBadge"></div>}
-      </div>
-      <div className="conversationItem">
-        <div className="conversationItemName">{user?.username}</div>
-        <div className="conversationItemMessage">
-          <div>{`${
+      </StyledBadge>
+
+      <Box sx={{ ml: 2, width: "100%" }}>
+        <Box
+          sx={{
+            textTransform: "capitalize",
+            fontWeight: 500,
+            marginBottom: "4px",
+          }}
+        >
+          {user?.username}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            fontSize: "14px",
+          }}
+        >
+          <Box>{`${
             userNameSendMessage === currentUser?.username
               ? "You"
               : userNameSendMessage
-          }: ${lastMessage?.text}`}</div>
-          <div>{format(lastMessage?.createdAt)}</div>
-        </div>
-      </div>
-    </div>
+          }: ${lastMessage?.text}`}</Box>
+          <Box>{format(lastMessage?.createdAt)}</Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

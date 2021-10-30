@@ -11,7 +11,7 @@ function Feed({ posts }) {
 
   return (
     <Box sx={{ flex: 6 }}>
-      <Box sx={{ padding: "0 20px" }}>
+      <Box sx={{ padding: "0 40px" }}>
         {!(userId || userId === user._id) && <Share />}
         {posts
           .slice()

@@ -49,6 +49,10 @@ import VolumeImg from "../assets/volume.png";
 import WeatherImg from "../assets/weather.png";
 import WifiImg from "../assets/wifi.png";
 import WowImg from "../assets/wow.svg";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import TagFacesIcon from "@mui/icons-material/TagFaces";
+import MicIcon from "@mui/icons-material/Mic";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 export const sidebarList = [
   { name: "Bạn bè", img: FriendImg },
@@ -86,18 +90,44 @@ export const sidebarList = [
   { name: "Yêu thích", img: StarImg },
 ];
 
+const shareIcon = {
+  fontSize: "24px",
+  mr: "8px",
+};
+
 export const shareList = [
   {
     name: "Video trực tiếp",
-    icon: <VideoCameraFrontIcon htmlColor="red" className="shareIcon" />,
+    icon: <VideoCameraFrontIcon htmlColor="red" sx={shareIcon} />,
   },
   {
     name: "Ảnh/Video",
-    icon: <PermMediaIcon htmlColor="green" className="shareIcon" />,
+    icon: <PermMediaIcon htmlColor="green" sx={shareIcon} />,
   },
   {
     name: "Cảm xúc/Hoạt động",
-    icon: <EmojiEmotionsIcon htmlColor="goldenrod" className="shareIcon" />,
+    icon: <EmojiEmotionsIcon htmlColor="goldenrod" sx={shareIcon} />,
+  },
+];
+
+export const shareListIcon = [
+  {
+    icon: <PermMediaIcon htmlColor="green" sx={{ mr: 2 }} />,
+  },
+  {
+    icon: <LocalOfferIcon htmlColor="blue" sx={{ mr: 2 }} />,
+  },
+  {
+    icon: <TagFacesIcon htmlColor="goldenrod" sx={{ mr: 2 }} />,
+  },
+  {
+    icon: <LocationOnIcon htmlColor="tomato" sx={{ mr: 2 }} />,
+  },
+  {
+    icon: <MicIcon htmlColor="red" sx={{ mr: 2 }} />,
+  },
+  {
+    icon: <MoreHorizIcon htmlColor="gray" />,
   },
 ];
 

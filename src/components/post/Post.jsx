@@ -191,9 +191,7 @@ function Post({ post, currentUser }) {
       />
 
       <CardContent sx={{ pt: 0 }}>
-        <Typography variant="span" color="text.secondary">
-          {post?.desc || ""}
-        </Typography>
+        <Typography variant="span">{post?.desc || ""}</Typography>
       </CardContent>
 
       {post.img && (
@@ -317,6 +315,7 @@ function Post({ post, currentUser }) {
               <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
                 {states.map((item, index) => (
                   <Box
+                    className="animate__animated animate__pulse animate__infinite	infinite"
                     onClick={() => {
                       handleLikeClick(post._id, index, currentUser._id);
                       setOpenStates(false);
@@ -330,8 +329,9 @@ function Post({ post, currentUser }) {
 
                       transition: "all 0.5s easy-in-out 0s",
                       "&:hover": {
+                        position: "relative",
+                        marginTop: "-10px",
                         cursor: "pointer",
-                        transform: "scale(1.1)",
                       },
                     }}
                     component="img"
