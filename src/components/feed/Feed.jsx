@@ -8,11 +8,10 @@ import Share from "../share/Share";
 function Feed({ posts }) {
   const { userId } = useParams();
   const { user } = useSelector((state) => state.user);
-
   return (
-    <Box sx={{ flex: 6 }}>
-      <Box sx={{ padding: "0 40px" }}>
-        {!(userId || userId === user._id) && <Share />}
+    <Box sx={{ flex: 5.5 }}>
+      <Box sx={{ padding: "0 20px" }}>
+        {(!userId || userId === user._id) && <Share />}
         {posts
           .slice()
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))

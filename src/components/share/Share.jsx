@@ -330,21 +330,23 @@ function Share(props) {
                       Thêm ảnh từ thiết bị di động
                     </Box>
 
-                    <Box
-                      component="button"
-                      sx={{
-                        display: "block",
-                        ml: "auto",
-                        border: "none",
-                        padding: "10px 12px",
-                        borderRadius: "8px",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        backgroundColor: "#e4e6eb",
-                      }}
-                    >
-                      Thêm
-                    </Box>
+                    <BlackTooltip title="Tính năng này sẽ sóm được hoàn thành">
+                      <Box
+                        sx={{
+                          display: "block",
+                          ml: "auto",
+                          border: "none",
+                          padding: "10px 12px",
+                          borderRadius: "8px",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          backgroundColor: "#e4e6eb",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Thêm
+                      </Box>
+                    </BlackTooltip>
                   </Box>
                 </Box>
               )}

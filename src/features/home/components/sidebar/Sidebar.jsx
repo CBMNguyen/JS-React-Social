@@ -13,6 +13,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { sidebarList } from "constants/global";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { capitalizeFirstLetter } from "utils/common";
 import NoAvatarImg from "../../../../assets/person/noAvatar.png";
 
@@ -32,9 +33,10 @@ function Sidebar({ user }) {
 
   const renderList = (item, i) => {
     const listItem = (
-      <ListItem key={item.name} disablePadding>
+      <ListItem disablePadding>
         {i === newSideBarList.length - 1 ? (
           <ListItemButton
+            sx={{ borderRadius: "8px" }}
             onClick={() => setIndex(index === 9 ? sidebarList.length - 1 : 9)}
           >
             <ListItemIcon>
@@ -43,7 +45,7 @@ function Sidebar({ user }) {
             <ListItemText primary={item.name} />
           </ListItemButton>
         ) : (
-          <ListItemButton>
+          <ListItemButton sx={{ borderRadius: "8px" }}>
             <ListItemAvatar>
               <Avatar src={item.img} />
             </ListItemAvatar>
@@ -53,7 +55,20 @@ function Sidebar({ user }) {
       </ListItem>
     );
 
-    return listItem;
+    return (
+      <Link
+        key={item.name}
+        style={{
+          display: "block",
+          color: "inherit",
+          textDecoration: "none",
+          marginLeft: "10px",
+        }}
+        to={i === 0 ? `profile/${user._id}` : "/"}
+      >
+        {listItem}
+      </Link>
+    );
   };
 
   return (

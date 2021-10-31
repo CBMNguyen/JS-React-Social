@@ -203,15 +203,15 @@ function Post({ post, currentUser }) {
         />
       )}
 
-      <CardContent sx={{ py: 1.5 }}>
-        <Stack
-          sx={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          {
+      {(post.likes.length > 0 || post.comments.length > 0) && (
+        <CardContent sx={{ py: 1.5 }}>
+          <Stack
+            sx={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <AvatarGroup sx={{ "&:hover": { cursor: "pointer" } }} max={10}>
                 {states.map((item, index) => {
@@ -226,11 +226,14 @@ function Post({ post, currentUser }) {
                           {userNamelikePost.map((user, i) => {
                             if (user.state === index) {
                               return (
-                                <Box
-                                  key={i}
-                                  sx={{ textTransform: "capitalize" }}
-                                >
-                                  {user.username}
+                                <Box sx={{ maxWidth: "100px" }} key={index}>
+                                  {index > 19
+                                    ? `và ${
+                                        userNamelikePost.length - 19
+                                      } người khác...`
+                                    : capitalizeFirstLetter(
+                                        user.username || ""
+                                      )}
                                 </Box>
                               );
                             }
@@ -282,20 +285,21 @@ function Post({ post, currentUser }) {
                 </Box>
               </BlackTooltip>
             </Box>
-          }
-          <Box sx={{ display: "flex", alignItem: "center" }}>
-            <Box
-              onClick={handleExpandClick}
-              component="span"
-              sx={{
-                mr: 1 / 2,
-                "&:hover": { cursor: "pointer", textDecoration: "underline" },
-              }}
-            >{`${post.comments.length} bình luận `}</Box>
-            <Box component="span">0 lượt chia sẻ</Box>
-          </Box>
-        </Stack>
-      </CardContent>
+
+            <Box sx={{ display: "flex", alignItem: "center" }}>
+              <Box
+                onClick={handleExpandClick}
+                component="span"
+                sx={{
+                  mr: 1 / 2,
+                  "&:hover": { cursor: "pointer", textDecoration: "underline" },
+                }}
+              >{`${post.comments.length} bình luận `}</Box>
+              <Box component="span">0 lượt chia sẻ</Box>
+            </Box>
+          </Stack>
+        </CardContent>
+      )}
 
       <Divider />
 

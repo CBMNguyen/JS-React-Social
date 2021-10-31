@@ -6,7 +6,10 @@ import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import HouseIcon from "@mui/icons-material/House";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import MicIcon from "@mui/icons-material/Mic";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
@@ -14,6 +17,7 @@ import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
 import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
+import TagFacesIcon from "@mui/icons-material/TagFaces";
 import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import WebAssetOffOutlinedIcon from "@mui/icons-material/WebAssetOffOutlined";
@@ -49,10 +53,6 @@ import VolumeImg from "../assets/volume.png";
 import WeatherImg from "../assets/weather.png";
 import WifiImg from "../assets/wifi.png";
 import WowImg from "../assets/wow.svg";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
-import MicIcon from "@mui/icons-material/Mic";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 export const sidebarList = [
   { name: "Bạn bè", img: FriendImg },
@@ -161,45 +161,6 @@ export const PersonalInformation = (
   {
     name: followers,
     icon: <RssFeedIcon />,
-  },
-];
-
-export const ItemData = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
   },
 ];
 

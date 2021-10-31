@@ -110,3 +110,33 @@ export const StyledBadge = styled(Badge)({
     borderRadius: "50%",
   },
 });
+
+export function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  );
+}
+
+export const profileTabItemStyle = (value, index) => {
+  const style =
+    value !== index
+      ? {
+          textTransform: "initial",
+          "&:hover": {
+            backgroundColor: "#f0f2f5",
+            borderRadius: "8px",
+          },
+        }
+      : { textTransform: "initial" };
+  return style;
+};
