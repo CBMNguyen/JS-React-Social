@@ -45,8 +45,24 @@ function ProfileBottomFriendList({ friends }) {
           >
             <ImageListItem sx={{ m: "4px" }}>
               <img
-                src={`${friend?.profilePicture || NoAvatarImg}`}
-                srcSet={`${friend?.profilePicture || NoAvatarImg}`}
+                src={
+                  friend?.profilePicture?.length > 0
+                    ? `${process.env.REACT_APP_API_URL}/upload/${
+                        friend?.profilePicture[
+                          friend?.profilePicture?.length - 1
+                        ]
+                      }`
+                    : NoAvatarImg
+                }
+                srcSet={
+                  friend?.profilePicture?.length > 0
+                    ? `${process.env.REACT_APP_API_URL}/upload/${
+                        friend?.profilePicture[
+                          friend?.profilePicture?.length - 1
+                        ]
+                      }`
+                    : NoAvatarImg
+                }
                 alt={friend?.username}
                 loading="lazy"
                 style={{ borderRadius: "8px" }}

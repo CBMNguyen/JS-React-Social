@@ -1,14 +1,16 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Paper } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
+import { profileTopTabStyle } from "features/profile/profileTopStyle";
 import { default as React } from "react";
-import { profileTabItemStyle, TabPanel } from "utils/common";
+import { TabPanel } from "utils/common";
 import FriendTabItems from "./FriendTabItems";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
+import { style } from "./friendTabStyle";
 
 function FriendTab({ user, friends }) {
   const [value, setValue] = React.useState(0);
@@ -17,18 +19,8 @@ function FriendTab({ user, friends }) {
   };
 
   return (
-    <Paper
-      elevation={2}
-      sx={{ padding: "16px", mt: "20px", borderRadius: "8px" }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
+    <Paper elevation={2} sx={style.friendTabWrapper}>
+      <Box sx={style.friendTabHeader}>
         <Box component="h2">Bạn bè</Box>
         <Box
           sx={{
@@ -36,64 +28,18 @@ function FriendTab({ user, friends }) {
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              width: "200px",
-              height: "38px",
-              mx: 1 / 2,
-              borderRadius: "20px",
-              backgroundColor: "#f0f2f5",
-            }}
-          >
-            <SearchIcon fontSize="small" sx={{ mx: 1 / 2, color: "#606770" }} />
+          <Box sx={style.friendTabSearchBox}>
+            <SearchIcon fontSize="small" sx={style.friendTabSearchIcon} />
             <Box
-              sx={{
-                border: "none",
-                background: "inherit",
-                "&:focus": { outline: "none" },
-              }}
+              sx={style.friendTabSearchInput}
               component="input"
               placeholder="Tìm kiếm"
             />
           </Box>
-          <Box
-            sx={{
-              mx: 1 / 2,
-              fontWeight: "600",
-              padding: "8px",
-              borderRadius: "8px",
-              color: "#1877f2",
-              "&:hover": {
-                backgroundColor: "#f0f2f5",
-                cursor: "pointer",
-              },
-            }}
-          >
-            Lời mời kết bạn
-          </Box>
-          <Box
-            sx={{
-              mx: 1 / 2,
-              fontWeight: "600",
-              padding: "8px",
-              borderRadius: "8px",
-              color: "#1877f2",
-              "&:hover": {
-                backgroundColor: "#f0f2f5",
-                cursor: "pointer",
-              },
-            }}
-          >
-            Tìm bạn bè
-          </Box>
+          <Box sx={style.friendTabHeaderItem}>Lời mời kết bạn</Box>
+          <Box sx={style.friendTabHeaderItem}>Tìm bạn bè</Box>
           <Button
-            sx={{
-              ml: 1,
-              padding: "2px 8px",
-              "&:hover": { backgroundColor: "lightgray" },
-            }}
+            sx={style.friendTabHeaderItemMoreIcon}
             color="inherit"
             disableElevation
             variant="contained"
@@ -105,37 +51,37 @@ function FriendTab({ user, friends }) {
 
       <Tabs sx={{ mb: "20px" }} value={value} onChange={handleChange}>
         <Tab
-          sx={profileTabItemStyle(value, 0)}
+          sx={profileTopTabStyle(value, 0)}
           disableRipple
           value={0}
           label="Tất cả bạn bè"
         />
         <Tab
-          sx={profileTabItemStyle(value, 1)}
+          sx={profileTopTabStyle(value, 1)}
           disableRipple
           value={1}
           label="Bạn chung"
         />
         <Tab
-          sx={profileTabItemStyle(value, 2)}
+          sx={profileTopTabStyle(value, 2)}
           disableRipple
           value={2}
           label="Tỉnh/Thành phố hiện tại"
         />
         <Tab
-          sx={profileTabItemStyle(value, 3)}
+          sx={profileTopTabStyle(value, 3)}
           disableRipple
           value={3}
           label="Quê quán"
         />
         <Tab
-          sx={profileTabItemStyle(value, 4)}
+          sx={profileTopTabStyle(value, 4)}
           disableRipple
           value={4}
           label="Người Theo dõi"
         />
         <Tab
-          sx={profileTabItemStyle(value, 5)}
+          sx={profileTopTabStyle(value, 5)}
           disableRipple
           value={5}
           label="Đang theo dỗi"

@@ -127,16 +127,23 @@ export function TabPanel(props) {
   );
 }
 
-export const profileTabItemStyle = (value, index) => {
+export const profileTabInfoItemStyle = (value, index) => {
   const style =
     value !== index
       ? {
+          marginBottom: "2px",
           textTransform: "initial",
+          borderRadius: "8px",
           "&:hover": {
-            backgroundColor: "#f0f2f5",
             borderRadius: "8px",
+            backgroundColor: "#eee",
           },
         }
-      : { textTransform: "initial" };
+      : {
+          marginBottom: "2px",
+          borderRadius: "8px",
+          textTransform: "initial",
+          backgroundColor: value === index ? "#e7f3ff" : "transparent",
+        };
   return style;
 };

@@ -25,8 +25,8 @@ function ProfileBottomInfo({ user }) {
           user?.from || "......",
           user?.relationship?.length === 1
             ? "Độc thân"
-            : user?.relationship?.length === 2
-            ? "Married"
+            : user?.relationship
+            ? user?.relationship
             : ".........",
           `Tham gia vào tháng ${
             new Date(user?.createdAt).getMonth() + 1

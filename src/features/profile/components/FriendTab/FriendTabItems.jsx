@@ -2,7 +2,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Avatar, Grid, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import NoAvatarImg from "../../../assets/person/noAvatar.png";
+import NoAvatarImg from "../../../../assets/person/noAvatar.png";
 
 function FriendTabItems({ user, friends }) {
   const mutualFriends = (friend) => {
@@ -31,7 +31,13 @@ function FriendTabItems({ user, friends }) {
                 height: "80px",
                 borderRadius: "8px",
               }}
-              src={friend.profilePicture || NoAvatarImg}
+              src={
+                friend?.profilePicture?.length > 0
+                  ? `${process.env.REACT_APP_API_URL}/upload/${
+                      friend?.profilePicture[friend?.profilePicture?.length - 1]
+                    }`
+                  : NoAvatarImg
+              }
             />
 
             <Box sx={{ display: "flex", flexDirection: "column", ml: 2 }}>

@@ -2,7 +2,8 @@ import { Box } from "@mui/system";
 import Feed from "components/feed/Feed";
 import { default as React } from "react";
 import { TabPanel } from "utils/common";
-import FriendTab from "./FriendTab";
+import FriendTab from "./FriendTab/FriendTab";
+import InfoTab from "./InfoTab/InfoTab";
 import ProfileBottomFriendList from "./ProfileBottomFriendList";
 import ProfileBottomImageList from "./ProfileBottomImageList";
 import ProfileBottomInfo from "./ProfileBottomInfo";
@@ -41,6 +42,10 @@ function ProfileBottom({ value, user, friends, posts }) {
             <Feed posts={posts} />
           </Box>
         </Box>
+      </TabPanel>
+
+      <TabPanel value={value} index={1}>
+        <InfoTab user={user} friends={friends} />
       </TabPanel>
 
       <TabPanel value={value} index={2}>
