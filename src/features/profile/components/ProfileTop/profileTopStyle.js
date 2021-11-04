@@ -84,6 +84,61 @@ export const style = {
     textTransform: "initial",
     "&:active": { transform: "scale(0.98)" },
   },
+
+  profileTopTextArea: {
+    width: "280px",
+    height: "74px",
+    padding: "8px 12px",
+    resize: "none",
+    borderColor: "#ccd0d5",
+    borderRadius: "6px",
+    color: "#333",
+    backgroundColor: "#f0f2f5",
+    fontWeight: 500,
+    fontSize: "16px",
+    textAlign: "center",
+
+    "&:hover": { backgroundColor: "#e3e6e9" },
+    "&:focus": {
+      outline: "none",
+      borderColor: "#1976d2",
+      backgroundColor: "#f0f2f5",
+    },
+  },
+
+  profileTopCancelButton: {
+    mr: 1,
+    padding: "8px 10px",
+    border: "none",
+    borderRadius: "6px",
+    fontWeight: 500,
+    fontSize: "15px",
+    color: "#444",
+    backgroundColor: "#e4e6eb",
+    "&:hover": {
+      cursor: "pointer",
+      backgroundColor: "#ddd",
+    },
+  },
+
+  profileTopSaveButton: {
+    padding: "8px 10px",
+    border: "none",
+    borderRadius: "6px",
+    fontWeight: 500,
+    fontSize: "15px",
+    color: "#fff",
+    backgroundColor: "#1479fb",
+    "&:hover": {
+      cursor: "pointer",
+      backgroundColor: "#136de2",
+    },
+    "&:disabled": {
+      color: "#888",
+      cursor: "not-allowed",
+      backgroundColor: "#ddd",
+    },
+  },
 };
 
 export const profileTopTabStyle = (value, index) => {

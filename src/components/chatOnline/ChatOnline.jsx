@@ -66,7 +66,7 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                   sx={{ alignSelf: "flex-start" }}
                   badgeContent=" "
                   color={
-                    onlineUsers.includes(friend._id) ? "success" : "default"
+                    onlineUsers?.includes(friend._id) ? "success" : "default"
                   }
                   overlap="circular"
                   anchorOrigin={{
@@ -115,9 +115,9 @@ function ChatOnline({ onlineUsers, currentUserId }) {
               <ListItemButton sx={{ borderRadius: "8px" }}>
                 <ListItemIcon>
                   <StyledBadge
-                    variant={onlineUsers.includes(friend._id) ? "dot" : ""}
+                    variant={onlineUsers?.includes(friend._id) ? "dot" : ""}
                     color={
-                      onlineUsers.includes(friend._id) ? "success" : "default"
+                      onlineUsers?.includes(friend._id) ? "success" : "default"
                     }
                     overlap="circular"
                     anchorOrigin={{
@@ -139,9 +139,9 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                   </StyledBadge>
                 </ListItemIcon>
                 <ListItemText
-                  primary={capitalizeFirstLetter(friend.username)}
+                  primary={capitalizeFirstLetter(friend?.username)}
                 />
-                {!onlineUsers.includes(friend._id) && (
+                {!onlineUsers?.includes(friend._id) && (
                   <ListItemText
                     sx={{ position: "absolute", left: "16px", bottom: 0 }}
                     primary={

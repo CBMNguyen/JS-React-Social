@@ -10,7 +10,7 @@ import LoveImg from "../assets/love.svg";
 import SadImg from "../assets/sad.svg";
 import WowImg from "../assets/wow.svg";
 
-export const capitalizeFirstLetter = (string) =>
+export const capitalizeFirstLetter = (string = "") =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
 export const pendingState = (state) => {

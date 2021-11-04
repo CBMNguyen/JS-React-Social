@@ -16,8 +16,8 @@ function Profile(props) {
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.posts);
   const currentUser = useSelector((state) => state.user);
-
   const [user, setUser] = useState({});
+
   const [friends, setFriends] = useState([]);
   const [openImg, setOpenImg] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -37,7 +37,7 @@ function Profile(props) {
       }
     };
     fetchUser(userId);
-  }, [userId]);
+  }, [userId, currentUser]);
 
   useEffect(() => {
     const fetchPosts = async (id) => {

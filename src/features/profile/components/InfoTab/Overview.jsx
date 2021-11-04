@@ -18,7 +18,7 @@ function Overview({ user }) {
     <Box sx={{ padding: "8px" }}>
       <AddItem content="Thêm nơi làm việc" />
       <AddItem content="Thêm trường trung học" />
-      <AddItem content="Thêm trường cao đẳng" />
+      <AddItem content="Thêm trường cao đẳng/đại học" />
 
       {/*  City */}
       <InfoItem

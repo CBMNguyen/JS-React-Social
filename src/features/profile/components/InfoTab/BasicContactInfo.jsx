@@ -22,7 +22,7 @@ function BasicContactInfo({ user }) {
         alignContent: "flex-start",
       }}
     >
-      <AddItem title="Thông tin liên hệ cơ bản" content="Thêm thành phố" />
+      <AddItem title="Thông tin liên hệ" content="Thêm địa chỉ của bạn" />
 
       <InfoItem
         sx={{ mb: 2 }}

@@ -9,7 +9,7 @@ function AddItem({
   component = "h4",
   title,
   content,
-  fontSize = "small",
+  fontSize = "medium",
   onClick = null,
 }) {
   return (
@@ -21,7 +21,7 @@ function AddItem({
       )}
       <Box sx={{ ...style.flex, ...style.blue }}>
         <IconButton sx={{ ...style.icon }}>
-          <AddCircleOutlineIcon fontSize={fontSize} sx={style.blue} />
+          <AddCircleOutlineIcon fontSize={fontSize} sx={{ ...style.blue }} />
         </IconButton>
 
         <Box>{content}</Box>

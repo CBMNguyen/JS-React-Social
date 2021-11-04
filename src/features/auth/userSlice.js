@@ -74,8 +74,8 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async ({ id, user }, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const data = await userApi.update(id, user);
-      return fulfillWithValue(data);
+      await userApi.update(id, user);
+      return fulfillWithValue({ user });
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -101,6 +101,15 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = "";
       state.user = action.payload.user;
+    },
+
+    [updateUser.pending]: pendingState,
+    [updateUser.rejected]: rejectedState,
+    [updateUser.fulfilled]: (state, action) => {
+      const { user } = action.payload;
+      state.loading = false;
+      state.error = "";
+      state.user = { ...state.user, ...user };
     },
 
     [follow.pending]: pendingState,
