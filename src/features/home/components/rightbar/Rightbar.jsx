@@ -47,7 +47,7 @@ function Rightbar({ onlineUsers, currentUserId }) {
             alt="birthdayImg"
           />
           <span className="birthdayText">
-            <b>Pola Foster</b> and <b>3 orther friend</b> have a birth dat today
+            <b>Pola Foster</b> and <b>3 orther friend</b> have a birth day today
           </span>
         </Paper>
 

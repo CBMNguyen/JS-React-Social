@@ -111,6 +111,13 @@ export const StyledBadge = styled(Badge)({
   },
 });
 
+export const StyledBadgeUserTag = styled(Badge)({
+  "& .MuiBadge-badge": {
+    border: "2px solid #fff",
+    borderRadius: "50%",
+  },
+});
+
 export function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

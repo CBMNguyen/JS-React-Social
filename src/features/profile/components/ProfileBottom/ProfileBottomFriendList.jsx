@@ -1,5 +1,5 @@
 import NoAvatarImg from "..././../assets/person/noAvatar.png";
-import { Paper } from "@mui/material";
+import { Avatar, Paper } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -31,9 +31,8 @@ function ProfileBottomFriendList({ friends }) {
       <ImageList
         sx={{
           width: "100%",
-          maxHeight: "460px",
           borderRadius: "8px",
-          mt: "16px",
+          mt: "8px",
         }}
         cols={3}
       >
@@ -43,11 +42,16 @@ function ProfileBottomFriendList({ friends }) {
             to={`/profile/${friend._id}`}
             style={{ textDecoration: "none", color: "#000" }}
           >
-            <ImageListItem sx={{ m: "4px" }}>
-              <img
+            <ImageListItem>
+              <Avatar
+                sx={{
+                  width: "104px",
+                  height: "104px",
+                  borderRadius: "8px",
+                }}
                 src={
                   friend?.profilePicture?.length > 0
-                    ? `${process.env.REACT_APP_API_URL}/upload/${
+                    ? `${process.env.REACT_APP_API_URL}/${
                         friend?.profilePicture[
                           friend?.profilePicture?.length - 1
                         ]
@@ -56,7 +60,7 @@ function ProfileBottomFriendList({ friends }) {
                 }
                 srcSet={
                   friend?.profilePicture?.length > 0
-                    ? `${process.env.REACT_APP_API_URL}/upload/${
+                    ? `${process.env.REACT_APP_API_URL}/${
                         friend?.profilePicture[
                           friend?.profilePicture?.length - 1
                         ]

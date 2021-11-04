@@ -25,25 +25,64 @@ export const style = {
     objectFit: "cover",
     borderBottomLeftRadius: "8px",
     borderBottomRightRadius: "8px",
+    cursor: "pointer",
   },
 
-  profileTopAvatarImg: {
+  profileTopEditButton: {
     position: "absolute",
-    top: "180px",
+    bottom: "38px",
+    right: "20px",
+    color: "#222",
+    backgroundColor: "#fff",
+    textTransform: "initial",
+    borderRadius: "6px",
+    "&:hover": {
+      backgroundColor: "#f0f2f5",
+    },
+    "&:active": { transform: "scale(0.98)" },
+  },
+
+  profileTopAvatarContainer: {
+    position: "absolute",
+    bottom: 0,
     left: 0,
     right: 0,
-
-    width: "150px",
-    height: "150px",
+    width: "164px",
+    height: "164px",
+    padding: "4px",
     margin: "auto",
-    border: "4px solid white",
     borderRadius: "50%",
+    backgroundColor: "#fff",
     objectFit: "cover",
+    "&:hover": {
+      cursor: "pointer",
+      filter: "brightness(0.95)",
+    },
+  },
+
+  profileTopAvatarWrapper: {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    "&:active": { transform: "scale(0.98)" },
+  },
+
+  profileTopCameraIcon: {
+    position: "absolute",
+    bottom: "4px",
+    right: "8px",
+    width: "34px",
+    height: "34px",
+    backgroundColor: "#ddd",
+    "&:hover": {
+      backgroundColor: "#ccc",
+    },
   },
 
   profileTopButton: {
-    marginX: 1,
+    marginX: 1 / 2,
     textTransform: "initial",
+    "&:active": { transform: "scale(0.98)" },
   },
 };
 

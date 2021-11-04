@@ -1,6 +1,6 @@
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
-import { Avatar, Badge, Stack } from "@mui/material";
+import { Avatar, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -14,7 +14,11 @@ import { LightTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { format } from "timeago.js";
-import { capitalizeFirstLetter, StyledBadge } from "utils/common";
+import {
+  capitalizeFirstLetter,
+  StyledBadge,
+  StyledBadgeUserTag,
+} from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
 function ChatOnline({ onlineUsers, currentUserId }) {
@@ -58,7 +62,7 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                   p: 1,
                 }}
               >
-                <Badge
+                <StyledBadgeUserTag
                   sx={{ alignSelf: "flex-start" }}
                   badgeContent=" "
                   color={
@@ -72,9 +76,17 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                 >
                   <Avatar
                     sx={{ width: "100px", height: "100px" }}
-                    src={friend?.profilePicture || noAvatarImg}
+                    src={
+                      friend?.profilePicture?.length > 0
+                        ? `${process.env.REACT_APP_API_URL}/${
+                            friend?.profilePicture[
+                              friend?.profilePicture?.length - 1
+                            ]
+                          }`
+                        : noAvatarImg
+                    }
                   />
-                </Badge>
+                </StyledBadgeUserTag>
 
                 <Stack spacing={1} sx={{ ml: 2, mt: 1, fontSize: "14px" }}>
                   <Box component="h1">
@@ -113,7 +125,17 @@ function ChatOnline({ onlineUsers, currentUserId }) {
                       horizontal: "right",
                     }}
                   >
-                    <Avatar src={friend?.profilePicture || noAvatarImg} />
+                    <Avatar
+                      src={
+                        friend?.profilePicture?.length > 0
+                          ? `${process.env.REACT_APP_API_URL}/${
+                              friend?.profilePicture[
+                                friend?.profilePicture?.length - 1
+                              ]
+                            }`
+                          : noAvatarImg
+                      }
+                    />
                   </StyledBadge>
                 </ListItemIcon>
                 <ListItemText

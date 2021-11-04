@@ -13,10 +13,9 @@ import LiveIn from "./LiveIn";
 import Overview from "./Overview";
 import RelationShip from "./RelationShip";
 import WorkAndEducation from "./WorkAndEducation";
-function InfoTab({ user, friends }) {
-  const [value, setValue] = React.useState(0);
+function InfoTab({ user, friends, infoTabValue, setInfoTabValue }) {
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setInfoTabValue(newValue);
   };
 
   return (
@@ -33,12 +32,12 @@ function InfoTab({ user, friends }) {
                 },
               }}
               orientation="vertical"
-              value={value}
+              value={infoTabValue}
               onChange={handleChange}
             >
               <Tab
                 className="MuiTab-fullWidth"
-                sx={profileTabInfoItemStyle(value, 0)}
+                sx={profileTabInfoItemStyle(infoTabValue, 0)}
                 disableRipple
                 value={0}
                 label={
@@ -46,7 +45,7 @@ function InfoTab({ user, friends }) {
                 }
               />
               <Tab
-                sx={profileTabInfoItemStyle(value, 1)}
+                sx={profileTabInfoItemStyle(infoTabValue, 1)}
                 disableRipple
                 value={1}
                 label={
@@ -56,7 +55,7 @@ function InfoTab({ user, friends }) {
                 }
               />
               <Tab
-                sx={profileTabInfoItemStyle(value, 2)}
+                sx={profileTabInfoItemStyle(infoTabValue, 2)}
                 disableRipple
                 value={2}
                 label={
@@ -66,7 +65,7 @@ function InfoTab({ user, friends }) {
                 }
               />
               <Tab
-                sx={profileTabInfoItemStyle(value, 3)}
+                sx={profileTabInfoItemStyle(infoTabValue, 3)}
                 disableRipple
                 value={3}
                 label={
@@ -76,7 +75,7 @@ function InfoTab({ user, friends }) {
                 }
               />
               <Tab
-                sx={profileTabInfoItemStyle(value, 4)}
+                sx={profileTabInfoItemStyle(infoTabValue, 4)}
                 disableRipple
                 value={4}
                 label={
@@ -86,7 +85,7 @@ function InfoTab({ user, friends }) {
                 }
               />
               <Tab
-                sx={profileTabInfoItemStyle(value, 5)}
+                sx={profileTabInfoItemStyle(infoTabValue, 5)}
                 disableRipple
                 value={5}
                 label={
@@ -96,7 +95,7 @@ function InfoTab({ user, friends }) {
                 }
               />
               <Tab
-                sx={profileTabInfoItemStyle(value, 6)}
+                sx={profileTabInfoItemStyle(infoTabValue, 6)}
                 disableRipple
                 value={6}
                 label={
@@ -113,31 +112,31 @@ function InfoTab({ user, friends }) {
               flex: 7,
             }}
           >
-            <TabPanel value={value} index={0}>
+            <TabPanel value={infoTabValue} index={0}>
               <Overview user={user} />
             </TabPanel>
 
-            <TabPanel value={value} index={1}>
+            <TabPanel value={infoTabValue} index={1}>
               <WorkAndEducation user={user} />
             </TabPanel>
 
-            <TabPanel value={value} index={2}>
+            <TabPanel value={infoTabValue} index={2}>
               <LiveIn user={user} />
             </TabPanel>
 
-            <TabPanel value={value} index={3}>
+            <TabPanel value={infoTabValue} index={3}>
               <BacsicContactInfo user={user} />
             </TabPanel>
 
-            <TabPanel value={value} index={4}>
+            <TabPanel value={infoTabValue} index={4}>
               <RelationShip user={user} />
             </TabPanel>
 
-            <TabPanel value={value} index={5}>
+            <TabPanel value={infoTabValue} index={5}>
               <DetailAboutYou user={user} />
             </TabPanel>
 
-            <TabPanel value={value} index={6}>
+            <TabPanel value={infoTabValue} index={6}>
               <LifeEvents user={user} />
             </TabPanel>
           </Stack>

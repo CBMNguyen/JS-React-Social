@@ -65,7 +65,13 @@ function Conversation({ conversation, currentUser }) {
         }}
       >
         <Avatar
-          src={user?.profilePicture || noAvatarImg}
+          src={
+            user?.profilePicture?.length > 0
+              ? `${process.env.REACT_APP_API_URL}/${
+                  user?.profilePicture[user?.profilePicture?.length - 1]
+                }`
+              : noAvatarImg
+          }
           sx={{ width: "42px", height: "42px" }}
         />
       </StyledBadge>

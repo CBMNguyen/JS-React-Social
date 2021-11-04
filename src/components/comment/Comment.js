@@ -37,7 +37,13 @@ function Comment({ comment, onCommentClick, currentUser }) {
     <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
       <Avatar
         sx={{ width: "28px", height: "28px", alignSelf: "flex-start" }}
-        src={user.profilePicture || NoAvatarImg}
+        src={
+          user?.profilePicture?.length > 0
+            ? `${process.env.REACT_APP_API_URL}/${
+                user?.profilePicture[user?.profilePicture?.length - 1]
+              }`
+            : NoAvatarImg
+        }
       />
       <Box
         sx={{

@@ -1,5 +1,4 @@
 import { EmailOutlined } from "@mui/icons-material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CakeIcon from "@mui/icons-material/Cake";
 import CreateIcon from "@mui/icons-material/Create";
 import GroupIcon from "@mui/icons-material/Group";
@@ -10,6 +9,8 @@ import TransgenderIcon from "@mui/icons-material/Transgender";
 import { IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { default as React } from "react";
+import AddItem from "../AddItem/AddItem";
+import InfoItem from "../InfoItem/InfoItem";
 import { style } from "./infoTabStyle";
 
 function BasicContactInfo({ user }) {
@@ -21,151 +22,73 @@ function BasicContactInfo({ user }) {
         alignContent: "flex-start",
       }}
     >
-      <Box>
-        <Box component="h4" sx={{ fontWeight: 500, ml: 1 }}>
-          Thông tin liên hệ cơ bản
-        </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
+      <AddItem title="Thông tin liên hệ cơ bản" content="Thêm thành phố" />
+
+      <InfoItem
+        sx={{ mb: 2 }}
+        startIcon={
           <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
+            <PhoneIcon sx={style.icon} />
           </IconButton>
+        }
+        title={<Box>{user?.phone || "..."}</Box>}
+        content="Di động"
+        end1Icon={<GroupIcon />}
+        end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+      />
 
-          <Box>Thêm thành phố</Box>
-        </Box>
-      </Box>
-
-      <Box sx={{ ...style.flex, mb: 2 }}>
-        <IconButton sx={{ ...style.icon }}>
-          <PhoneIcon sx={style.icon} />
-        </IconButton>
-
-        <Box>
-          <Box>{user?.phone || "..."}</Box>
-          <Box sx={{ ...style.subTitle }}>Di động</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <GroupIcon />
+      <InfoItem
+        sx={{ mb: 2 }}
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <EmailOutlined sx={style.icon} />
           </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <CreateIcon sx={{ color: "#555" }} />
-          </IconButton>
-        </Box>
-      </Box>
-
-      <Box sx={{ ...style.flex, mb: 2 }}>
-        <IconButton sx={{ ...style.icon }}>
-          <EmailOutlined sx={style.icon} />
-        </IconButton>
-
-        <Box>
-          <Box>{user?.email || "..."}</Box>
-          <Box sx={{ ...style.subTitle }}>Email</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <LockIcon />
-          </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <CreateIcon sx={{ color: "#555" }} />
-          </IconButton>
-        </Box>
-      </Box>
+        }
+        title={<Box>{user?.email || "..."}</Box>}
+        content="Email"
+        end1Icon={<LockIcon />}
+        end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+      />
 
       <Box>
         <Box component="h4" sx={{ fontWeight: 500, ml: 1 }}>
           Các trang mạng xã hội
         </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm một trang web</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm một liên kết xã hội</Box>
-        </Box>
+        <AddItem content="Thêm một trang web" />
+        <AddItem content="Thêm một liên kết xã hội" />
       </Box>
 
       <Box>
         <Box component="h4" sx={{ fontWeight: 500, ml: 1 }}>
           Thông tin cơ bản
         </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm một ngôn ngữ</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm quan điểm tôn giáo của bạn</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm quan điểm chính trị của bạn</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm người mà bạn thích</Box>
-        </Box>
+        <AddItem content="Thêm một ngôn ngữ" />
+        <AddItem content="Thêm quan điểm tôn giáo của bạn" />
+        <AddItem content="Thêm quan điểm chính trị của bạn" />
+        <AddItem content="Thêm người mà bạn thích" />
       </Box>
 
-      <Box sx={{ ...style.flex, mb: 2 }}>
-        <IconButton sx={{ ...style.icon }}>
-          <TransgenderIcon sx={style.icon} />
-        </IconButton>
-
-        <Box>
-          <Box>{user?.gender || "..."}</Box>
-          <Box sx={{ ...style.subTitle }}>Giới tính</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <GroupIcon />
+      <InfoItem
+        sx={{ mb: 2 }}
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <TransgenderIcon sx={style.icon} />
           </IconButton>
+        }
+        title={<Box>{user?.gender || "..."}</Box>}
+        content="Giới tính"
+        end1Icon={<GroupIcon />}
+        end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+      />
 
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <CreateIcon sx={{ color: "#555" }} />
+      <InfoItem
+        sx={{ mb: 2 }}
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <CakeIcon sx={style.icon} />
           </IconButton>
-        </Box>
-      </Box>
-
-      <Box sx={{ ...style.flex, mb: 2 }}>
-        <IconButton sx={{ ...style.icon }}>
-          <CakeIcon sx={style.icon} />
-        </IconButton>
-
-        <Box>
+        }
+        title={
           <Box>
             {user?.birthday
               ? `${new Date(user?.birthday)?.getDay()} Tháng ${
@@ -175,22 +98,11 @@ function BasicContactInfo({ user }) {
                   new Date().getMonth() + 1
                 } Năm ${new Date().getFullYear()}`}
           </Box>
-          <Box sx={{ ...style.subTitle }}>Ngày sinh</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <PublicIcon />
-          </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <CreateIcon sx={{ color: "#555" }} />
-          </IconButton>
-        </Box>
-      </Box>
+        }
+        content="Ngày sinh"
+        end1Icon={<PublicIcon />}
+        end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+      />
     </Box>
   );
 }

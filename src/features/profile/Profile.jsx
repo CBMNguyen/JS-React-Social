@@ -7,17 +7,25 @@ import { follow, unFollow } from "features/auth/userSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import ProfileBottom from "./components/ProfileBottom";
-import ProfileTop from "./components/ProfileTop";
+import EditProfileModal from "./components/EditProfileModal/EditProfileModal.jsx";
+import ProfileBottom from "./components/ProfileBottom/ProfileBottom";
+import ProfileTop from "./components/ProfileTop/ProfileTop";
 
 function Profile(props) {
-  const dispatch = useDispatch();
-
   const { userId } = useParams();
-  const [user, setUser] = useState({});
+  const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.posts);
   const currentUser = useSelector((state) => state.user);
+
+  const [user, setUser] = useState({});
   const [friends, setFriends] = useState([]);
+  const [openImg, setOpenImg] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [infoTabValue, setInfoTabValue] = React.useState(0);
+  const [value, setValue] = React.useState(0);
+  const [profileState, setProfileState] = React.useState(
+    JSON.parse(localStorage.getItem("profileState")) || [1, 1, 1, 1, 1]
+  );
 
   useEffect(() => {
     const fetchUser = async (id) => {
@@ -54,6 +62,10 @@ function Profile(props) {
     fetchFriends(userId);
   }, [userId]);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const handleFollowClick = async () => {
     try {
       currentUser.user.followings.includes(user?._id)
@@ -64,36 +76,49 @@ function Profile(props) {
     }
   };
 
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   return (
     <>
       {/* This is Top Bar */}
-      <Topbar />
+      {!openImg && <Topbar />}
 
       <Box sx={{ backgroundColor: "#f0f2f5" }}>
         {/* Profile Top */}
 
         <ProfileTop
+          value={value}
+          setValue={setValue}
           user={user}
           currentUser={currentUser}
           userId={userId}
-          value={value}
           handleChange={handleChange}
           handleFollowClick={handleFollowClick}
         />
 
         {/* Profile Bottom */}
         <ProfileBottom
+          profileState={profileState}
           value={value}
+          setValue={setValue}
+          infoTabValue={infoTabValue}
+          setInfoTabValue={setInfoTabValue}
           user={user}
           friends={friends}
           posts={posts}
+          openImg={openImg}
+          setOpenImg={setOpenImg}
+          setOpenModal={setOpenModal}
         />
       </Box>
+
+      <EditProfileModal
+        profileState={profileState}
+        setProfileState={setProfileState}
+        setValue={setValue}
+        setInfoTabValue={setInfoTabValue}
+        user={user}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
 
       <Messenger />
     </>

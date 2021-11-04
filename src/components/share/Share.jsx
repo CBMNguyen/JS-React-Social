@@ -1,15 +1,15 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CloseIcon from "@mui/icons-material/Close";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import PeopleIcon from "@mui/icons-material/People";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import { Avatar, Divider, IconButton, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import { styled } from "@mui/system";
 import { createPost } from "app/postSlice";
-import axios from "axios";
+import { BlackTooltip, StyledModal } from "constants/mui";
+import Picker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,15 +20,6 @@ import {
 import BoxColorImg from "../../assets/BoxColorImg.png";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import { shareList, shareListIcon } from "../../constants/global";
-import CloseIcon from "@mui/icons-material/Close";
-import Picker from "emoji-picker-react";
-import { BlackTooltip } from "constants/mui";
-
-const StyledModal = styled(Modal)`
-  .MuiBackdrop-root {
-    background-color: rgb(255, 255, 255, 0.6);
-  }
-`;
 
 function Share(props) {
   const { user } = useSelector((state) => state.user);
@@ -59,24 +50,11 @@ function Share(props) {
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
-    const newPost = {
-      desc: value,
-    };
-
-    if (file) {
-      const data = new FormData();
-      data.append("file", file);
-      newPost.img = file.name;
-
-      try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/upload`, data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
+    const data = new FormData();
+    data.append("file", file);
+    data.append("desc", value);
     try {
-      await showToastSuccess(dispatch(createPost(newPost)));
+      await showToastSuccess(dispatch(createPost(data)));
       setValue("");
       setFile(null);
     } catch (error) {
@@ -90,7 +68,13 @@ function Share(props) {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={{ width: "42px", height: "42px", mr: "10px" }}
-            src={user?.profilePicture || noAvatarImg}
+            src={
+              user?.profilePicture?.length > 0
+                ? `${process.env.REACT_APP_API_URL}/${
+                    user?.profilePicture[user?.profilePicture?.length - 1]
+                  }`
+                : noAvatarImg
+            }
             alt="avatar"
           />
 
@@ -140,7 +124,11 @@ function Share(props) {
             }}
           >
             {shareList.map((item, index) => (
-              <Box key={item.name} sx={{ display: "flex" }}>
+              <Box
+                key={item.name}
+                onClick={handleOpenModal}
+                sx={{ display: "flex", cursor: "pointer" }}
+              >
                 {item.icon}
                 <Box
                   component="span"
@@ -211,7 +199,13 @@ function Share(props) {
               >
                 <Avatar
                   sx={{ width: "40px", height: "40px", mr: 1 / 2 }}
-                  src={user?.profilePicture || noAvatarImg}
+                  src={
+                    user?.profilePicture?.length > 0
+                      ? `${process.env.REACT_APP_API_URL}/${
+                          user?.profilePicture[user?.profilePicture?.length - 1]
+                        }`
+                      : noAvatarImg
+                  }
                   alt="avatar"
                 />
                 <Box>

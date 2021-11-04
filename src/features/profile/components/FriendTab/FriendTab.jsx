@@ -6,7 +6,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
-import { profileTopTabStyle } from "features/profile/profileTopStyle";
+import { profileTopTabStyle } from "features/profile/components/ProfileTop/profileTopStyle";
 import { default as React } from "react";
 import { TabPanel } from "utils/common";
 import FriendTabItems from "./FriendTabItems";

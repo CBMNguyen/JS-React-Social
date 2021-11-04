@@ -33,7 +33,7 @@ function FriendTabItems({ user, friends }) {
               }}
               src={
                 friend?.profilePicture?.length > 0
-                  ? `${process.env.REACT_APP_API_URL}/upload/${
+                  ? `${process.env.REACT_APP_API_URL}/${
                       friend?.profilePicture[friend?.profilePicture?.length - 1]
                     }`
                   : NoAvatarImg

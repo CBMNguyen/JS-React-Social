@@ -23,7 +23,12 @@ function Sidebar({ user }) {
 
   newSideBarList.unshift({
     name: capitalizeFirstLetter(user?.username) || "",
-    img: capitalizeFirstLetter(user?.profilePicture) || NoAvatarImg,
+    img:
+      user?.profilePicture?.length > 0
+        ? `${process.env.REACT_APP_API_URL}/${
+            user?.profilePicture[user?.profilePicture?.length - 1]
+          }`
+        : NoAvatarImg,
   });
 
   newSideBarList.push({

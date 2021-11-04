@@ -5,9 +5,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Box } from "@mui/system";
 import { default as React } from "react";
-import { PersonalInformation } from "../../../constants/global";
+import { PersonalInformation } from "../../../../constants/global";
 
-function ProfileBottomInfo({ user }) {
+function ProfileBottomInfo({ user, setOpenModal, profileState }) {
   return (
     <Paper
       elevation={2}
@@ -21,8 +21,12 @@ function ProfileBottomInfo({ user }) {
 
       <List>
         {PersonalInformation(
-          user?.city || "...",
-          user?.from || "......",
+          <Box>
+            Sống tại <b>{user?.city || "..."}</b>
+          </Box>,
+          <Box>
+            Đến từ <b>{user?.from || "......"}</b>
+          </Box>,
           user?.relationship?.length === 1
             ? "Độc thân"
             : user?.relationship
@@ -31,16 +35,22 @@ function ProfileBottomInfo({ user }) {
           `Tham gia vào tháng ${
             new Date(user?.createdAt).getMonth() + 1
           } năm ${new Date(new Date(user?.createdAt)).getFullYear()}`,
-          `Có ${user?.followers?.length} người theo dỗi`
-        ).map((item, index) => (
-          <ListItem sx={{ paddingLeft: 0 }} key={index}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.name} />
-          </ListItem>
-        ))}
+          <Box>
+            Có <b>{user?.followers?.length}</b> người theo dỗi
+          </Box>
+        ).map((item, index) => {
+          if (profileState[index] !== 1) return "";
+          return (
+            <ListItem sx={{ paddingLeft: 0 }} key={index}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItem>
+          );
+        })}
       </List>
       {/* Profile Left Bottom Info Button */}
       <Box
+        onClick={() => setOpenModal(true)}
         component="button"
         sx={{
           width: "100%",
@@ -50,12 +60,13 @@ function ProfileBottomInfo({ user }) {
           borderRadius: "8px",
           fontWeight: 500,
           fontSize: "15px",
-          backgroundColor: "#f0f2f5",
+          backgroundColor: "#ddd",
           transition: "all 0.4s easy-in-out 0s",
           "&:hover": {
-            backgroundColor: "#e0e4e7",
+            backgroundColor: "#ccc",
             cursor: "pointer",
           },
+          "&:active": { transform: "scale(0.98)" },
         }}
       >
         Chỉnh sửa chi tiết

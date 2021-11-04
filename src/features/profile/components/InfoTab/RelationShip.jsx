@@ -1,11 +1,12 @@
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CreateIcon from "@mui/icons-material/Create";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PublicIcon from "@mui/icons-material/Public";
 import { IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { default as React } from "react";
+import AddItem from "../AddItem/AddItem";
 import { style } from "./infoTabStyle";
+import InfoItem from "../InfoItem/InfoItem";
 
 function RelationShip({ user }) {
   return (
@@ -14,39 +15,23 @@ function RelationShip({ user }) {
         <Box component="h4" sx={{ fontWeight: 500, ml: 1 }}>
           Mối quan hệ
         </Box>
-        <Box sx={style.flex}>
-          <IconButton sx={{ ...style.icon }}>
-            <FavoriteIcon />
-          </IconButton>
-          <Box>{user?.relationship || "..."}</Box>
-          <Box sx={{ ...style.flex, ml: "auto" }}>
-            <IconButton>
-              <PublicIcon />
-            </IconButton>
 
-            <IconButton
-              sx={{
-                ...style.wrappedIcon,
-              }}
-            >
-              <CreateIcon sx={{ color: "#555" }} />
+        <InfoItem
+          startIcon={
+            <IconButton sx={{ ...style.icon }}>
+              <FavoriteIcon />
             </IconButton>
-          </Box>
-        </Box>
+          }
+          title={<Box>{user?.relationship || "..."}</Box>}
+          end1Icon={<PublicIcon />}
+          end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+        />
       </Box>
 
-      <Box>
-        <Box component="h4" sx={{ fontWeight: 500, ml: 1 }}>
-          Thành viên trong gia đình
-        </Box>
-        <Box sx={{ ...style.flex, ...style.blue }}>
-          <IconButton sx={{ ...style.icon }}>
-            <AddCircleOutlineIcon sx={style.blue} />
-          </IconButton>
-
-          <Box>Thêm một thành viên gia đình</Box>
-        </Box>
-      </Box>
+      <AddItem
+        title="Thành viên trong gia đình"
+        content="Thêm một thành viên gia đình"
+      />
     </Box>
   );
 }

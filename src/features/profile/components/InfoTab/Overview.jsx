@@ -1,4 +1,3 @@
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CreateIcon from "@mui/icons-material/Create";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GroupIcon from "@mui/icons-material/Group";
@@ -7,131 +6,75 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PublicIcon from "@mui/icons-material/Public";
-import { IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { default as React } from "react";
+import AddItem from "../AddItem/AddItem";
+import InfoItem from "../InfoItem/InfoItem";
 import { style } from "./infoTabStyle";
+import { IconButton } from "@mui/material";
 
 function Overview({ user }) {
   return (
     <Box sx={{ padding: "8px" }}>
-      <Box sx={{ ...style.flex, ...style.blue }}>
-        <IconButton sx={{ ...style.icon }}>
-          <AddCircleOutlineIcon sx={style.blue} />
-        </IconButton>
-        <Box>Thêm nơi làm việc</Box>
-      </Box>
-
-      <Box sx={{ ...style.flex, ...style.blue }}>
-        <IconButton sx={{ ...style.icon }}>
-          <AddCircleOutlineIcon sx={{ ...style.blue }} />
-        </IconButton>
-        <Box>Thêm trường trung học</Box>
-      </Box>
-
-      <Box sx={{ ...style.flex, ...style.blue }}>
-        <IconButton sx={{ ...style.icon }}>
-          <AddCircleOutlineIcon sx={{ ...style.blue }} />
-        </IconButton>
-        <Box>Thêm trường cao đẳng</Box>
-      </Box>
+      <AddItem content="Thêm nơi làm việc" />
+      <AddItem content="Thêm trường trung học" />
+      <AddItem content="Thêm trường cao đẳng" />
 
       {/*  City */}
-
-      <Box sx={style.flex}>
-        <IconButton sx={{ ...style.icon }}>
-          <HouseIcon />
-        </IconButton>
-
-        <Box>
-          Sống tại <b>{user?.city || "..."}</b>{" "}
-        </Box>
-
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <PublicIcon />
+      <InfoItem
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <HouseIcon />
           </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <MoreHorizIcon />
-          </IconButton>
-        </Box>
-      </Box>
+        }
+        title={<Box>Sống tại {<b>{user?.city || "..."}</b>}</Box>}
+        end1Icon={<PublicIcon />}
+        end2Icon={<MoreHorizIcon />}
+      />
 
       {/*  From */}
 
-      <Box sx={style.flex}>
-        <IconButton sx={{ ...style.icon }}>
-          <LocationOnIcon />
-        </IconButton>
-        <Box>
-          Đến từ <b>{user?.from || "..."}</b>{" "}
-        </Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <PublicIcon />
+      <InfoItem
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <LocationOnIcon />
           </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <MoreHorizIcon />
-          </IconButton>
-        </Box>
-      </Box>
+        }
+        title={
+          <Box>
+            Đến từ <b>{user?.from || "..."}</b>
+          </Box>
+        }
+        end1Icon={<PublicIcon />}
+        end2Icon={<MoreHorizIcon />}
+      />
 
       {/*  Relationship */}
 
-      <Box sx={style.flex}>
-        <IconButton sx={{ ...style.icon }}>
-          <FavoriteIcon />
-        </IconButton>
-        <Box>Độc thân</Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <PublicIcon />
+      <InfoItem
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <FavoriteIcon />
           </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <CreateIcon sx={{ color: "#555" }} />
-          </IconButton>
-        </Box>
-      </Box>
+        }
+        title={<Box>{user?.relationship}</Box>}
+        end1Icon={<PublicIcon />}
+        end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+      />
 
       {/*  Phone Number */}
 
-      <Box sx={style.flex}>
-        <IconButton sx={{ ...style.icon }}>
-          <PhoneIcon sx={style.icon} />
-        </IconButton>
-        <Box>
-          <Box sx={{ ...style.flex }}>{user?.phone || "..."}</Box>
-          <Box sx={{ ...style.subTitle }}>Di động</Box>
-        </Box>
-        <Box sx={{ ...style.flex, ml: "auto" }}>
-          <IconButton>
-            <GroupIcon />
+      <InfoItem
+        startIcon={
+          <IconButton sx={{ ...style.icon }}>
+            <PhoneIcon />
           </IconButton>
-
-          <IconButton
-            sx={{
-              ...style.wrappedIcon,
-            }}
-          >
-            <CreateIcon sx={{ color: "#555" }} />
-          </IconButton>
-        </Box>
-      </Box>
+        }
+        title={<Box>{user?.phone}</Box>}
+        content="Di động"
+        end1Icon={<GroupIcon />}
+        end2Icon={<CreateIcon sx={{ color: "#555" }} />}
+      />
     </Box>
   );
 }

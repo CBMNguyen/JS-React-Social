@@ -214,7 +214,13 @@ function Topbar(props) {
               >
                 <Avatar
                   sx={{ width: 28, height: 28 }}
-                  src={user?.profilePicture || noAvatarImg}
+                  src={
+                    user?.profilePicture?.length > 0
+                      ? `${process.env.REACT_APP_API_URL}/${
+                          user?.profilePicture[user?.profilePicture?.length - 1]
+                        }`
+                      : noAvatarImg
+                  }
                   alt="avatar"
                 />
 

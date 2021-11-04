@@ -283,7 +283,15 @@ function Messenger() {
                     >
                       <Avatar
                         sx={{ width: "32px", height: "32px" }}
-                        src={arrivalUser?.profilePicture || noAvatarImg}
+                        src={
+                          arrivalUser?.profilePicture?.length > 0
+                            ? `${process.env.REACT_APP_API_URL}/upload/${
+                                arrivalUser?.profilePicture[
+                                  arrivalUser?.profilePicture?.length - 1
+                                ]
+                              }`
+                            : noAvatarImg
+                        }
                         alt=""
                       ></Avatar>
                     </Badge>
@@ -377,6 +385,8 @@ function Messenger() {
                   {messages.map((message) => (
                     <div key={message._id} ref={scrollRef}>
                       <Message
+                        user={user}
+                        arrivalUser={arrivalUser}
                         message={message}
                         own={message.senderId === user._id}
                       />

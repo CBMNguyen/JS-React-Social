@@ -9,7 +9,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
 import React from "react";
-import { profileTopTabStyle, style } from "../profileTopStyle";
+import { profileTopTabStyle, style } from "./profileTopStyle";
 
 function ProfileTopTab({
   value,
@@ -106,8 +106,7 @@ function ProfileTopTab({
       {/* Profile Top Edit Button */}
       <Button
         sx={{
-          mr: 1,
-          textTransform: "initial",
+          ...style.profileTopButton,
           "&:hover": { backgroundColor: "lightgray" },
         }}
         disableElevation
@@ -120,7 +119,9 @@ function ProfileTopTab({
       {/* Profile Top More Button */}
       <Button
         sx={{
+          ml: 1 / 2,
           "&:hover": { backgroundColor: "lightgray" },
+          "&:active": { transform: "scale(0.98)" },
         }}
         color="inherit"
         disableElevation

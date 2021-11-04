@@ -7,14 +7,7 @@ import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ShareIcon from "@mui/icons-material/Share";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import {
-  AvatarGroup,
-  Badge,
-  Button,
-  Divider,
-  IconButton,
-  Stack,
-} from "@mui/material";
+import { AvatarGroup, Button, Divider, IconButton, Stack } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -32,6 +25,7 @@ import {
 } from "app/postSlice";
 import { states } from "constants/global";
 import { BlackTooltip, TransparentTooltip } from "constants/mui";
+import Picker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -44,10 +38,10 @@ import {
   formatDateFull,
   showToastError,
   showToastSuccess,
+  StyledBadge,
 } from "utils/common";
 import NoAvatarImg from "../../assets/person/noAvatar.png";
 import Comment from "../../components/comment/Comment";
-import Picker from "emoji-picker-react";
 
 function Post({ post, currentUser }) {
   const dispatch = useDispatch();
@@ -155,7 +149,13 @@ function Post({ post, currentUser }) {
         avatar={
           <Link to={`/profile/${user._id}`}>
             <Avatar
-              src={user?.profilePicture || NoAvatarImg}
+              src={
+                user?.profilePicture?.length > 0
+                  ? `${process.env.REACT_APP_API_URL}/${
+                      user?.profilePicture[user?.profilePicture?.length - 1]
+                    }`
+                  : NoAvatarImg
+              }
               aria-label="recipe"
             />
           </Link>
@@ -197,7 +197,7 @@ function Post({ post, currentUser }) {
       {post.img && (
         <CardMedia
           component="img"
-          image={`${process.env.REACT_APP_API_URL}/upload/${post.img}`}
+          image={`${process.env.REACT_APP_API_URL}/${post.img}`}
           alt="Paella dish"
           sx={{ objectFit: "contain", maxHeight: 500 }}
         />
@@ -295,7 +295,6 @@ function Post({ post, currentUser }) {
                   "&:hover": { cursor: "pointer", textDecoration: "underline" },
                 }}
               >{`${post.comments.length} bình luận `}</Box>
-              <Box component="span">0 lượt chia sẻ</Box>
             </Box>
           </Stack>
         </CardContent>
@@ -473,7 +472,7 @@ function Post({ post, currentUser }) {
             }}
           >
             <Link to={`/profile/${user._id}`}>
-              <Badge
+              <StyledBadge
                 variant="dot"
                 color="success"
                 anchorOrigin={{
@@ -484,9 +483,15 @@ function Post({ post, currentUser }) {
               >
                 <Avatar
                   sx={{ width: 28, height: 28 }}
-                  src={user?.profilePicture || NoAvatarImg}
+                  src={
+                    user?.profilePicture?.length > 0
+                      ? `${process.env.REACT_APP_API_URL}/${
+                          user?.profilePicture[user?.profilePicture?.length - 1]
+                        }`
+                      : NoAvatarImg
+                  }
                 />
-              </Badge>
+              </StyledBadge>
             </Link>
 
             <Box
