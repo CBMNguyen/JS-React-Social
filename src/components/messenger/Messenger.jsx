@@ -285,7 +285,7 @@ function Messenger() {
                         sx={{ width: "32px", height: "32px" }}
                         src={
                           arrivalUser?.profilePicture?.length > 0
-                            ? `${process.env.REACT_APP_API_URL}/upload/${
+                            ? `${process.env.REACT_APP_API_URL}/${
                                 arrivalUser?.profilePicture[
                                   arrivalUser?.profilePicture?.length - 1
                                 ]

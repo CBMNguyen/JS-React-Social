@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -49,17 +49,20 @@ function ProfileBottomInfo({ user, setOpenModal, profileState }) {
         })}
       </List>
       {/* Profile Left Bottom Info Button */}
-      <Box
+      <Button
+        disableElevation
+        variant="contained"
+        color="inherit"
         onClick={() => setOpenModal(true)}
-        component="button"
         sx={{
           width: "100%",
           marginTop: "10px",
-          padding: "10px",
+          padding: "6px",
           border: "none",
-          borderRadius: "8px",
+          borderRadius: "6px",
           fontWeight: 500,
           fontSize: "15px",
+          textTransform: "initial",
           backgroundColor: "#ddd",
           transition: "all 0.4s easy-in-out 0s",
           "&:hover": {
@@ -70,7 +73,7 @@ function ProfileBottomInfo({ user, setOpenModal, profileState }) {
         }}
       >
         Chỉnh sửa chi tiết
-      </Box>
+      </Button>
     </Paper>
   );
 }

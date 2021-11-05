@@ -6,19 +6,19 @@ import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
 import { updateUser } from "features/auth/userSlice";
 
-function ProfileTopUserInfo({ user }) {
+function ProfileTopUserInfo({ user, currentUser }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(user?.desc || "");
   const [openEditDesc, setOpenEditDesc] = useState(false);
 
   const handleCloseEditDesc = () => {
     setOpenEditDesc(false);
-    setValue(user.desc);
+    setValue(user.desc || "");
   };
 
   const handleEditDescClick = () => {
     setOpenEditDesc(true);
-    setValue(user.desc);
+    setValue(user.desc || "");
   };
 
   const handleSaveEditDesc = async () => {
@@ -98,7 +98,7 @@ function ProfileTopUserInfo({ user }) {
         </Box>
       )}
 
-      {!openEditDesc && (
+      {!openEditDesc && currentUser?.user?._id === user?._id && (
         <Box
           onClick={handleEditDescClick}
           component="span"

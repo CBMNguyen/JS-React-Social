@@ -12,29 +12,25 @@ function Message({ own, message, user, arrivalUser }) {
         display: "flex",
         flexDirection: "column",
         marginTop: "20px",
-        alignItems: own ? "flex-start" : "flex-end",
+        alignItems: !own ? "flex-start" : "flex-end",
       }}
     >
       <Box sx={{ display: "flex" }}>
-        <Avatar
-          sx={{ width: "32px", height: "32px", mr: "10px" }}
-          src={
-            own
-              ? user?.profilePicture?.length > 0
-                ? `${process.env.REACT_APP_API_URL}/upload/${
-                    user?.profilePicture[user?.profilePicture?.length - 1]
+        {!own && (
+          <Avatar
+            sx={{ width: "32px", height: "32px", mr: "10px" }}
+            src={
+              arrivalUser?.profilePicture?.length > 0
+                ? `${process.env.REACT_APP_API_URL}/${
+                    arrivalUser?.profilePicture[
+                      arrivalUser?.profilePicture?.length - 1
+                    ]
                   }`
                 : noAvatarImg
-              : arrivalUser?.profilePicture?.length > 0
-              ? `${process.env.REACT_APP_API_URL}/upload/${
-                  arrivalUser?.profilePicture[
-                    arrivalUser?.profilePicture?.length - 1
-                  ]
-                }`
-              : noAvatarImg
-          }
-          alt="avatar"
-        />
+            }
+            alt="avatar"
+          />
+        )}
         <BlackTooltip
           title={`Thứ ${
             new Date(message.createdAt).getDay() + 1

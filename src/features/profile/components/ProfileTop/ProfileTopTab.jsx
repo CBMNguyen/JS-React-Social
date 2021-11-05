@@ -10,6 +10,7 @@ import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
 import React from "react";
 import { profileTopTabStyle, style } from "./profileTopStyle";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 function ProfileTopTab({
   value,
@@ -104,18 +105,30 @@ function ProfileTopTab({
         </Button>
       )}
       {/* Profile Top Edit Button */}
-      <Button
-        sx={{
-          ...style.profileTopButton,
-          "&:hover": { backgroundColor: "lightgray" },
-        }}
-        disableElevation
-        variant="contained"
-        color="inherit"
-        startIcon={<CreateIcon />}
-      >
-        Chỉnh sửa trang cá nhân
-      </Button>
+      {currentUser?.user?._id === userId ? (
+        <Button
+          sx={{
+            ...style.profileTopButton,
+            "&:hover": { backgroundColor: "lightgray" },
+          }}
+          disableElevation
+          variant="contained"
+          color="inherit"
+          startIcon={<CreateIcon />}
+        >
+          Chỉnh sửa trang cá nhân
+        </Button>
+      ) : (
+        <Button
+          disableElevation
+          color="primary"
+          variant="contained"
+          sx={style.profileTopButton}
+          startIcon={<PersonAddAlt1Icon />}
+        >
+          Thêm bạn bè
+        </Button>
+      )}
       {/* Profile Top More Button */}
       <Button
         sx={{

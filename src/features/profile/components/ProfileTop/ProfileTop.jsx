@@ -21,7 +21,7 @@ function ProfileTop({
         <CoverAndAvatarImg user={user} />
 
         {/* Profile Top User Info */}
-        <ProfileTopUserInfo user={user} />
+        <ProfileTopUserInfo currentUser={currentUser} user={user} />
 
         <Divider sx={{ marginY: 1 / 2 }} />
 
