@@ -2,10 +2,12 @@ import LinearProgress from "@mui/material/LinearProgress";
 import ScopedCssBaseline from "@mui/material/ScopedCssBaseline";
 import userApi from "api/user";
 import ProtectedRoute from "components/protectedRoute/ProtectedRoute";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { io } from "socket.io-client";
 import NotFound from "./components/notFound/NotFound";
+
 window.addEventListener("beforeunload", async () => {
   const user = JSON.parse(localStorage.getItem("persist:facebook")).user;
   const userId = JSON.parse(user).user._id;
@@ -18,20 +20,30 @@ function App() {
   const Home = React.lazy(() => import("features/home/Home"));
   const Profile = React.lazy(() => import("features/profile/Profile"));
 
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    setSocket(io(process.env.REACT_APP_WS_URL));
+  }, []);
+
   return (
     <div className="App">
       <ScopedCssBaseline>
         <Suspense fallback={<LinearProgress />}>
           <BrowserRouter>
             <Switch>
-              <ProtectedRoute path="/" exact component={Home} />
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <ProtectedRoute
-                path="/profile/:userId"
-                exact
-                component={Profile}
-              />
+              <ProtectedRoute path="/" exact>
+                <Home socket={socket} />
+              </ProtectedRoute>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/register">
+                <Register />
+              </Route>
+              <ProtectedRoute path="/profile/:userId" exact>
+                <Profile socket={socket} />
+              </ProtectedRoute>
               <Route component={NotFound} />
             </Switch>
           </BrowserRouter>

@@ -90,7 +90,37 @@ export const createPost = createAsyncThunk(
 const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    createCommentSocket: (state, action) => {
+      const { postId, comment } = action.payload;
+      const post = state.posts.find((post) => post._id === postId);
+      if (post) post.comments.push(comment);
+    },
+    createLikeSocket: (State, action) => {
+      const { postId, state, userId } = action.payload;
+      const postIndex = State.posts.findIndex((post) => post._id === postId);
+      const currentPost = State.posts[postIndex];
+
+      if (!currentPost.likes.some((like) => like.userId === userId)) {
+        currentPost.likes.push({ userId, state });
+      } else {
+        if (
+          currentPost.likes.some(
+            (like) => like.userId === userId && like.state === state
+          )
+        ) {
+          currentPost.likes = currentPost.likes.filter(
+            (like) => like.userId !== userId
+          );
+        } else {
+          currentPost.likes = currentPost.likes.map((like) => {
+            if (like.userId === userId) return { ...like, state: state };
+            return like;
+          });
+        }
+      }
+    },
+  },
   extraReducers: {
     [getTimeLine.pending]: pendingState,
     [getTimeLine.rejected]: rejectedState,
@@ -192,5 +222,6 @@ const postSlice = createSlice({
   },
 });
 
-const { reducer } = postSlice;
+const { reducer, actions } = postSlice;
+export const { createCommentSocket, createLikeSocket } = actions;
 export default reducer;

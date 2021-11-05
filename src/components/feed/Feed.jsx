@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import Post from "../post/Post";
 import Share from "../share/Share";
 
-function Feed({ posts }) {
+function Feed({ posts, socket }) {
   const { userId } = useParams();
   const { user } = useSelector((state) => state.user);
   return (
@@ -16,7 +16,12 @@ function Feed({ posts }) {
           .slice()
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((post) => (
-            <Post key={post._id} post={post} currentUser={user} />
+            <Post
+              key={post._id}
+              post={post}
+              socket={socket}
+              currentUser={user}
+            />
           ))}
       </Box>
     </Box>

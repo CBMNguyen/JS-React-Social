@@ -11,7 +11,7 @@ import EditProfileModal from "./components/EditProfileModal/EditProfileModal.jsx
 import ProfileBottom from "./components/ProfileBottom/ProfileBottom";
 import ProfileTop from "./components/ProfileTop/ProfileTop";
 
-function Profile(props) {
+function Profile({ socket }) {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.posts);
@@ -79,7 +79,7 @@ function Profile(props) {
   return (
     <>
       {/* This is Top Bar */}
-      {!openImg && <Topbar />}
+      {!openImg && <Topbar socket={socket} />}
 
       <Box sx={{ backgroundColor: "#f0f2f5" }}>
         {/* Profile Top */}
@@ -120,7 +120,7 @@ function Profile(props) {
         setOpenModal={setOpenModal}
       />
 
-      <Messenger />
+      <Messenger socket={socket} />
     </>
   );
 }

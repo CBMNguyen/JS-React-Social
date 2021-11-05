@@ -64,7 +64,7 @@ export const style = {
     position: "relative",
     width: "100%",
     height: "100%",
-    "&:active": { transform: "scale(0.98)" },
+    "&:active": { transform: "scale(0.96)", filter: "brightness(0.75)" },
   },
 
   profileTopCameraIcon: {

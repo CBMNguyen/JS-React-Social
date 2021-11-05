@@ -9,7 +9,7 @@ import PhotoIcon from "@mui/icons-material/Photo";
 import SendIcon from "@mui/icons-material/Send";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import VideocamIcon from "@mui/icons-material/Videocam";
-import { Avatar, Badge, Grow, IconButton, Paper } from "@mui/material";
+import { Avatar, Grow, IconButton, Paper } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -23,8 +23,8 @@ import {
   setArrivalMessage,
   setCurrentChat,
   setMessages,
-  setOnlineUsers,
 } from "app/messengerSlice";
+import { setOnlineUsers } from "app/notificationSlice";
 import axios from "axios";
 import { messengerToolTip } from "constants/global";
 import { BlackTooltip, LightTooltip } from "constants/mui";
@@ -32,13 +32,12 @@ import Picker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { io } from "socket.io-client";
+import { StyledBadge } from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import Message from "../message/Message";
 
-function Messenger() {
+function Messenger({ socket }) {
   const { user } = useSelector((state) => state.user);
-
   const [arrivalUser, setArrivalUser] = useState(null);
   const [showEmoji, setShowEmoji] = useState(false);
   const [message, setMessage] = useState("");
@@ -46,13 +45,14 @@ function Messenger() {
   const [openMessengerOptions, setOpenMessengerOptions] = useState(false);
 
   const inputRef = useRef();
-  const socket = useRef();
   const scrollRef = useRef();
   const dispatch = useDispatch();
 
-  const { currentChat, messages, arrivalMessage, onlineUsers } = useSelector(
+  const { currentChat, messages, arrivalMessage } = useSelector(
     (state) => state.messenger
   );
+
+  const { onlineUsers } = useSelector((state) => state.notification);
   // get current messenger User
   useEffect(() => {
     const getArrivalUser = async () => {
@@ -66,8 +66,7 @@ function Messenger() {
   }, [currentChat, user]);
   // handle bind socket and get Message
   useEffect(() => {
-    socket.current = io(process.env.REACT_APP_WS_URL);
-    socket.current.on("getMessage", (data) => {
+    socket?.on("getMessage", (data) => {
       dispatch(
         setArrivalMessage({
           senderId: data.senderId,
@@ -76,7 +75,7 @@ function Messenger() {
         })
       );
     });
-  }, [dispatch]);
+  }, [dispatch, socket]);
   // handle update arrival Message
   useEffect(() => {
     arrivalMessage &&
@@ -85,15 +84,15 @@ function Messenger() {
   }, [arrivalMessage, currentChat, dispatch]);
 
   useEffect(() => {
-    socket.current.emit("addUser", user._id);
-    socket.current.on("getUsers", (users) => {
+    socket?.emit("addUser", user._id);
+    socket?.on("getUsers", (users) => {
       dispatch(
         setOnlineUsers(
           user?.followings?.filter((f) => users.some((u) => u.userId === f))
         )
       );
     });
-  }, [user, dispatch]);
+  }, [user, dispatch, socket]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -268,7 +267,7 @@ function Messenger() {
                       setOpenMessengerOptions(!openMessengerOptions)
                     }
                   >
-                    <Badge
+                    <StyledBadge
                       variant="dot"
                       color={
                         onlineUsers.includes(arrivalUser?._id)
@@ -294,7 +293,7 @@ function Messenger() {
                         }
                         alt=""
                       ></Avatar>
-                    </Badge>
+                    </StyledBadge>
 
                     <Box
                       sx={{

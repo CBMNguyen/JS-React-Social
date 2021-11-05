@@ -16,6 +16,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import { getConversations } from "app/messengerSlice";
+import { setNotifications } from "app/notificationSlice";
 import ShowConversations from "components/showConversations/ShowConversations";
 import { BlackTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
@@ -24,7 +25,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
-function Topbar(props) {
+function Topbar({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { conversations } = useSelector((state) => state.messenger);
@@ -35,6 +36,12 @@ function Topbar(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    socket?.on("getNotification", ({ postId, senderId, type }) => {
+      dispatch(setNotifications({ postId, senderId, type }));
+    });
+  }, [socket, dispatch]);
 
   useEffect(() => {
     const fetchConversations = async () => {

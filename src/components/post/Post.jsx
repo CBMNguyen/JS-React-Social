@@ -20,6 +20,8 @@ import { Box } from "@mui/system";
 import userApi from "api/user";
 import {
   createComment,
+  createCommentSocket,
+  createLikeSocket,
   likeAndDislike,
   likeAndDislikeComment,
 } from "app/postSlice";
@@ -43,14 +45,13 @@ import {
 import NoAvatarImg from "../../assets/person/noAvatar.png";
 import Comment from "../../components/comment/Comment";
 
-function Post({ post, currentUser }) {
+function Post({ post, currentUser, socket }) {
   const dispatch = useDispatch();
   const inputRef = useRef();
 
   const [user, setUser] = useState({});
   const [openStates, setOpenStates] = useState(false);
   const [userNamelikePost, setUsernameLikePost] = useState([]);
-  const [textComment, setTextComment] = useState("");
   const [expanded, setExpanded] = React.useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [cursorPosition, setCursorPosition] = useState();
@@ -89,6 +90,20 @@ function Post({ post, currentUser }) {
     if (inputRef.current) inputRef.current.selectionEnd = cursorPosition;
   }, [cursorPosition]);
 
+  useEffect(() => {
+    socket?.on("getComment", ({ postId, comment }) => {
+      if (comment.userId !== currentUser._id && post._id === postId)
+        dispatch(createCommentSocket({ postId, comment }));
+    });
+  }, [socket, currentUser._id, dispatch, post._id]);
+
+  useEffect(() => {
+    socket?.on("getLike", ({ postId, state, senderId }) => {
+      if (senderId !== currentUser._id && post._id === postId)
+        dispatch(createLikeSocket({ postId, state, userId: senderId }));
+    });
+  }, [socket, currentUser._id, dispatch, post._id]);
+
   const handleLikeClick = async (postId, state, userId) => {
     try {
       await showToastSuccess(
@@ -100,6 +115,21 @@ function Post({ post, currentUser }) {
           })
         )
       );
+
+      socket.emit("addLike", {
+        postId,
+        senderId: currentUser._id,
+        state,
+      });
+
+      if (currentUser._id !== post.userId) {
+        socket.emit("addNotification", {
+          postId,
+          senderId: currentUser._id,
+          receiverId: post.userId,
+          type: state,
+        });
+      }
     } catch (error) {
       showToastError(error);
     }
@@ -124,20 +154,30 @@ function Post({ post, currentUser }) {
   const handlePickEmoji = (e, { emoji }) => {
     const ref = inputRef.current;
     ref.focus();
-    const start = textComment.substring(0, ref.selectionStart);
-    const end = textComment.substring(ref.selectionStart);
+    const start = ref.value.substring(0, ref.selectionStart);
+    const end = ref.value.substring(ref.selectionStart);
     const text = start + emoji + end;
-    setTextComment(text);
+    ref.value = text;
     setCursorPosition(start.length + emoji.length);
   };
 
   const handleCreateComment = async (e) => {
     e.preventDefault();
+    if (!inputRef.current.value || !inputRef.current.value.trim("")) return;
+
     try {
-      await showToastSuccess(
-        dispatch(createComment({ postId: post._id, text: textComment }))
+      const { postId, comment } = await showToastSuccess(
+        dispatch(
+          createComment({ postId: post._id, text: inputRef.current.value })
+        )
       );
-      setTextComment("");
+
+      socket.emit("addComment", {
+        postId,
+        comment,
+      });
+
+      inputRef.current.value = "";
     } catch (error) {
       showToastError(error);
     }
@@ -351,6 +391,9 @@ function Post({ post, currentUser }) {
                 alignItems: "center",
                 justifyContent: "center",
                 height: "38px",
+                "&:hover": {
+                  backgroundColor: "#eee",
+                },
               }}
               onClick={() => handleLikeClick(post._id, 0, currentUser._id)}
               onMouseEnter={() => setOpenStates(true)}
@@ -418,6 +461,9 @@ function Post({ post, currentUser }) {
               alignItems: "center",
               justifyContent: "center",
               height: "38px",
+              "&:hover": {
+                backgroundColor: "#eee",
+              },
             }}
             color="inherit"
             onClick={handleExpandClick}
@@ -434,6 +480,9 @@ function Post({ post, currentUser }) {
               alignItems: "center",
               justifyContent: "center",
               height: "38px",
+              "&:hover": {
+                backgroundColor: "#eee",
+              },
             }}
             color="inherit"
           >
@@ -528,8 +577,6 @@ function Post({ post, currentUser }) {
                     },
                   }}
                   ref={inputRef}
-                  value={textComment}
-                  onChange={(e) => setTextComment(e.target.value)}
                   onClick={() => setShowEmoji(false)}
                   component="input"
                   placeholder="Viết bình luận"

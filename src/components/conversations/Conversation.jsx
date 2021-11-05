@@ -8,7 +8,7 @@ import { format } from "timeago.js";
 import { StyledBadge } from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 function Conversation({ conversation, currentUser }) {
-  const { onlineUsers } = useSelector((state) => state.messenger);
+  const { onlineUsers } = useSelector((state) => state.notification);
   const [user, setUser] = useState({});
 
   const [lastMessage, setLastMessage] = useState({});

@@ -5,7 +5,7 @@ import { Redirect, Route } from "react-router-dom";
 
 function ProtectedRoute(props) {
   const { token } = useSelector((state) => state.user);
-  const { component: Component, ...rest } = props;
+  const { children, ...rest } = props;
 
   return (
     <Route
@@ -13,7 +13,7 @@ function ProtectedRoute(props) {
       render={(props) => {
         try {
           jwt.verify(token, process.env.REACT_APP_JWT_KEY);
-          return <Component />;
+          return children;
         } catch (error) {
           console.log(error);
           return (

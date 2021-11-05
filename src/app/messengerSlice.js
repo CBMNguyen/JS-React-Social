@@ -5,7 +5,6 @@ import { pendingState, rejectedState } from "utils/common";
 const initialState = {
   conversations: [],
   currentChat: null,
-  onlineUsers: [],
   messages: [],
   arrivalMessage: null,
   error: "",
@@ -51,10 +50,6 @@ const messengerSlice = createSlice({
     setArrivalMessage: (state, action) => {
       state.arrivalMessage = action.payload;
     },
-
-    setOnlineUsers: (state, action) => {
-      state.onlineUsers = action.payload;
-    },
   },
   extraReducers: {
     [getConversations.pending]: pendingState,
@@ -76,10 +71,5 @@ const messengerSlice = createSlice({
 });
 
 const { reducer, actions } = messengerSlice;
-export const {
-  setCurrentChat,
-  setMessages,
-  setArrivalMessage,
-  setOnlineUsers,
-} = actions;
+export const { setCurrentChat, setMessages, setArrivalMessage } = actions;
 export default reducer;

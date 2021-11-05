@@ -11,11 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { showToastError, showToastSuccess } from "utils/common";
 import Sidebar from "./components/sidebar/Sidebar";
 
-function Home() {
+function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { posts } = useSelector((state) => state.posts);
-  const { onlineUsers } = useSelector((state) => state.messenger);
+  const { onlineUsers } = useSelector((state) => state.notification);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,14 +48,14 @@ function Home() {
 
   return (
     <>
-      <Topbar />
+      <Topbar socket={socket} />
       <Box sx={{ display: "flex", width: "100%", backgroundColor: "#f0f2f5" }}>
         <Sidebar user={user} />
-        <Feed posts={posts} />
+        <Feed posts={posts} socket={socket} />
         <Rightbar currentUserId={user._id} onlineUsers={onlineUsers} />
       </Box>
 
-      <Messenger />
+      <Messenger socket={socket} />
     </>
   );
 }
