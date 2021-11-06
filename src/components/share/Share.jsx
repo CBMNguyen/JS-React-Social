@@ -21,7 +21,7 @@ import BoxColorImg from "../../assets/BoxColorImg.png";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import { shareList, shareListIcon } from "../../constants/global";
 
-function Share(props) {
+function Share({ socket }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const inputRef = useRef();
@@ -54,7 +54,12 @@ function Share(props) {
     data.append("file", file);
     data.append("desc", value);
     try {
-      await showToastSuccess(dispatch(createPost(data)));
+      const { post } = await showToastSuccess(dispatch(createPost(data)));
+
+      socket.emit("addPost", {
+        post,
+      });
+
       setValue("");
       setFile(null);
     } catch (error) {

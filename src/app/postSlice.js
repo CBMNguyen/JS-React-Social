@@ -91,6 +91,10 @@ const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
+    createPostSocket: (state, action) => {
+      const { post } = action.payload;
+      state.posts.push(post);
+    },
     createCommentSocket: (state, action) => {
       const { postId, comment } = action.payload;
       const post = state.posts.find((post) => post._id === postId);
@@ -223,5 +227,6 @@ const postSlice = createSlice({
 });
 
 const { reducer, actions } = postSlice;
-export const { createCommentSocket, createLikeSocket } = actions;
+export const { createCommentSocket, createLikeSocket, createPostSocket } =
+  actions;
 export default reducer;

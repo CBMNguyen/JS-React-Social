@@ -96,6 +96,7 @@ function Profile({ socket }) {
 
         {/* Profile Bottom */}
         <ProfileBottom
+          socket={socket}
           profileState={profileState}
           value={value}
           setValue={setValue}

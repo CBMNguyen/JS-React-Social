@@ -9,6 +9,7 @@ import ProfileBottomImageList from "./ProfileBottomImageList";
 import ProfileBottomInfo from "./ProfileBottomInfo";
 
 function ProfileBottom({
+  socket,
   profileState,
   infoTabValue,
   setInfoTabValue,
@@ -60,7 +61,7 @@ function ProfileBottom({
           </Box>
           {/* Profile Right Bottom Post */}
           <Box sx={{ flex: 6 }}>
-            <Feed posts={posts} />
+            <Feed posts={posts} socket={socket} />
           </Box>
         </Box>
       </TabPanel>

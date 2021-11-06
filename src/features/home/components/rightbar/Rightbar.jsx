@@ -10,45 +10,22 @@ import { BlackTooltip } from "constants/mui";
 import React from "react";
 import giftImg from "../../../../assets/gift.png";
 import sponsorImg from "../../../../assets/sponsor.png";
+import rightbarStyle from "./rightbar";
 
 function Rightbar({ onlineUsers, currentUserId }) {
   return (
-    <Box
-      sx={{
-        flex: 3.5,
-        height: "calc(100vh - 62px)",
-        overflow: "scroll",
-        position: "sticky",
-        top: "62px",
-      }}
-    >
-      <Box
-        sx={{
-          padding: "20px 20px 0 0",
-        }}
-      >
-        <Paper
-          elevation={1}
-          sx={{
-            padding: 2,
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+    <Box sx={rightbarStyle.container}>
+      <Box sx={rightbarStyle.wrapper}>
+        <Paper elevation={1} sx={rightbarStyle.birthdayBox}>
           <Box
             component="img"
-            sx={{
-              width: "40px",
-              height: "40px",
-              marginRight: "10px",
-            }}
+            sx={rightbarStyle.birthdayLogo}
             src={giftImg}
             alt="birthdayImg"
           />
-          <span className="birthdayText">
+          <Box>
             <b>Pola Foster</b> and <b>3 orther friend</b> have a birth day today
-          </span>
+          </Box>
         </Paper>
 
         <Box sx={{ margin: "20px 0" }} component="h4">
@@ -56,48 +33,22 @@ function Rightbar({ onlineUsers, currentUserId }) {
         </Box>
 
         <Box
-          sx={{
-            display: "block",
-            textDecoration: "none",
-            color: "inherit",
-            mb: "20px",
-          }}
+          sx={rightbarStyle.sponsorBox}
           component="a"
           href="https://shoestore-7857c.web.app/"
           rel="noopener noreferrer"
           target="blank"
         >
-          <Paper
-            elevation={2}
-            sx={{
-              display: "flex",
-              padding: 1,
-              borderRadius: "8px",
-            }}
-          >
+          <Paper elevation={2} sx={rightbarStyle.sponsorWrapper}>
             <Box
+              sx={rightbarStyle.sponsorImg}
               component="img"
-              sx={{
-                width: "150px",
-                height: "80px",
-                borderRadius: "8px",
-                objectFit: "cover",
-                boxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.1)",
-              }}
               src={sponsorImg}
               alt="sponsorImg"
             />
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                ml: 2,
-              }}
-            >
-              <Box component="h3" sx={{}}>
-                Website ShoesStore | Sale Off
-              </Box>
+            <Box sx={rightbarStyle.sponsorLeftWrapper}>
+              <Box component="h3">Website ShoesStore | Sale Off</Box>
               <Box sx={{ fontSize: "12px" }} component="span">
                 shoestore-7857c.web.app
               </Box>
@@ -107,13 +58,7 @@ function Rightbar({ onlineUsers, currentUserId }) {
 
         <Divider sx={{ mb: 1 }} />
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={rightbarStyle.flexBetween}>
           <Box component="h4">Người liên hệ</Box>
 
           <Box>

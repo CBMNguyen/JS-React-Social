@@ -18,7 +18,7 @@ function ProfileTop({
     <Box sx={style.profileTopBg}>
       <Box sx={style.profileTopWidth}>
         {/* Profile Top Cover Img & Profile Picture */}
-        <CoverAndAvatarImg user={user} />
+        <CoverAndAvatarImg user={user} currentUser={currentUser} />
 
         {/* Profile Top User Info */}
         <ProfileTopUserInfo currentUser={currentUser} user={user} />
