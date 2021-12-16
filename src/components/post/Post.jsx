@@ -8,6 +8,7 @@ import userApi from "api/user";
 import {
   createComment,
   createCommentSocket,
+  createLikeCommentSocket,
   createLikeSocket,
   likeAndDislike,
   likeAndDislikeComment,
@@ -61,10 +62,12 @@ function Post({ post, currentUser, socket }) {
     fetchUserLikeBox();
   }, [post.likes]);
 
+  // Add emoji correct order
   useEffect(() => {
     if (inputRef.current) inputRef.current.selectionEnd = cursorPosition;
   }, [cursorPosition]);
 
+  // Get comment realtime
   useEffect(() => {
     socket?.on("getComment", ({ postId, comment }) => {
       if (comment.userId !== currentUser._id && post._id === postId)
@@ -72,10 +75,21 @@ function Post({ post, currentUser, socket }) {
     });
   }, [socket, currentUser._id, dispatch, post._id]);
 
+  // Get like realtime
   useEffect(() => {
     socket?.on("getLike", ({ postId, state, senderId }) => {
       if (senderId !== currentUser._id && post._id === postId)
         dispatch(createLikeSocket({ postId, state, userId: senderId }));
+    });
+  }, [socket, currentUser._id, dispatch, post._id]);
+
+  // Get LikeComment realtime
+  useEffect(() => {
+    socket?.on("getLikeComment", ({ postId, commentId, state, senderId }) => {
+      if (senderId !== currentUser._id && post._id === postId)
+        dispatch(
+          createLikeCommentSocket({ postId, commentId, state, senderId })
+        );
     });
   }, [socket, currentUser._id, dispatch, post._id]);
 
@@ -92,19 +106,11 @@ function Post({ post, currentUser, socket }) {
       );
 
       socket.emit("addLike", {
+        // add like post with socket
         postId,
         senderId: currentUser._id,
         state,
       });
-
-      if (currentUser._id !== post.userId) {
-        socket.emit("addNotification", {
-          postId,
-          senderId: currentUser._id,
-          receiverId: post.userId,
-          type: state,
-        });
-      }
     } catch (error) {
       showToastError(error);
     }
@@ -117,11 +123,20 @@ function Post({ post, currentUser, socket }) {
           likeAndDislikeComment({ postId: post._id, state, commentId, userId })
         )
       );
+
+      socket.emit("addLikeComment", {
+        // add like comment with socket
+        postId: post._id,
+        commentId,
+        senderId: currentUser._id,
+        state,
+      });
     } catch (error) {
       showToastError(error);
     }
   };
 
+  // handle emoji
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -135,6 +150,7 @@ function Post({ post, currentUser, socket }) {
     ref.value = text;
     setCursorPosition(start.length + emoji.length);
   };
+  // =====================================================
 
   const handleCreateComment = async (e) => {
     e.preventDefault();
@@ -148,6 +164,7 @@ function Post({ post, currentUser, socket }) {
       );
 
       socket.emit("addComment", {
+        // add comment with socket
         postId,
         comment,
       });
@@ -213,38 +230,3 @@ function Post({ post, currentUser, socket }) {
 }
 
 export default Post;
-
-// {
-//   /* <StyledModal open={openModal} onClose={handleCloseModal}>
-//         <Paper
-//           sx={{
-//             position: "absolute",
-//             top: "50%",
-//             left: "50%",
-//             width: "500px",
-//             paddingBottom: 2,
-//             borderRadius: "12px",
-//             transform: "translate(-50%, -50%)",
-//             boxShadow: 24,
-//           }}
-//         >
-//           <IconButton
-//             onClick={handleCloseModal}
-//             sx={{
-//               position: "absolute",
-//               top: "10px",
-//               right: "20px",
-//               backgroundColor: "#f0f2f5",
-//             }}
-//           >
-//             <CloseIcon />
-//           </IconButton>
-
-//           <Box>
-//             <StateTabs post={post} />
-
-//             <Divider />
-//           </Box>
-//         </Paper>
-//       </StyledModal> */
-// }

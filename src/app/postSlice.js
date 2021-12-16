@@ -91,15 +91,20 @@ const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
+    // Handle create post socket
     createPostSocket: (state, action) => {
       const { post } = action.payload;
       state.posts.push(post);
     },
+
+    // Handle create comment socket
     createCommentSocket: (state, action) => {
       const { postId, comment } = action.payload;
       const post = state.posts.find((post) => post._id === postId);
       if (post) post.comments.push(comment);
     },
+
+    // Handle create like socket
     createLikeSocket: (State, action) => {
       const { postId, state, userId } = action.payload;
       const postIndex = State.posts.findIndex((post) => post._id === postId);
@@ -124,8 +129,41 @@ const postSlice = createSlice({
         }
       }
     },
+
+    // Handle create like comment socket
+    createLikeCommentSocket: (State, action) => {
+      const { postId, state, commentId, userId } = action.payload;
+      const postIndex = State.posts.findIndex((post) => post._id === postId);
+      const commentIndex = State.posts[postIndex].comments.findIndex(
+        (comment) => comment._id === commentId
+      );
+
+      const currentComment = State.posts[postIndex].comments[commentIndex];
+
+      if (!currentComment.likes.some((like) => like.userId === userId)) {
+        currentComment.likes.push({ userId, state });
+      } else {
+        if (
+          currentComment.likes.some(
+            (like) => like.userId === userId && like.state === state
+          )
+        ) {
+          currentComment.likes = currentComment.likes.filter(
+            (like) => like.userId !== userId
+          );
+        } else {
+          currentComment.likes = currentComment.likes.map((like) => {
+            if (like.userId === userId) {
+              return { ...like, state: state };
+            }
+            return like;
+          });
+        }
+      }
+    },
   },
   extraReducers: {
+    // Handle get timeline
     [getTimeLine.pending]: pendingState,
     [getTimeLine.rejected]: rejectedState,
     [getTimeLine.fulfilled]: (state, action) => {
@@ -133,6 +171,8 @@ const postSlice = createSlice({
       state.error = "";
       state.posts = action.payload.posts;
     },
+
+    // Handle get post of me
     [getPostOfMe.pending]: pendingState,
     [getPostOfMe.rejected]: rejectedState,
     [getPostOfMe.fulfilled]: (state, action) => {
@@ -140,7 +180,7 @@ const postSlice = createSlice({
       state.error = "";
       state.posts = action.payload.posts;
     },
-
+    // Handle create comment
     [createPost.pending]: pendingState,
     [createPost.rejected]: rejectedState,
     [createPost.fulfilled]: (state, action) => {
@@ -149,6 +189,7 @@ const postSlice = createSlice({
       state.posts.push(action.payload.post);
     },
 
+    // Handle create comment
     [createComment.pending]: pendingState,
     [createComment.rejected]: rejectedState,
     [createComment.fulfilled]: (state, action) => {
@@ -159,6 +200,7 @@ const postSlice = createSlice({
       state.error = "";
     },
 
+    // Handle like and dislike Post
     [likeAndDislike.pending]: pendingState,
     [likeAndDislike.rejected]: rejectedState,
     [likeAndDislike.fulfilled]: (State, action) => {
@@ -188,6 +230,7 @@ const postSlice = createSlice({
       State.error = "";
     },
 
+    // Handle like and dislike Comment
     [likeAndDislikeComment.pending]: pendingState,
     [likeAndDislikeComment.rejected]: rejectedState,
     [likeAndDislikeComment.fulfilled]: (State, action) => {
@@ -227,6 +270,10 @@ const postSlice = createSlice({
 });
 
 const { reducer, actions } = postSlice;
-export const { createCommentSocket, createLikeSocket, createPostSocket } =
-  actions;
+export const {
+  createCommentSocket,
+  createLikeSocket,
+  createLikeCommentSocket,
+  createPostSocket,
+} = actions;
 export default reducer;

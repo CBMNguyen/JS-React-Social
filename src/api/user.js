@@ -11,6 +11,11 @@ const userApi = {
     return axiosClient.get(url);
   },
 
+  getUserByName: (name) => {
+    const url = `/users/search/${name}`;
+    return axiosClient.get(url);
+  },
+
   getFriends: (id) => {
     const url = `/users/friends/${id}`;
     return axiosClient.get(url);
