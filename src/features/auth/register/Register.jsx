@@ -1,11 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import InputField from "custom-fields/InputField";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { showToastError, showToastSuccess } from "utils/common";
 import {
@@ -20,6 +21,7 @@ import { register } from "../userSlice";
 function Register(props) {
   const dispatch = useDispatch();
   const history = useHistory();
+  const loading = useSelector((state) => state.user.loading);
 
   const defaultValues = {
     username: "",
@@ -78,7 +80,7 @@ function Register(props) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack
               justifyContent="space-between"
-              height="440px"
+              height="480px"
               padding="20px"
               bgcolor="#fff"
               borderRadius="10px"
@@ -102,10 +104,28 @@ function Register(props) {
                 sx={{
                   height: "50px",
                   borderRadius: "10px",
-                  backgroundColor: "#1775ee !important",
+                  backgroundColor: loading
+                    ? "#62a1f3 !important"
+                    : "#1775ee !important",
                 }}
               >
-                Register
+                <Box sx={{ color: "white" }}>Register</Box>
+
+                {loading && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "20%",
+                      top: "18px",
+                      ml: 8,
+                    }}
+                  >
+                    <CircularProgress
+                      sx={{ position: "absolute", color: "white" }}
+                      size={14}
+                    />
+                  </Box>
+                )}
               </Button>
 
               <Button

@@ -5,10 +5,11 @@ import Feed from "components/feed/Feed";
 import Messenger from "components/messenger/Messenger";
 import Topbar from "components/topbar/Topbar";
 import { getMe } from "features/auth/userSlice";
-import Rightbar from "features/home/components/rightbar/Rightbar";
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showToastError, showToastSuccess } from "utils/common";
+import Rightbar from "./components/rightbar/Rightbar.jsx";
 import Sidebar from "./components/sidebar/Sidebar";
 
 function Home({ socket }) {

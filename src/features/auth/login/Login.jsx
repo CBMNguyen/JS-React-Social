@@ -1,11 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import InputField from "custom-fields/InputField";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { showToastError, showToastSuccess } from "utils/common";
 import { checkEmail, checkStringRequired } from "utils/validate-field";
@@ -15,6 +16,8 @@ import { login } from "../userSlice";
 function Login(props) {
   const history = useHistory();
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.loading);
+
   const defaultValues = {
     email: "",
     password: "",
@@ -82,15 +85,35 @@ function Login(props) {
               <InputField name="password" control={control} type="password" />
 
               <Button
+                disabled={loading}
                 variant="contained"
                 type="submit"
                 sx={{
+                  position: "relative",
                   height: "50px",
                   borderRadius: "10px",
-                  backgroundColor: "#1775ee !important",
+                  backgroundColor: loading
+                    ? "#62a1f3 !important"
+                    : "#1775ee !important",
                 }}
               >
-                Login
+                <Box sx={{ color: "white" }}>Login</Box>
+
+                {loading && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "20%",
+                      top: "18px",
+                      ml: 8,
+                    }}
+                  >
+                    <CircularProgress
+                      sx={{ position: "absolute", color: "white" }}
+                      size={14}
+                    />
+                  </Box>
+                )}
               </Button>
 
               <Typography variant="body1" textAlign="center" color="#1775ee">
