@@ -5,13 +5,13 @@ import React from "react";
 import { format } from "timeago.js";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
-function Message({ own, message, user, arrivalUser }) {
+function Message({ own, message, arrivalUser }) {
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        marginTop: "20px",
+        marginTop: "8px",
         alignItems: !own ? "flex-start" : "flex-end",
       }}
     >
@@ -32,11 +32,13 @@ function Message({ own, message, user, arrivalUser }) {
           />
         )}
         <BlackTooltip
-          title={`Thứ ${
-            new Date(message.createdAt).getDay() + 1
-          } ${`0${new Date(message.createdAt).getHours()}`.slice(
+          title={`${`0${new Date(message.createdAt).getHours()}`.slice(
             -2
-          )}:${`0${new Date(message.createdAt).getMinutes()}`.slice(-2)}`}
+          )}:${`0${new Date(message.createdAt).getMinutes()}`.slice(-2)}
+          ${new Date(message.createdAt).getDate()} Tháng ${
+            new Date(message.createdAt).getMonth() + 1
+          }, ${new Date(message.createdAt).getFullYear()}
+          `}
         >
           <Typography
             sx={{
@@ -56,7 +58,8 @@ function Message({ own, message, user, arrivalUser }) {
         component="span"
         sx={{
           fontSize: "10px",
-          marginTop: "8px",
+          marginTop: "2px",
+          marginLeft: !own ? "48px" : "0px",
           color: "#0008",
           fontWeight: 500,
         }}

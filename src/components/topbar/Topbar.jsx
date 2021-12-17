@@ -40,13 +40,13 @@ function Topbar({ socket }) {
   const { conversations } = useSelector((state) => state.messenger);
 
   const typingTimeoutRef = useRef(null); // keep time value
-  const [name, setName] = React.useState("");
-  const [value, setValue] = React.useState("one");
+  const [name, setName] = useState("");
+  const [value, setValue] = useState("one");
   const { user } = useSelector((state) => state.user);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [showConversations, setShowConversations] = useState(false);
+  const [anchorElSearch, setAnchorElSearch] = useState(null);
+  const [anchorElChat, setAnchorElChat] = useState(null);
 
-  const [users, setUsers] = React.useState(() => {
+  const [users, setUsers] = useState(() => {
     return JSON.parse(localStorage.getItem("recentUsers")) || [];
   });
 
@@ -63,17 +63,30 @@ function Topbar({ socket }) {
   }, [user._id, dispatch]);
 
   // handle show user search bar
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleSearchClick = (event) => {
+    setAnchorElSearch(event.currentTarget);
   };
 
   // handle hide user search bar
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleSearchClose = () => {
+    setAnchorElSearch(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const openSearch = Boolean(anchorElSearch);
+  const SearchId = openSearch ? "simple-popover" : undefined;
+
+  // handle show user chat bar
+  const handleChatClick = (event) => {
+    setAnchorElChat(event.currentTarget);
+  };
+
+  // handle hide user chat bar
+  const handleChatClose = () => {
+    setAnchorElChat(null);
+  };
+
+  const openChat = Boolean(anchorElChat);
+  const chatId = openChat ? "simple-popover" : undefined;
 
   // handle Tabs change
   const handleChange = (event, newValue) => {
@@ -162,8 +175,8 @@ function Topbar({ socket }) {
 
           <Box
             component="div"
-            aria-describedby={id}
-            onClick={handleClick}
+            aria-describedby={SearchId}
+            onClick={handleSearchClick}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -192,10 +205,10 @@ function Topbar({ socket }) {
         </Box>
 
         <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
+          id={SearchId}
+          open={openSearch}
+          anchorEl={anchorElSearch}
+          onClose={handleSearchClose}
           sx={{
             position: "absolute",
             top: "-15px",
@@ -212,7 +225,7 @@ function Topbar({ socket }) {
               }}
             >
               <IconButton
-                onClick={handleClose}
+                onClick={handleSearchClose}
                 sx={{ mr: 2, width: 38, height: 38, objectFit: "cover" }}
               >
                 <ArrowBackIcon />
@@ -320,9 +333,11 @@ function Topbar({ socket }) {
                         />
                         <ListItemText primary={u.username} />
                       </Box>
-                      <IconButton onClick={() => handleRemoveRecentUser(u)}>
-                        <CloseIcon fontSize="small" />
-                      </IconButton>
+                      {name === "" && users.length > 0 && (
+                        <IconButton onClick={() => handleRemoveRecentUser(u)}>
+                          <CloseIcon fontSize="small" />
+                        </IconButton>
+                      )}
                     </ListItemButton>
                   </ListItem>
                 ))}
@@ -494,13 +509,14 @@ function Topbar({ socket }) {
 
             <BlackTooltip title="Messenger">
               <IconButton
-                onClick={() => setShowConversations(!showConversations)}
+                aria-describedby={chatId}
+                onClick={handleChatClick}
                 sx={{ backgroundColor: "#f0f2f5", mx: 2 }}
               >
                 <Badge badgeContent={1} max={10} color="error">
                   <ChatIcon
                     color="primary"
-                    sx={!showConversations ? { color: "#000" } : {}}
+                    sx={!anchorElChat ? { color: "#000" } : {}}
                   />
                 </Badge>
               </IconButton>
@@ -523,14 +539,23 @@ function Topbar({ socket }) {
         </Box>
       </Toolbar>
 
-      {showConversations && (
+      <Popover
+        id={chatId}
+        open={openChat}
+        anchorEl={anchorElChat}
+        onClose={handleChatClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        sx={{ mt: 1, ml: 1 / 2 }}
+      >
         <ShowConversations
           currentUser={user}
           conversations={conversations}
-          showConversations={true}
-          setShowConversations={setShowConversations}
+          handleChatClose={handleChatClose}
         />
-      )}
+      </Popover>
     </AppBar>
   );
 }

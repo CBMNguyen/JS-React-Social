@@ -4,6 +4,7 @@ import userApi from "api/user";
 import { states } from "constants/global";
 import { BlackTooltip, TransparentTooltip } from "constants/mui";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { format } from "timeago.js";
 import {
   capitalizeFirstLetter,
@@ -35,16 +36,18 @@ function Comment({ comment, onCommentClick, currentUser }) {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-      <Avatar
-        sx={{ width: "28px", height: "28px", alignSelf: "flex-start" }}
-        src={
-          user?.profilePicture?.length > 0
-            ? `${process.env.REACT_APP_API_URL}/${
-                user?.profilePicture[user?.profilePicture?.length - 1]
-              }`
-            : NoAvatarImg
-        }
-      />
+      <Link style={{ alignSelf: "flex-start" }} to={`/profile/${user._id}`}>
+        <Avatar
+          sx={{ width: 28, height: 28 }}
+          src={
+            user?.profilePicture?.length > 0
+              ? `${process.env.REACT_APP_API_URL}/${
+                  user?.profilePicture[user?.profilePicture?.length - 1]
+                }`
+              : NoAvatarImg
+          }
+        />
+      </Link>
       <Box
         sx={{
           display: "flex",

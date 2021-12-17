@@ -99,7 +99,7 @@ function Conversation({ conversation, currentUser }) {
               ? "You"
               : userNameSendMessage
           }: ${lastMessage?.text}`}</Box>
-          <Box>{format(lastMessage?.createdAt)}</Box>
+          <Box sx={{ fontSize: "12px" }}>{format(lastMessage?.createdAt)}</Box>
         </Box>
       </Box>
     </Box>

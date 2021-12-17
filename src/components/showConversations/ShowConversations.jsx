@@ -11,152 +11,126 @@ import { BlackTooltip } from "constants/mui";
 import React from "react";
 import { useDispatch } from "react-redux";
 
-function ShowConversations({
-  conversations,
-  currentUser,
-  showConversations,
-  setShowConversations,
-}) {
+function ShowConversations({ conversations, currentUser, handleChatClose }) {
   const dispatch = useDispatch();
 
   return (
-    <>
-      <Paper
-        elevation={2}
+    <Paper
+      elevation={2}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+
+        width: "340px",
+        maxHeight: "700px",
+        borderRadius: "8px",
+        padding: "10px",
+        paddingBottom: 0,
+
+        backgroundColor: "#fff",
+        color: "#000",
+        transition: "all 0.4s easy-in-out 0s",
+      }}
+    >
+      <Box
         sx={{
-          position: "absolute",
-          zIndex: 999,
-          top: "62px",
-          right: "8px",
           display: "flex",
-          flexDirection: "column",
-
-          width: "350px",
-          maxHeight: "700px",
-          borderRadius: "8px",
-          padding: "10px",
-          paddingBottom: 0,
-
-          backgroundColor: "#fff",
-          color: "#000",
-          transition: "all 0.4s easy-in-out 0s",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box component="h2" sx={{ mt: "10px", ml: "10px" }}>
-            Messenger
-          </Box>
-
-          <Box>
-            <BlackTooltip title="Tùy chọn">
-              <IconButton>
-                <MoreHorizIcon fontSize="small" color="textSecondary" />
-              </IconButton>
-            </BlackTooltip>
-
-            <BlackTooltip title="Xem tất cả trong messenger">
-              <IconButton>
-                <GridViewIcon fontSize="small" color="textSecondary" />
-              </IconButton>
-            </BlackTooltip>
-
-            <BlackTooltip title="Tạo phòng họp mặt mới">
-              <IconButton>
-                <VideoCallIcon fontSize="small" color="textSecondary" />
-              </IconButton>
-            </BlackTooltip>
-
-            <BlackTooltip title="Tin nhắn mới">
-              <IconButton>
-                <BorderColorIcon fontSize="small" color="textSecondary" />
-              </IconButton>
-            </BlackTooltip>
-          </Box>
+        <Box component="h2" sx={{ mt: "10px", ml: "10px" }}>
+          Messenger
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            width: "90%",
-            height: "32px",
-            margin: "auto",
-            marginY: "20px",
-            padding: "5px 0",
 
-            backgroundColor: "#f0f2f5",
-            border: "1px solid lightgray",
-            borderRadius: "20px",
-          }}
-        >
-          <SearchIcon sx={{ fontSize: "20px", ml: "10px", color: "#0008" }} />
-          <Box
-            component="input"
-            sx={{
-              width: "100%",
-              border: "none",
-              backgroundColor: "inherit",
-              "&:focus": {
-                outline: "none",
-              },
-            }}
-            placeholder="Search friend on messenger"
-          />
+        <Box>
+          <BlackTooltip title="Tùy chọn">
+            <IconButton>
+              <MoreHorizIcon fontSize="small" color="textSecondary" />
+            </IconButton>
+          </BlackTooltip>
+
+          <BlackTooltip title="Xem tất cả trong messenger">
+            <IconButton>
+              <GridViewIcon fontSize="small" color="textSecondary" />
+            </IconButton>
+          </BlackTooltip>
+
+          <BlackTooltip title="Tạo phòng họp mặt mới">
+            <IconButton>
+              <VideoCallIcon fontSize="small" color="textSecondary" />
+            </IconButton>
+          </BlackTooltip>
+
+          <BlackTooltip title="Tin nhắn mới">
+            <IconButton>
+              <BorderColorIcon fontSize="small" color="textSecondary" />
+            </IconButton>
+          </BlackTooltip>
         </Box>
-        {conversations.map((conversation) => (
-          <div
-            onClick={() => {
-              dispatch(setCurrentChat(conversation));
-              setShowConversations(!showConversations);
-            }}
-            key={conversation._id}
-          >
-            <Conversation
-              currentUser={currentUser}
-              conversation={conversation}
-            />
-          </div>
-        ))}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          width: "90%",
+          height: "24px",
+          margin: "auto",
+          marginY: "20px",
+          padding: "5px 0",
 
+          backgroundColor: "#f0f2f5",
+          border: "1px solid lightgray",
+          borderRadius: "20px",
+        }}
+      >
+        <SearchIcon sx={{ fontSize: "20px", ml: "10px", color: "#0008" }} />
         <Box
+          component="input"
           sx={{
-            display: "block",
-            padding: "12px 0",
-            borderTop: "2px solid #f0f2f5",
-
-            color: "#1877f2",
-            textAlign: "center",
-            textDecoration: "none",
-            fontSize: "14px",
-            transition: "all 0.2s ease-in-out 0s",
-
-            "&:hover": {
-              cursor: "pointer",
-              textDecoration: "underline",
+            width: "100%",
+            border: "none",
+            backgroundColor: "inherit",
+            "&:focus": {
+              outline: "none",
             },
           }}
+          placeholder="Search friend on messenger"
+        />
+      </Box>
+      {conversations.map((conversation) => (
+        <div
+          onClick={() => {
+            dispatch(setCurrentChat(conversation));
+            handleChatClose();
+          }}
+          key={conversation._id}
         >
-          Xem tất cả trong Messenger
-        </Box>
-      </Paper>
+          <Conversation currentUser={currentUser} conversation={conversation} />
+        </div>
+      ))}
 
       <Box
         sx={{
-          top: 0,
-          left: 0,
-          position: "absolute",
-          width: "100%",
-          height: "100vh",
-          zIndex: 0,
+          display: "block",
+          padding: "12px 0",
+          borderTop: "2px solid #f0f2f5",
+
+          color: "#1877f2",
+          textAlign: "center",
+          textDecoration: "none",
+          fontSize: "14px",
+          transition: "all 0.2s ease-in-out 0s",
+
+          "&:hover": {
+            cursor: "pointer",
+            textDecoration: "underline",
+          },
         }}
-        onClick={() => setShowConversations(false)}
-      ></Box>
-    </>
+      >
+        Xem tất cả trong Messenger
+      </Box>
+    </Paper>
   );
 }
 

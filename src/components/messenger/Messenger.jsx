@@ -9,7 +9,7 @@ import PhotoIcon from "@mui/icons-material/Photo";
 import SendIcon from "@mui/icons-material/Send";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import VideocamIcon from "@mui/icons-material/Videocam";
-import { Avatar, Grow, IconButton, Paper } from "@mui/material";
+import { Avatar, Grow, IconButton, Paper, Popover } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -27,7 +27,7 @@ import {
 import { setOnlineUsers } from "app/notificationSlice";
 import axios from "axios";
 import { messengerToolTip } from "constants/global";
-import { BlackTooltip, LightTooltip } from "constants/mui";
+import { BlackTooltip } from "constants/mui";
 import Picker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +42,7 @@ function Messenger({ socket }) {
   const [showEmoji, setShowEmoji] = useState(false);
   const [message, setMessage] = useState("");
   const [cursorPosition, setCursorPosition] = useState();
-  const [openMessengerOptions, setOpenMessengerOptions] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const inputRef = useRef();
   const scrollRef = useRef();
@@ -123,6 +123,19 @@ function Messenger({ socket }) {
     if (inputRef.current) inputRef.current.selectionEnd = cursorPosition;
   }, [cursorPosition]);
 
+  // handle show user chat bar
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // handle hide user chat bar
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newMessage = inputRef.current.value;
@@ -137,7 +150,7 @@ function Messenger({ socket }) {
       (member) => member !== user._id
     );
 
-    socket.current.emit("sendMessage", {
+    socket.emit("sendMessage", {
       senderId: user._id,
       receiverId,
       text: newMessage,
@@ -188,148 +201,147 @@ function Messenger({ socket }) {
                   borderTopRightRadius: "8px",
                 }}
               >
-                <LightTooltip
-                  open={openMessengerOptions}
-                  placement="left-start"
-                  arrow
-                  title={
-                    <List sx={{ width: "320px", padding: "2px" }}>
-                      {messengerToolTip.map((item, index) => {
-                        let divider = <span />;
-                        if (
-                          index === 1 ||
-                          index === 4 ||
-                          index === 5 ||
-                          index === 8
-                        )
-                          divider = <Divider sx={{ marginY: 1 }} />;
-                        return (
-                          <Link
-                            to={
-                              index === 1 ? `/profile/${arrivalUser?._id}` : "/"
-                            }
-                            style={{ color: "#333", textDecoration: "none" }}
-                            key={item.name}
-                          >
-                            <ListItem disablePadding>
-                              <ListItemButton sx={{ padding: 0 }}>
-                                <ListItemIcon
-                                  sx={{
-                                    paddingLeft: "8px",
-                                  }}
-                                >
-                                  {item.icon}
-                                </ListItemIcon>
-                                <ListItemText
-                                  primary={
-                                    <Box
-                                      sx={{ fontWeight: "500", color: "#333" }}
-                                    >
-                                      <Box>{item.name}</Box>
-                                      {index ===
-                                        messengerToolTip.length - 1 && (
-                                        <Box
-                                          sx={{
-                                            fontSize: "12px",
-                                            color: "#555",
-                                          }}
-                                        >
-                                          Đóng góp ý kiến và báo cáo cuộc trò
-                                          chuyện
-                                        </Box>
-                                      )}
-                                    </Box>
-                                  }
-                                />
-                              </ListItemButton>
-                            </ListItem>
-                            {divider}
-                          </Link>
-                        );
-                      })}
-                    </List>
-                  }
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  sx={{ position: "absolute", left: "-334px", top: "8px" }}
                 >
+                  <List sx={{ width: "320px", padding: "2px" }}>
+                    {messengerToolTip.map((item, index) => {
+                      let divider = <span />;
+                      if (
+                        index === 1 ||
+                        index === 4 ||
+                        index === 5 ||
+                        index === 8
+                      )
+                        divider = <Divider sx={{ marginY: 1 }} />;
+                      return (
+                        <Link
+                          to={
+                            index === 1 ? `/profile/${arrivalUser?._id}` : "/"
+                          }
+                          style={{ color: "#333", textDecoration: "none" }}
+                          key={item.name}
+                        >
+                          <ListItem disablePadding>
+                            <ListItemButton sx={{ padding: 0 }}>
+                              <ListItemIcon
+                                sx={{
+                                  paddingLeft: "8px",
+                                }}
+                              >
+                                {item.icon}
+                              </ListItemIcon>
+                              <ListItemText
+                                primary={
+                                  <Box
+                                    sx={{ fontWeight: "500", color: "#333" }}
+                                  >
+                                    <Box>{item.name}</Box>
+                                    {index === messengerToolTip.length - 1 && (
+                                      <Box
+                                        sx={{
+                                          fontSize: "12px",
+                                          color: "#555",
+                                        }}
+                                      >
+                                        Đóng góp ý kiến và báo cáo cuộc trò
+                                        chuyện
+                                      </Box>
+                                    )}
+                                  </Box>
+                                }
+                              />
+                            </ListItemButton>
+                          </ListItem>
+                          {divider}
+                        </Link>
+                      );
+                    })}
+                  </List>
+                </Popover>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "2px",
+                    borderRadius: "4px",
+                    transition: "all 0.5s easy-in-out 0s",
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: "#f0f2f5",
+                    },
+                  }}
+                  aria-describedby={id}
+                  onClick={handleClick}
+                >
+                  <StyledBadge
+                    variant="dot"
+                    color={
+                      onlineUsers.includes(arrivalUser?._id)
+                        ? "success"
+                        : "default"
+                    }
+                    overlap="circular"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                  >
+                    <Avatar
+                      sx={{ width: "32px", height: "32px" }}
+                      src={
+                        arrivalUser?.profilePicture?.length > 0
+                          ? `${process.env.REACT_APP_API_URL}/${
+                              arrivalUser?.profilePicture[
+                                arrivalUser?.profilePicture?.length - 1
+                              ]
+                            }`
+                          : noAvatarImg
+                      }
+                      alt=""
+                    ></Avatar>
+                  </StyledBadge>
+
                   <Box
                     sx={{
+                      marginLeft: "10px",
                       display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "2px",
-                      borderRadius: "4px",
-                      transition: "all 0.5s easy-in-out 0s",
-                      "&:hover": {
-                        cursor: "pointer",
-                        backgroundColor: "#f0f2f5",
-                      },
+                      flexDirection: "column",
                     }}
-                    onClick={() =>
-                      setOpenMessengerOptions(!openMessengerOptions)
-                    }
                   >
-                    <StyledBadge
-                      variant="dot"
-                      color={
-                        onlineUsers.includes(arrivalUser?._id)
-                          ? "success"
-                          : "default"
-                      }
-                      overlap="circular"
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "right",
-                      }}
-                    >
-                      <Avatar
-                        sx={{ width: "32px", height: "32px" }}
-                        src={
-                          arrivalUser?.profilePicture?.length > 0
-                            ? `${process.env.REACT_APP_API_URL}/${
-                                arrivalUser?.profilePicture[
-                                  arrivalUser?.profilePicture?.length - 1
-                                ]
-                              }`
-                            : noAvatarImg
-                        }
-                        alt=""
-                      ></Avatar>
-                    </StyledBadge>
-
                     <Box
                       sx={{
-                        marginLeft: "10px",
                         display: "flex",
-                        flexDirection: "column",
+                        alignItems: "center",
+                        fontWeight: 500,
+                        color: "rgb(53, 52, 52)",
+                        textTransform: "capitalize",
                       }}
                     >
+                      {arrivalUser?.username}
+                      <KeyboardArrowDownOutlinedIcon
+                        sx={{ fontSize: "18px", ml: "2px" }}
+                      />
+                    </Box>
+
+                    {onlineUsers.includes(arrivalUser?._id) && (
                       <Box
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          fontWeight: 500,
-                          color: "rgb(53, 52, 52)",
-                          textTransform: "capitalize",
+                          fontSize: "12px",
                         }}
+                        component="span"
                       >
-                        {arrivalUser?.username}
-                        <KeyboardArrowDownOutlinedIcon
-                          sx={{ fontSize: "18px", ml: "2px" }}
-                        />
+                        đang hoạt động
                       </Box>
-
-                      {onlineUsers.includes(arrivalUser?._id) && (
-                        <Box
-                          sx={{
-                            fontSize: "12px",
-                          }}
-                          component="span"
-                        >
-                          đang hoạt động
-                        </Box>
-                      )}
-                    </Box>
+                    )}
                   </Box>
-                </LightTooltip>
+                </Box>
 
                 <Box>
                   <BlackTooltip
@@ -484,22 +496,6 @@ function Messenger({ socket }) {
             </Box>
           </Paper>
         </Grow>
-
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: "100%",
-            zIndex: 0,
-          }}
-          onClick={() => {
-            setShowEmoji(false);
-            setOpenMessengerOptions(false);
-          }}
-        />
       </>
     )
   );
