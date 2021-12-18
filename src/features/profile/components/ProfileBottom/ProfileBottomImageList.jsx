@@ -1,4 +1,3 @@
-import NoAvatarImg from "../../../../assets/person/noAvatar.png";
 import { Avatar, Paper } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -7,8 +6,15 @@ import React, { useState } from "react";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 
-function ProfileBottomImageList({ openImg, setOpenImg }) {
+function ProfileBottomImageList({ openImg, setOpenImg, user, posts }) {
   const [photoIndex, setPhotoIndex] = useState(0);
+  const imageInPost = posts.filter((post) => post.img);
+
+  const imageList = [].concat(
+    user?.coverPicture,
+    user?.profilePicture,
+    imageInPost.map((post) => post.img)
+  );
 
   return (
     <Box>
@@ -33,40 +39,59 @@ function ProfileBottomImageList({ openImg, setOpenImg }) {
           </Box>
         </Box>
         {/* Images List */}
-        <ImageList
-          sx={{
-            width: "100%",
-            borderRadius: "8px",
-            marginTop: "8px",
-          }}
-          cols={3}
-        >
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
-            <ImageListItem onClick={() => setOpenImg(true)} key={index}>
-              <Avatar
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "0",
+        {imageList.length > 0 && (
+          <ImageList
+            sx={{
+              width: "100%",
+              borderRadius: "8px",
+              marginTop: "8px",
+            }}
+            cols={3}
+          >
+            {imageList.map((item, index) => (
+              <ImageListItem
+                onClick={() => {
+                  setOpenImg(true);
+                  setPhotoIndex(index);
                 }}
-                src={`${NoAvatarImg}`}
-                srcSet={`${NoAvatarImg}`}
-                alt={item.title}
-                loading="lazy"
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
+                key={index}
+              >
+                <Avatar
+                  sx={{
+                    width: "100%",
+                    height: "104px",
+                    borderRadius: "0",
+                    cursor: "pointer",
+                  }}
+                  src={`${process.env.REACT_APP_API_URL}/${item}`}
+                  alt={item}
+                  loading="lazy"
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        )}
+        {imageList.length === 0 && <Box>Empty Image</Box>}
       </Paper>
 
       {openImg && (
         <Lightbox
-          mainSrc={NoAvatarImg}
-          nextSrc={NoAvatarImg}
-          prevSrc={NoAvatarImg}
+          mainSrc={`${process.env.REACT_APP_API_URL}/${imageList[photoIndex]}`}
+          nextSrc={`${process.env.REACT_APP_API_URL}/${[
+            (photoIndex + 1) % imageList.length,
+          ]}`}
+          prevSrc={`${process.env.REACT_APP_API_URL}/${[
+            (photoIndex + imageList.length - 1) % imageList.length,
+          ]}`}
           onCloseRequest={() => setOpenImg(false)}
-          onMovePrevRequest={() => setPhotoIndex((photoIndex + 9 - 1) % 9)}
-          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % 9)}
+          onMovePrevRequest={() =>
+            setPhotoIndex(
+              (photoIndex + imageList.length - 1) % imageList.length
+            )
+          }
+          onMoveNextRequest={() =>
+            setPhotoIndex((photoIndex + 1) % imageList.length)
+          }
         />
       )}
     </Box>

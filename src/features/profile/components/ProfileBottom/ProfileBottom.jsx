@@ -52,6 +52,7 @@ function ProfileBottom({
             {/* Profile Left Bottom Images */}
             <ProfileBottomImageList
               user={user}
+              posts={posts}
               openImg={openImg}
               setOpenImg={setOpenImg}
             />
