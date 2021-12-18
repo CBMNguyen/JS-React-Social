@@ -1,14 +1,13 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Paper } from "@mui/material";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
 import { profileTopTabStyle } from "features/profile/components/ProfileTop/profileTopStyle";
 import { default as React } from "react";
 import { TabPanel } from "utils/common";
+import NotComplete from "../NotComplete/NotComplete";
 import FriendTabItems from "./FriendTabItems";
 import { style } from "./friendTabStyle";
 
@@ -93,31 +92,19 @@ function FriendTab({ user, friends }) {
       </TabPanel>
 
       <TabPanel value={value} index={1}>
-        <Alert severity="warning">
-          <AlertTitle>Facebook</AlertTitle>
-          Xin lỗi bạn tính năng này sẽ sớm được hoàn thành
-        </Alert>
+        <NotComplete />
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        <Alert severity="warning">
-          <AlertTitle>Facebook</AlertTitle>
-          Xin lỗi bạn tính năng này sẽ sớm được hoàn thành
-        </Alert>
+        <NotComplete />
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        <Alert severity="warning">
-          <AlertTitle>Facebook</AlertTitle>
-          Xin lỗi bạn tính năng này sẽ sớm được hoàn thành
-        </Alert>
+        <NotComplete />
       </TabPanel>
 
       <TabPanel value={value} index={4}>
-        <Alert severity="warning">
-          <AlertTitle>Facebook</AlertTitle>
-          Xin lỗi bạn tính năng này sẽ sớm được hoàn thành
-        </Alert>
+        <NotComplete />
       </TabPanel>
 
       <TabPanel value={value} index={5}>

@@ -5,9 +5,16 @@ import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { Box } from "@mui/system";
 import { default as React } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-function ProfileBottomFriendList({ friends }) {
+function ProfileBottomFriendList({ friends, setValue, scrollTopRef }) {
+  const history = useHistory();
+
+  const handleFriendClick = (friend) => {
+    history.push(`/profile/${friend._id}`);
+    scrollTopRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <Paper
       elevation={2}
@@ -25,7 +32,21 @@ function ProfileBottomFriendList({ friends }) {
         }}
       >
         <Box component="h2">Friends</Box>
-        <Box sx={{ textDecoration: "none", color: "blue" }}>Xem tất bạn bè</Box>
+        <Box
+          onClick={() => setValue(2)}
+          sx={{
+            fontWeight: "400",
+            padding: "8px",
+            borderRadius: "8px",
+            color: "#1877f2",
+            "&:hover": {
+              backgroundColor: "#f0f2f5",
+              cursor: "pointer",
+            },
+          }}
+        >
+          Xem tất bạn bè
+        </Box>
       </Box>
       <Box component="span">{friends.length} người bạn</Box>
       <ImageList
@@ -37,11 +58,7 @@ function ProfileBottomFriendList({ friends }) {
         cols={3}
       >
         {friends.slice(0, 9).map((friend) => (
-          <Link
-            key={friend._id}
-            to={`/profile/${friend._id}`}
-            style={{ textDecoration: "none", color: "#000" }}
-          >
+          <Box key={friend._id} onClick={() => handleFriendClick(friend)}>
             <ImageListItem>
               <Avatar
                 sx={{
@@ -80,7 +97,7 @@ function ProfileBottomFriendList({ friends }) {
                 }}
               />
             </ImageListItem>
-          </Link>
+          </Box>
         ))}
       </ImageList>
     </Paper>

@@ -34,6 +34,7 @@ function CoverAndAvatarImg({ user, currentUser }) {
       <Box sx={style.profileTopAvatarContainer}>
         <Box sx={style.profileTopAvatarWrapper}>
           <Avatar
+            id={user._id}
             sx={{ width: "100%", height: "100%" }}
             src={
               user?.profilePicture?.length > 0

@@ -4,7 +4,8 @@ import { getPostOfMe } from "app/postSlice";
 import Messenger from "components/messenger/Messenger";
 import Topbar from "components/topbar/Topbar";
 import { follow, unFollow } from "features/auth/userSlice";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Lightbox from "react-image-lightbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import EditProfileModal from "./components/EditProfileModal/EditProfileModal.jsx";
@@ -13,10 +14,12 @@ import ProfileTop from "./components/ProfileTop/ProfileTop";
 
 function Profile({ socket }) {
   const { userId } = useParams();
+  const scrollTopRef = useRef();
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.posts);
   const currentUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   const [friends, setFriends] = useState([]);
   const [openImg, setOpenImg] = useState(false);
@@ -25,6 +28,14 @@ function Profile({ socket }) {
   const [value, setValue] = React.useState(0);
   const [profileState, setProfileState] = React.useState(
     JSON.parse(localStorage.getItem("profileState")) || [1, 1, 1, 1, 1]
+  );
+
+  const imageInPost = posts.filter((post) => post.img);
+
+  const imageList = [].concat(
+    user?.coverPicture,
+    user?.profilePicture,
+    imageInPost.map((post) => post.img)
   );
 
   useEffect(() => {
@@ -81,7 +92,7 @@ function Profile({ socket }) {
       {/* This is Top Bar */}
       {!openImg && <Topbar socket={socket} />}
 
-      <Box sx={{ backgroundColor: "#f0f2f5" }}>
+      <Box ref={scrollTopRef} sx={{ backgroundColor: "#f0f2f5" }}>
         {/* Profile Top */}
 
         <ProfileTop
@@ -108,6 +119,10 @@ function Profile({ socket }) {
           openImg={openImg}
           setOpenImg={setOpenImg}
           setOpenModal={setOpenModal}
+          photoIndex={photoIndex}
+          setPhotoIndex={setPhotoIndex}
+          imageList={imageList}
+          scrollTopRef={scrollTopRef}
         />
       </Box>
 
@@ -120,6 +135,27 @@ function Profile({ socket }) {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
+
+      {openImg && (
+        <Lightbox
+          mainSrc={`${process.env.REACT_APP_API_URL}/${imageList[photoIndex]}`}
+          nextSrc={`${process.env.REACT_APP_API_URL}/${[
+            (photoIndex + 1) % imageList.length,
+          ]}`}
+          prevSrc={`${process.env.REACT_APP_API_URL}/${[
+            (photoIndex + imageList.length - 1) % imageList.length,
+          ]}`}
+          onCloseRequest={() => setOpenImg(false)}
+          onMovePrevRequest={() =>
+            setPhotoIndex(
+              (photoIndex + imageList.length - 1) % imageList.length
+            )
+          }
+          onMoveNextRequest={() =>
+            setPhotoIndex((photoIndex + 1) % imageList.length)
+          }
+        />
+      )}
 
       <Messenger socket={socket} />
     </>
