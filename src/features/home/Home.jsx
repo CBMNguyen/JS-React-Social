@@ -53,7 +53,7 @@ function Home({ socket }) {
       <Box sx={{ display: "flex", width: "100%", backgroundColor: "#f0f2f5" }}>
         <Sidebar user={user} />
         <Feed posts={posts} socket={socket} />
-        <Rightbar currentUserId={user._id} onlineUsers={onlineUsers} />
+        <Rightbar currentUser={user} onlineUsers={onlineUsers} />
       </Box>
 
       <Messenger socket={socket} />

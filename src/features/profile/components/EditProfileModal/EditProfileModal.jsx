@@ -103,7 +103,7 @@ function EditProfileModal({
               onChange={() => handleChange(0)}
               onClick={editAddress}
               title="Tỉnh/Thành phố hiện tại"
-              content={`Sống tại ${user?.city}`}
+              content={`Sống tại ${user?.city || "..."}`}
             />
 
             <InfoItem
@@ -111,7 +111,7 @@ function EditProfileModal({
               onChange={() => handleChange(1)}
               onClick={editAddress}
               title="Quê quán"
-              content={`Đến từ ${user?.from}`}
+              content={`Đến từ ${user?.from || "......"}`}
             />
 
             <InfoItem

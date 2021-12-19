@@ -89,7 +89,7 @@ function FriendTab({ user }) {
 
       <TabPanel value={value} index={0}>
         <Grid container spacing={2}>
-          {user.friends.map((userId) => (
+          {user?.friends?.map((userId) => (
             <FriendTabItems key={userId} userId={userId} currentUser={user} />
           ))}
         </Grid>
@@ -108,12 +108,16 @@ function FriendTab({ user }) {
       </TabPanel>
 
       <TabPanel value={value} index={4}>
-        <NotComplete />
+        <Grid container spacing={2}>
+          {user?.followers?.map((userId) => (
+            <FriendTabItems key={userId} userId={userId} currentUser={user} />
+          ))}
+        </Grid>
       </TabPanel>
 
       <TabPanel value={value} index={5}>
         <Grid container spacing={2}>
-          {user.followers.map((userId) => (
+          {user?.followings?.map((userId) => (
             <FriendTabItems key={userId} userId={userId} currentUser={user} />
           ))}
         </Grid>

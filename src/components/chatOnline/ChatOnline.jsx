@@ -2,7 +2,6 @@ import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
 import { Avatar, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -21,26 +20,26 @@ import {
 } from "utils/common";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
-function ChatOnline({ onlineUsers, currentUserId }) {
+function ChatOnline({ onlineUsers, currentUser, friendId }) {
   const dispatch = useDispatch();
-  const [friends, setFriends] = useState([]);
+  const [friend, setFriend] = useState({});
 
   useEffect(() => {
-    const getFriends = async () => {
+    const fetchUser = async (id) => {
       try {
-        const { friendList } = await userApi.getFriends(currentUserId);
-        setFriends(friendList);
+        const { user } = await userApi.getUserById(id);
+        setFriend(user);
       } catch (error) {
         console.log(error);
       }
     };
-    getFriends();
-  }, [currentUserId, onlineUsers]);
+    fetchUser(friendId);
+  }, [friendId]);
 
-  const handleClick = async (friend) => {
+  const handleClick = async (friendId) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/conversations/find/${currentUserId}/${friend._id}`
+        `${process.env.REACT_APP_API_URL}/conversations/find/${currentUser._id}/${friendId}`
       );
       dispatch(setCurrentChat(res.data.conversation));
     } catch (error) {
@@ -50,126 +49,115 @@ function ChatOnline({ onlineUsers, currentUserId }) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <List>
-        {friends.map((friend) => (
-          <LightTooltip
-            placement="left-start"
-            title={
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  p: 1,
+      <LightTooltip
+        placement="left-start"
+        title={
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              p: 1,
+            }}
+          >
+            <StyledBadgeUserTag
+              sx={{ alignSelf: "flex-start" }}
+              badgeContent=" "
+              color={onlineUsers?.includes(friend._id) ? "success" : "default"}
+              overlap="circular"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <Avatar
+                sx={{ width: "100px", height: "100px" }}
+                src={
+                  friend?.profilePicture?.length > 0
+                    ? `${process.env.REACT_APP_API_URL}/${
+                        friend?.profilePicture[
+                          friend?.profilePicture?.length - 1
+                        ]
+                      }`
+                    : noAvatarImg
+                }
+              />
+            </StyledBadgeUserTag>
+
+            <Stack spacing={1} sx={{ ml: 2, mt: 1, fontSize: "14px" }}>
+              <Box component="h1">{capitalizeFirstLetter(friend.username)}</Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <PersonIcon sx={{ color: "#0009", mr: 1 }} />
+                <Box>
+                  Đã trở thành bạn bè với <b>Hiếu Nguyễn</b> và{" "}
+                  <b>4 người khác</b>
+                </Box>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <GroupIcon sx={{ color: "#0009", mr: 1 }} />
+                <Box>
+                  50 bạn chung bao gồm <b>Việt Linh</b> và{" "}
+                  <b>Trần Trọng Toàn</b>
+                </Box>
+              </Box>
+            </Stack>
+          </Box>
+        }
+        key={friend._id}
+      >
+        <ListItem onClick={() => handleClick(friend._id)} disablePadding>
+          <ListItemButton sx={{ borderRadius: "8px" }}>
+            <ListItemIcon>
+              <StyledBadge
+                variant={onlineUsers?.includes(friend._id) ? "dot" : ""}
+                color={
+                  onlineUsers?.includes(friend._id) ? "success" : "default"
+                }
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
                 }}
               >
-                <StyledBadgeUserTag
-                  sx={{ alignSelf: "flex-start" }}
-                  badgeContent=" "
-                  color={
-                    onlineUsers?.includes(friend._id) ? "success" : "default"
+                <Avatar
+                  src={
+                    friend?.profilePicture?.length > 0
+                      ? `${process.env.REACT_APP_API_URL}/${
+                          friend?.profilePicture[
+                            friend?.profilePicture?.length - 1
+                          ]
+                        }`
+                      : noAvatarImg
                   }
-                  overlap="circular"
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                >
-                  <Avatar
-                    sx={{ width: "100px", height: "100px" }}
-                    src={
-                      friend?.profilePicture?.length > 0
-                        ? `${process.env.REACT_APP_API_URL}/${
-                            friend?.profilePicture[
-                              friend?.profilePicture?.length - 1
-                            ]
-                          }`
-                        : noAvatarImg
-                    }
-                  />
-                </StyledBadgeUserTag>
-
-                <Stack spacing={1} sx={{ ml: 2, mt: 1, fontSize: "14px" }}>
-                  <Box component="h1">
-                    {capitalizeFirstLetter(friend.username)}
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <PersonIcon sx={{ color: "#0009", mr: 1 }} />
-                    <Box>
-                      Đã trở thành bạn bè với <b>Hiếu Nguyễn</b> và{" "}
-                      <b>4 người khác</b>
-                    </Box>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <GroupIcon sx={{ color: "#0009", mr: 1 }} />
-                    <Box>
-                      50 bạn chung bao gồm <b>Việt Linh</b> và{" "}
-                      <b>Trần Trọng Toàn</b>
-                    </Box>
-                  </Box>
-                </Stack>
-              </Box>
-            }
-            key={friend._id}
-          >
-            <ListItem onClick={() => handleClick(friend)} disablePadding>
-              <ListItemButton sx={{ borderRadius: "8px" }}>
-                <ListItemIcon>
-                  <StyledBadge
-                    variant={onlineUsers?.includes(friend._id) ? "dot" : ""}
-                    color={
-                      onlineUsers?.includes(friend._id) ? "success" : "default"
-                    }
-                    overlap="circular"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
+                />
+              </StyledBadge>
+            </ListItemIcon>
+            <ListItemText primary={capitalizeFirstLetter(friend?.username)} />
+            {!onlineUsers?.includes(friend._id) && (
+              <ListItemText
+                sx={{ position: "absolute", left: "16px", bottom: 0 }}
+                primary={
+                  <Box
+                    sx={{
+                      padding: "1px",
+                      fontSize: "9px",
+                      fontWeight: "bold",
+                      color: "green",
+                      backgroundColor: "rgb(226, 250, 226)",
+                      borderRadius: "8px",
                     }}
                   >
-                    <Avatar
-                      src={
-                        friend?.profilePicture?.length > 0
-                          ? `${process.env.REACT_APP_API_URL}/${
-                              friend?.profilePicture[
-                                friend?.profilePicture?.length - 1
-                              ]
-                            }`
-                          : noAvatarImg
-                      }
-                    />
-                  </StyledBadge>
-                </ListItemIcon>
-                <ListItemText
-                  primary={capitalizeFirstLetter(friend?.username)}
-                />
-                {!onlineUsers?.includes(friend._id) && (
-                  <ListItemText
-                    sx={{ position: "absolute", left: "16px", bottom: 0 }}
-                    primary={
-                      <Box
-                        sx={{
-                          padding: "1px",
-                          fontSize: "9px",
-                          fontWeight: "bold",
-                          color: "green",
-                          backgroundColor: "rgb(226, 250, 226)",
-                          borderRadius: "8px",
-                        }}
-                      >
-                        {format(new Date(friend.latestOnline)).toString()
-                          .length > 8
-                          ? format(new Date(friend.latestOnline))
-                              .toString()
-                              .slice(0, -3)
-                          : format(new Date(friend.latestOnline)).toString()}
-                      </Box>
-                    }
-                  />
-                )}
-              </ListItemButton>
-            </ListItem>
-          </LightTooltip>
-        ))}
-      </List>
+                    {format(new Date(friend.latestOnline)).toString().length > 8
+                      ? format(new Date(friend.latestOnline))
+                          .toString()
+                          .slice(0, -3)
+                      : format(new Date(friend.latestOnline)).toString()}
+                  </Box>
+                }
+              />
+            )}
+          </ListItemButton>
+        </ListItem>
+      </LightTooltip>
     </Box>
   );
 }

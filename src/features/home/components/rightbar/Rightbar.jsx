@@ -1,7 +1,7 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SearchIcon from "@mui/icons-material/Search";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
-import { Paper } from "@mui/material";
+import { List, Paper } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { Box } from "@mui/system";
@@ -12,7 +12,7 @@ import giftImg from "../../../../assets/gift.png";
 import sponsorImg from "../../../../assets/sponsor.png";
 import rightbarStyle from "./rightbar";
 
-function Rightbar({ onlineUsers, currentUserId }) {
+function Rightbar({ onlineUsers, currentUser }) {
   return (
     <Box sx={rightbarStyle.container}>
       <Box sx={rightbarStyle.wrapper}>
@@ -82,7 +82,16 @@ function Rightbar({ onlineUsers, currentUserId }) {
           </Box>
         </Box>
 
-        <ChatOnline onlineUsers={onlineUsers} currentUserId={currentUserId} />
+        <List>
+          {currentUser?.friends?.map((friendId) => (
+            <ChatOnline
+              key={friendId}
+              onlineUsers={onlineUsers}
+              friendId={friendId}
+              currentUser={currentUser}
+            />
+          ))}
+        </List>
       </Box>
     </Box>
   );
