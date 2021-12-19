@@ -50,7 +50,7 @@ function CoverAndAvatarImg({ user, currentUser }) {
             <IconButton sx={style.profileTopCameraIcon}>
               <CameraAltIcon sx={{ color: "#333" }} />
             </IconButton>
-          ) : onlineUsers.includes(user._id) ? (
+          ) : onlineUsers?.includes(user._id) ? (
             <Box
               sx={{
                 ...style.profileTopCameraIcon,

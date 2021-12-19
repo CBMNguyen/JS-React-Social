@@ -65,6 +65,7 @@ function ProfileBottomFriendList({ friends, setValue, scrollTopRef }) {
                   width: "104px",
                   height: "104px",
                   borderRadius: "8px",
+                  cursor: "pointer",
                 }}
                 src={
                   friend?.profilePicture?.length > 0

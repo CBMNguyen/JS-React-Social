@@ -12,7 +12,10 @@ function ProfileTop({
   userId,
   value,
   handleChange,
+  handleChatClick,
   handleFollowClick,
+  handleUnFriendClick,
+  handleRequireFriendClick,
 }) {
   return (
     <Box sx={style.profileTopBg}>
@@ -27,12 +30,15 @@ function ProfileTop({
 
         {/* Profile Top Tabs  */}
         <ProfileTopTab
-          value={value}
-          handleChange={handleChange}
-          currentUser={currentUser}
-          handleFollowClick={handleFollowClick}
-          userId={userId}
           user={user}
+          value={value}
+          userId={userId}
+          currentUser={currentUser}
+          handleChange={handleChange}
+          handleChatClick={handleChatClick}
+          handleFollowClick={handleFollowClick}
+          handleUnFriendClick={handleUnFriendClick}
+          handleRequireFriendClick={handleRequireFriendClick}
         />
       </Box>
 

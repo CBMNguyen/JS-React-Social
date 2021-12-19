@@ -35,6 +35,21 @@ export const getMessages = createAsyncThunk(
   }
 );
 
+export const getConversationTwoUser = createAsyncThunk(
+  "get/getConversationTwoUser",
+  async ({ userId1, userId2 }, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { conversation } = await messengerApi.getConversationTwoUser(
+        userId1,
+        userId2
+      );
+      return fulfillWithValue({ conversation });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const messengerSlice = createSlice({
   name: "messenger",
   initialState,
@@ -66,6 +81,14 @@ const messengerSlice = createSlice({
       state.loading = false;
       state.error = "";
       state.messages = action.payload.messages;
+    },
+
+    [getConversationTwoUser.pending]: pendingState,
+    [getConversationTwoUser.rejected]: rejectedState,
+    [getConversationTwoUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.currentChat = action.payload.conversation;
     },
   },
 });

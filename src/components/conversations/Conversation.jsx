@@ -44,7 +44,7 @@ function Conversation({ conversation, currentUser }) {
     getUser();
   }, [conversation.members, currentUser._id]);
 
-  return (
+  return lastMessage?.text ? (
     <Box
       sx={{
         display: "flex",
@@ -86,6 +86,7 @@ function Conversation({ conversation, currentUser }) {
         >
           {user?.username}
         </Box>
+
         <Box
           sx={{
             display: "flex",
@@ -103,6 +104,8 @@ function Conversation({ conversation, currentUser }) {
         </Box>
       </Box>
     </Box>
+  ) : (
+    <></>
   );
 }
 

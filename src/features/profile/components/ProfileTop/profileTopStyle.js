@@ -81,6 +81,7 @@ export const style = {
 
   profileTopButton: {
     marginX: 1 / 2,
+    padding: "5px 14px",
     textTransform: "initial",
     "&:active": { transform: "scale(0.98)" },
   },

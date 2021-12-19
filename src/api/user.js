@@ -31,6 +31,16 @@ const userApi = {
     axiosClient.delete(url);
   },
 
+  addfriend: (id) => {
+    const url = `/users/${id}/addfriend`;
+    axiosClient.put(url);
+  },
+
+  unfriend: (id) => {
+    const url = `/users/${id}/unfriend`;
+    axiosClient.put(url);
+  },
+
   follow: (id) => {
     const url = `/users/${id}/follow`;
     axiosClient.put(url);
@@ -38,6 +48,16 @@ const userApi = {
 
   unfollow: (id) => {
     const url = `/users/${id}/unfollow`;
+    axiosClient.put(url);
+  },
+
+  addnotification: (id) => {
+    const url = `/users/${id}/addnotification`;
+    axiosClient.put(url);
+  },
+
+  removenotification: (id) => {
+    const url = `/users/${id}/removenotification`;
     axiosClient.put(url);
   },
 };

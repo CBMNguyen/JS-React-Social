@@ -10,6 +10,10 @@ const messengerApi = {
     const url = `/messages/${userId}`;
     return axiosClient.get(url);
   },
+  getConversationTwoUser: (userId1, userId2) => {
+    const url = `/conversations/find/${userId1}/${userId2}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default messengerApi;

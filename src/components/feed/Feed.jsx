@@ -4,7 +4,6 @@ import { createPostSocket } from "app/postSlice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { capitalizeFirstLetter } from "utils/common";
 import Post from "../post/Post";
 import Share from "../share/Share";
 
@@ -40,9 +39,7 @@ function Feed({ posts, socket }) {
         {posts.length === 0 && (
           <Alert sx={{ mt: "20px" }} severity="info">
             <AlertTitle>Facebook</AlertTitle>
-            {`${capitalizeFirstLetter(
-              user?.username || ""
-            )} hiện tại chưa có dòng trạng thái nào 😥`}
+            hiện tại chưa có dòng trạng thái nào 😥
           </Alert>
         )}
       </Box>

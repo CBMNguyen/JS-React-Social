@@ -8,6 +8,7 @@ const initialState = {
   token: null,
   error: "",
   loading: false,
+  requiredFriends: [],
 };
 
 export const register = createAsyncThunk(
@@ -46,6 +47,30 @@ export const getMe = createAsyncThunk(
   }
 );
 
+export const addFriend = createAsyncThunk(
+  "user/addFriend",
+  async (userId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      await userApi.addfriend(userId);
+      return fulfillWithValue({ userId });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const unFriend = createAsyncThunk(
+  "user/unFriend",
+  async (userId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      await userApi.unfriend(userId);
+      return fulfillWithValue({ userId });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const follow = createAsyncThunk(
   "user/follow",
   async (userId, { rejectWithValue, fulfillWithValue }) => {
@@ -70,6 +95,30 @@ export const unFollow = createAsyncThunk(
   }
 );
 
+export const addNotification = createAsyncThunk(
+  "user/addNotification",
+  async (userId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      await userApi.addnotification(userId);
+      return fulfillWithValue({ userId });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const removeNotification = createAsyncThunk(
+  "user/removeNotification",
+  async (userId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      await userApi.removenotification(userId);
+      return fulfillWithValue({ userId });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async ({ id, user }, { rejectWithValue, fulfillWithValue }) => {
@@ -85,7 +134,35 @@ export const updateUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    requiredFriend: (state, action) => {
+      state.requiredFriends.push(action.payload);
+    },
+    removeRequiredFriend: (state, action) => {
+      state.requiredFriends = state.requiredFriends.filter(
+        (id) => id !== action.payload
+      );
+      return state;
+    },
+    addNotificationSocket: (state, action) => {
+      state.user.notifications.push(action.payload);
+    },
+    removeNotificationSocket: (state, action) => {
+      state.user.notifications = state.user.notifications.filter(
+        (id) => id !== action.payload
+      );
+      return state;
+    },
+    addFriendSocket: (state, action) => {
+      state.user.friends.push(action.payload);
+    },
+    removeFriendSocket: (state, action) => {
+      state.user.friends = state.user.friends.filter(
+        (id) => id !== action.payload
+      );
+      return state;
+    },
+  },
   extraReducers: {
     [login.pending]: pendingState,
     [login.rejected]: rejectedState,
@@ -112,6 +189,25 @@ const userSlice = createSlice({
       state.user = { ...state.user, ...user };
     },
 
+    [addFriend.pending]: pendingState,
+    [addFriend.rejected]: rejectedState,
+    [addFriend.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.user.friends.push(action.payload.userId);
+    },
+
+    [unFriend.pending]: pendingState,
+    [unFriend.rejected]: rejectedState,
+    [unFriend.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.user.friends = state.user.friends.filter(
+        (userId) => userId !== action.payload.userId
+      );
+      return state;
+    },
+
     [follow.pending]: pendingState,
     [follow.rejected]: rejectedState,
     [follow.fulfilled]: (state, action) => {
@@ -130,8 +226,35 @@ const userSlice = createSlice({
       );
       return state;
     },
+
+    [addNotification.pending]: pendingState,
+    [addNotification.rejected]: rejectedState,
+    [addNotification.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = "";
+    },
+
+    [removeNotification.pending]: pendingState,
+    [removeNotification.rejected]: rejectedState,
+    [removeNotification.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.user.notifications = state.user.notifications.filter(
+        (userId) => userId !== action.payload.userId
+      );
+      return state;
+    },
   },
 });
+
+export const {
+  requiredFriend,
+  removeRequiredFriend,
+  addNotificationSocket,
+  removeNotificationSocket,
+  addFriendSocket,
+  removeFriendSocket,
+} = userSlice.actions;
 
 const { reducer } = userSlice;
 export default reducer;

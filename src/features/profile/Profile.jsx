@@ -1,9 +1,18 @@
 import { Box } from "@mui/system";
 import userApi from "api/user";
+import { getConversationTwoUser } from "app/messengerSlice.js";
 import { getPostOfMe } from "app/postSlice";
 import Messenger from "components/messenger/Messenger";
 import Topbar from "components/topbar/Topbar";
-import { follow, unFollow } from "features/auth/userSlice";
+import {
+  addNotification,
+  follow,
+  removeNotification,
+  removeRequiredFriend,
+  requiredFriend,
+  unFollow,
+  unFriend,
+} from "features/auth/userSlice";
 import React, { useEffect, useRef, useState } from "react";
 import Lightbox from "react-image-lightbox";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,8 +89,55 @@ function Profile({ socket }) {
   const handleFollowClick = async () => {
     try {
       currentUser.user.followings.includes(user?._id)
-        ? dispatch(unFollow(user._id))
-        : dispatch(follow(user._id));
+        ? await dispatch(unFollow(user._id))
+        : await dispatch(follow(user._id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnFriendClick = async () => {
+    try {
+      await dispatch(unFriend(user._id));
+      await dispatch(unFollow(user._id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRequireFriendClick = async () => {
+    try {
+      if (!currentUser?.requiredFriends?.includes(user?._id)) {
+        socket.emit("addNotification", {
+          senderId: currentUser.user._id,
+          receiverId: user._id,
+        });
+        await dispatch(requiredFriend(user?._id));
+        await dispatch(addNotification(user?._id));
+      } else {
+        socket.emit("removeNotification", {
+          senderId: currentUser.user._id,
+          receiverId: user._id,
+        });
+        await dispatch(removeNotification(user?._id));
+        await dispatch(removeRequiredFriend(user._id));
+      }
+
+      !currentUser.user.followings.includes(user?._id) &&
+        dispatch(follow(user._id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChatClick = async () => {
+    try {
+      await dispatch(
+        getConversationTwoUser({
+          userId1: currentUser.user._id,
+          userId2: user._id,
+        })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -102,7 +158,10 @@ function Profile({ socket }) {
           currentUser={currentUser}
           userId={userId}
           handleChange={handleChange}
+          handleChatClick={handleChatClick}
           handleFollowClick={handleFollowClick}
+          handleUnFriendClick={handleUnFriendClick}
+          handleRequireFriendClick={handleRequireFriendClick}
         />
 
         {/* Profile Bottom */}

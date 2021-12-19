@@ -2,6 +2,7 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import { Switch } from "@mui/material";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 export const BlackTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -16,7 +17,13 @@ export const BlackTooltip = styled(({ className, ...props }) => (
 }));
 
 export const LightTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <ClickAwayListener
+    onClickAway={() => {
+      if (props.onClose) props.onClose();
+    }}
+  >
+    <Tooltip {...props} classes={{ popper: className }} />
+  </ClickAwayListener>
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: theme.palette.common.white,

@@ -29,7 +29,14 @@ function ProfileBottom({
   scrollTopRef,
 }) {
   return (
-    <Box sx={{ width: "970px", margin: "0 auto", paddingBottom: "20px" }}>
+    <Box
+      sx={{
+        width: "970px",
+        minHeight: "230px",
+        margin: "0 auto",
+        paddingBottom: "20px",
+      }}
+    >
       <TabPanel value={value} index={0}>
         <Box
           sx={{
@@ -69,7 +76,7 @@ function ProfileBottom({
             )}
 
             {/* Profile Left Bottom Friends */}
-            {friends && (
+            {friends.length > 0 && (
               <ProfileBottomFriendList
                 scrollTopRef={scrollTopRef}
                 setValue={setValue}
@@ -108,13 +115,9 @@ function ProfileBottom({
       <TabPanel value={value} index={4}>
         <Paper
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
             padding: "16px",
             mt: "20px",
             borderRadius: "8px",
-            height: "184px",
           }}
         >
           <NotComplete />

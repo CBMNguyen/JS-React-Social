@@ -5,8 +5,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import GroupsIcon from "@mui/icons-material/Groups";
 import HomeIcon from "@mui/icons-material/Home";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import StoreIcon from "@mui/icons-material/Store";
@@ -25,7 +25,16 @@ import Toolbar from "@mui/material/Toolbar";
 import userApi from "api/user";
 import { getConversations } from "app/messengerSlice";
 import ShowConversations from "components/showConversations/ShowConversations";
+import ShowFriendRequest from "components/showFriendRequest/ShowFriendRequest";
 import { BlackTooltip } from "constants/mui";
+import {
+  addFriend,
+  addFriendSocket,
+  addNotificationSocket,
+  removeNotification,
+  removeNotificationSocket,
+  removeRequiredFriend,
+} from "features/auth/userSlice";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -45,10 +54,37 @@ function Topbar({ socket }) {
   const { user } = useSelector((state) => state.user);
   const [anchorElSearch, setAnchorElSearch] = useState(null);
   const [anchorElChat, setAnchorElChat] = useState(null);
+  const [anchorElFriend, setAnchorElFriend] = useState(null);
 
   const [users, setUsers] = useState(() => {
     return JSON.parse(localStorage.getItem("recentUsers")) || [];
   });
+
+  // get add friend Notification
+  useEffect(() => {
+    socket?.on("getNotification", ({ senderId }) => {
+      if (user._id !== senderId) {
+        dispatch(addNotificationSocket(senderId));
+      }
+    });
+  }, [socket, dispatch, user._id]);
+
+  // remove add friend Notification
+  useEffect(() => {
+    socket?.on("getRemoveNotification", ({ senderId }) => {
+      if (user._id !== senderId) dispatch(removeNotificationSocket(senderId));
+    });
+  }, [socket, dispatch, user._id]);
+
+  // get response add friend request
+  useEffect(() => {
+    socket?.on("getResponseNotification", ({ senderId, type }) => {
+      dispatch(removeRequiredFriend(senderId));
+      if (type > 0) {
+        dispatch(addFriendSocket(senderId));
+      }
+    });
+  }, [socket, dispatch]);
 
   // handle get Conversation
   useEffect(() => {
@@ -88,6 +124,52 @@ function Topbar({ socket }) {
   const openChat = Boolean(anchorElChat);
   const chatId = openChat ? "simple-popover" : undefined;
 
+  // handle show user friend request
+  const handleFriendRequestClick = (event) => {
+    setAnchorElFriend(event.currentTarget);
+  };
+
+  // handle hide user chat bar
+  const handleFriendRequestClose = () => {
+    setAnchorElFriend(null);
+  };
+
+  const openFriendRequest = Boolean(anchorElFriend);
+  const friendRequestId = openFriendRequest ? "simple-popover" : undefined;
+
+  // handle hide user chat bar
+  const handleAcceptFriendRequest = async (userId) => {
+    try {
+      await dispatch(addFriend(userId));
+      await dispatch(removeNotification(userId));
+      dispatch(removeNotificationSocket(userId));
+
+      socket.emit("responseNotification", {
+        senderId: user._id,
+        receiverId: userId,
+        type: 9,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // handle hide user chat bar
+  const handleRefuseFriendRequest = async (userId) => {
+    try {
+      await dispatch(removeNotification(userId));
+      dispatch(removeNotificationSocket(userId));
+
+      socket.emit("responseNotification", {
+        senderId: user._id,
+        receiverId: userId,
+        type: -1,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // handle Tabs change
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -113,6 +195,7 @@ function Topbar({ socket }) {
       );
       setUsers([]);
     }
+    handleSearchClose();
   };
 
   const handleRemoveRecentUser = (User) => {
@@ -507,24 +590,37 @@ function Topbar({ socket }) {
               </IconButton>
             </BlackTooltip>
 
-            <BlackTooltip title="Messenger">
+            <BlackTooltip title="Friend request">
               <IconButton
-                aria-describedby={chatId}
-                onClick={handleChatClick}
+                aria-describedby={friendRequestId}
+                onClick={handleFriendRequestClick}
                 sx={{ backgroundColor: "#f0f2f5", mx: 2 }}
               >
-                <Badge badgeContent={1} max={10} color="error">
-                  <ChatIcon
+                <Badge
+                  badgeContent={user?.notifications?.length}
+                  max={5}
+                  color="error"
+                >
+                  <PersonAddIcon
                     color="primary"
-                    sx={!anchorElChat ? { color: "#000" } : {}}
+                    sx={!anchorElFriend ? { color: "#000" } : { pr: "2px" }}
                   />
                 </Badge>
               </IconButton>
             </BlackTooltip>
 
-            <BlackTooltip title="Notifications">
-              <IconButton sx={{ backgroundColor: "#f0f2f5" }}>
-                <NotificationsIcon sx={{ color: "#000" }} />
+            <BlackTooltip title="Messenger">
+              <IconButton
+                aria-describedby={chatId}
+                onClick={handleChatClick}
+                sx={{ backgroundColor: "#f0f2f5" }}
+              >
+                <Badge badgeContent={1} max={5} color="error">
+                  <ChatIcon
+                    color="primary"
+                    sx={!anchorElChat ? { color: "#000" } : {}}
+                  />
+                </Badge>
               </IconButton>
             </BlackTooltip>
 
@@ -554,6 +650,24 @@ function Topbar({ socket }) {
           currentUser={user}
           conversations={conversations}
           handleChatClose={handleChatClose}
+        />
+      </Popover>
+
+      <Popover
+        id={friendRequestId}
+        open={openFriendRequest}
+        anchorEl={anchorElFriend}
+        onClose={handleFriendRequestClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        sx={{ mt: 1, ml: 1 / 2 }}
+      >
+        <ShowFriendRequest
+          onAcceptFriendRequest={handleAcceptFriendRequest}
+          onRefuseFriendRequest={handleRefuseFriendRequest}
+          notifications={user.notifications}
         />
       </Popover>
     </AppBar>
