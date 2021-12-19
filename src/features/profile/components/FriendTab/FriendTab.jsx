@@ -1,6 +1,6 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, Paper } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Box } from "@mui/system";
@@ -11,7 +11,7 @@ import NotComplete from "../NotComplete/NotComplete";
 import FriendTabItems from "./FriendTabItems";
 import { style } from "./friendTabStyle";
 
-function FriendTab({ user, friends }) {
+function FriendTab({ user }) {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -88,7 +88,11 @@ function FriendTab({ user, friends }) {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <FriendTabItems user={user} friends={friends} />
+        <Grid container spacing={2}>
+          {user.friends.map((userId) => (
+            <FriendTabItems key={userId} userId={userId} currentUser={user} />
+          ))}
+        </Grid>
       </TabPanel>
 
       <TabPanel value={value} index={1}>
@@ -108,7 +112,11 @@ function FriendTab({ user, friends }) {
       </TabPanel>
 
       <TabPanel value={value} index={5}>
-        <FriendTabItems user={user} friends={friends} />
+        <Grid container spacing={2}>
+          {user.followers.map((userId) => (
+            <FriendTabItems key={userId} userId={userId} currentUser={user} />
+          ))}
+        </Grid>
       </TabPanel>
     </Paper>
   );

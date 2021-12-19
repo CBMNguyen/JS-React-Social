@@ -30,7 +30,6 @@ function Profile({ socket }) {
   const [user, setUser] = useState({});
   const [photoIndex, setPhotoIndex] = useState(0);
 
-  const [friends, setFriends] = useState([]);
   const [openImg, setOpenImg] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [infoTabValue, setInfoTabValue] = React.useState(0);
@@ -69,18 +68,6 @@ function Profile({ socket }) {
     };
     user._id && fetchPosts(user._id);
   }, [user._id, dispatch]);
-
-  useEffect(() => {
-    const fetchFriends = async (id) => {
-      try {
-        const { friendList } = await userApi.getFriends(userId);
-        setFriends(friendList);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchFriends(userId);
-  }, [userId]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -173,7 +160,6 @@ function Profile({ socket }) {
           infoTabValue={infoTabValue}
           setInfoTabValue={setInfoTabValue}
           user={user}
-          friends={friends}
           posts={posts}
           openImg={openImg}
           setOpenImg={setOpenImg}

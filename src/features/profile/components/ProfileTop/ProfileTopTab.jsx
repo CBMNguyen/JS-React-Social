@@ -71,7 +71,7 @@ function ProfileTopTab({
             <Box sx={style.flexAlignItemCenter}>
               <Box>Bạn bè</Box>
               <Box sx={{ fontSize: "12px", ml: 1 }}>
-                {user?.followings?.length}
+                {user?.friends?.length}
               </Box>
             </Box>
           }

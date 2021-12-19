@@ -19,7 +19,6 @@ function ProfileBottom({
   value,
   setValue,
   user,
-  friends,
   posts,
   openImg,
   setOpenImg,
@@ -76,11 +75,11 @@ function ProfileBottom({
             )}
 
             {/* Profile Left Bottom Friends */}
-            {friends.length > 0 && (
+            {user?.friends?.length > 0 && (
               <ProfileBottomFriendList
                 scrollTopRef={scrollTopRef}
                 setValue={setValue}
-                friends={friends}
+                user={user}
               />
             )}
           </Box>
@@ -96,12 +95,12 @@ function ProfileBottom({
           infoTabValue={infoTabValue}
           setInfoTabValue={setInfoTabValue}
           user={user}
-          friends={friends}
+          friends={user?.friends}
         />
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        <FriendTab user={user} friends={friends} />
+        <FriendTab user={user} />
       </TabPanel>
 
       <TabPanel value={value} index={3}>

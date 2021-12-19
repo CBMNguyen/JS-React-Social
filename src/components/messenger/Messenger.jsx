@@ -264,84 +264,86 @@ function Messenger({ socket }) {
                   </List>
                 </Popover>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "2px",
-                    borderRadius: "4px",
-                    transition: "all 0.5s easy-in-out 0s",
-                    "&:hover": {
-                      cursor: "pointer",
-                      backgroundColor: "#f0f2f5",
-                    },
-                  }}
-                  aria-describedby={id}
-                  onClick={handleClick}
-                >
-                  <StyledBadge
-                    variant="dot"
-                    color={
-                      onlineUsers.includes(arrivalUser?._id)
-                        ? "success"
-                        : "default"
-                    }
-                    overlap="circular"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                  >
-                    <Avatar
-                      sx={{ width: "32px", height: "32px" }}
-                      src={
-                        arrivalUser?.profilePicture?.length > 0
-                          ? `${process.env.REACT_APP_API_URL}/${
-                              arrivalUser?.profilePicture[
-                                arrivalUser?.profilePicture?.length - 1
-                              ]
-                            }`
-                          : noAvatarImg
-                      }
-                      alt=""
-                    ></Avatar>
-                  </StyledBadge>
-
+                <BlackTooltip placement="top" title="Cài đặt chat">
                   <Box
                     sx={{
-                      marginLeft: "10px",
                       display: "flex",
-                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "2px",
+                      borderRadius: "4px",
+                      transition: "all 0.5s easy-in-out 0s",
+                      "&:hover": {
+                        cursor: "pointer",
+                        backgroundColor: "#f0f2f5",
+                      },
                     }}
+                    aria-describedby={id}
+                    onClick={handleClick}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontWeight: 500,
-                        color: "rgb(53, 52, 52)",
-                        textTransform: "capitalize",
+                    <StyledBadge
+                      variant="dot"
+                      color={
+                        onlineUsers.includes(arrivalUser?._id)
+                          ? "success"
+                          : "default"
+                      }
+                      overlap="circular"
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
                       }}
                     >
-                      {arrivalUser?.username}
-                      <KeyboardArrowDownOutlinedIcon
-                        sx={{ fontSize: "18px", ml: "2px" }}
-                      />
-                    </Box>
+                      <Avatar
+                        sx={{ width: "32px", height: "32px" }}
+                        src={
+                          arrivalUser?.profilePicture?.length > 0
+                            ? `${process.env.REACT_APP_API_URL}/${
+                                arrivalUser?.profilePicture[
+                                  arrivalUser?.profilePicture?.length - 1
+                                ]
+                              }`
+                            : noAvatarImg
+                        }
+                        alt=""
+                      ></Avatar>
+                    </StyledBadge>
 
-                    {onlineUsers.includes(arrivalUser?._id) && (
+                    <Box
+                      sx={{
+                        marginLeft: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
                       <Box
                         sx={{
-                          fontSize: "12px",
+                          display: "flex",
+                          alignItems: "center",
+                          fontWeight: 500,
+                          color: "rgb(53, 52, 52)",
+                          textTransform: "capitalize",
                         }}
-                        component="span"
                       >
-                        đang hoạt động
+                        {arrivalUser?.username}
+                        <KeyboardArrowDownOutlinedIcon
+                          sx={{ fontSize: "18px", ml: "2px" }}
+                        />
                       </Box>
-                    )}
+
+                      {onlineUsers.includes(arrivalUser?._id) && (
+                        <Box
+                          sx={{
+                            fontSize: "12px",
+                          }}
+                          component="span"
+                        >
+                          đang hoạt động
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
-                </Box>
+                </BlackTooltip>
 
                 <Box>
                   <BlackTooltip
