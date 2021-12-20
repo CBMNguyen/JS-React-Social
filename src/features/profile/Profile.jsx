@@ -7,7 +7,6 @@ import Topbar from "components/topbar/Topbar";
 import {
   addNotification,
   follow,
-  removeNotification,
   removeRequiredFriend,
   requiredFriend,
   unFollow,
@@ -56,7 +55,7 @@ function Profile({ socket }) {
       }
     };
     fetchUser(userId);
-  }, [userId, currentUser]);
+  }, [userId]);
 
   useEffect(() => {
     const fetchPosts = async (id) => {
@@ -78,6 +77,12 @@ function Profile({ socket }) {
       currentUser.user.followings.includes(user?._id)
         ? await dispatch(unFollow(user._id))
         : await dispatch(follow(user._id));
+
+      socket.emit("addFollowNotification", {
+        senderId: currentUser.user._id,
+        receiverId: user._id,
+        type: currentUser.user.followings.includes(user?._id) ? 0 : 9,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -87,6 +92,10 @@ function Profile({ socket }) {
     try {
       await dispatch(unFriend(user._id));
       await dispatch(unFollow(user._id));
+      socket.emit("addUnfriendNotification", {
+        senderId: currentUser.user._id,
+        receiverId: user._id,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +115,6 @@ function Profile({ socket }) {
           senderId: currentUser.user._id,
           receiverId: user._id,
         });
-        await dispatch(removeNotification(user?._id));
         await dispatch(removeRequiredFriend(user._id));
       }
 

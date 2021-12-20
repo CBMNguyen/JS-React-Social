@@ -28,9 +28,13 @@ import ShowConversations from "components/showConversations/ShowConversations";
 import ShowFriendRequest from "components/showFriendRequest/ShowFriendRequest";
 import { BlackTooltip } from "constants/mui";
 import {
+  addFollowSocket,
   addFriend,
   addFriendSocket,
   addNotificationSocket,
+  follow,
+  removeFollowSocket,
+  removeFriendSocket,
   removeNotification,
   removeNotificationSocket,
   removeRequiredFriend,
@@ -38,6 +42,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { capitalizeFirstLetter, showToast } from "utils/common";
 import logo from "../../assets/logo.png";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 
@@ -60,11 +65,34 @@ function Topbar({ socket }) {
     return JSON.parse(localStorage.getItem("recentUsers")) || [];
   });
 
+  const fetchUser = async (senderId, message) => {
+    try {
+      const { user } = await userApi.getUserById(senderId);
+      showToast(`${capitalizeFirstLetter(user.username || "")} ${message}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // get follow Notification
+  useEffect(() => {
+    socket?.on("getFollowNotification", ({ senderId, type }) => {
+      if (type > 0) {
+        dispatch(addFollowSocket(senderId));
+        fetchUser(senderId, "đã bắt đầu theo dõi bạn!");
+      } else {
+        dispatch(removeFollowSocket(senderId));
+        fetchUser(senderId, "đã hủy theo dõi bạn!");
+      }
+    });
+  }, [socket, dispatch, user._id]);
+
   // get add friend Notification
   useEffect(() => {
     socket?.on("getNotification", ({ senderId }) => {
       if (user._id !== senderId) {
         dispatch(addNotificationSocket(senderId));
+        fetchUser(senderId, "đã gửi yêu cầu kết bạn!");
       }
     });
   }, [socket, dispatch, user._id]);
@@ -73,6 +101,11 @@ function Topbar({ socket }) {
   useEffect(() => {
     socket?.on("getRemoveNotification", ({ senderId }) => {
       if (user._id !== senderId) dispatch(removeNotificationSocket(senderId));
+      try {
+        dispatch(removeNotification(senderId));
+      } catch (error) {
+        console.log(error);
+      }
     });
   }, [socket, dispatch, user._id]);
 
@@ -82,7 +115,20 @@ function Topbar({ socket }) {
       dispatch(removeRequiredFriend(senderId));
       if (type > 0) {
         dispatch(addFriendSocket(senderId));
+        user.notifications.includes(senderId) &&
+          dispatch(removeNotificationSocket(senderId));
+        fetchUser(senderId, "và bạn đã trở thành bạn bè!");
+      } else {
+        fetchUser(senderId, "đã từ chối yêu cầu kết bạn!");
       }
+    });
+  }, [socket, dispatch, user.notifications]);
+
+  // get un friend request
+  useEffect(() => {
+    socket?.on("getUnfriendNotification", ({ senderId }) => {
+      dispatch(removeFriendSocket(senderId));
+      fetchUser(senderId, "hủy kết bạn với bạn!");
     });
   }, [socket, dispatch]);
 
@@ -141,6 +187,7 @@ function Topbar({ socket }) {
   const handleAcceptFriendRequest = async (userId) => {
     try {
       await dispatch(addFriend(userId));
+      await dispatch(follow(userId));
       await dispatch(removeNotification(userId));
       dispatch(removeNotificationSocket(userId));
 

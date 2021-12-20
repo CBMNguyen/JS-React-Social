@@ -47,7 +47,7 @@ function App() {
               <Route component={NotFound} />
             </Switch>
           </BrowserRouter>
-          <ToastContainer theme="dark" />
+          <ToastContainer theme="light" />
         </Suspense>
       </ScopedCssBaseline>
     </div>

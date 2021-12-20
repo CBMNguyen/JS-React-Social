@@ -162,6 +162,17 @@ const userSlice = createSlice({
       );
       return state;
     },
+
+    addFollowSocket: (state, action) => {
+      state.user.followings.push(action.payload);
+    },
+
+    removeFollowSocket: (state, action) => {
+      state.user.followings = state.user.followings.filter(
+        (id) => id !== action.payload
+      );
+      return state;
+    },
   },
   extraReducers: {
     [login.pending]: pendingState,
@@ -254,6 +265,8 @@ export const {
   removeNotificationSocket,
   addFriendSocket,
   removeFriendSocket,
+  addFollowSocket,
+  removeFollowSocket,
 } = userSlice.actions;
 
 const { reducer } = userSlice;

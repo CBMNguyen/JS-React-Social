@@ -39,6 +39,12 @@ export const showToastError = (error) => {
   });
 };
 
+export const showToast = (message) => {
+  toast.info(message, {
+    ...PRODUCT_TOAST_OPTIONS,
+  });
+};
+
 // format date full VN
 
 export const formatDateFull = (date) => {
