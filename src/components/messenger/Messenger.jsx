@@ -86,13 +86,9 @@ function Messenger({ socket }) {
   useEffect(() => {
     socket?.emit("addUser", user._id);
     socket?.on("getUsers", (users) => {
-      dispatch(
-        setOnlineUsers(
-          user?.followings?.filter((f) => users.some((u) => u.userId === f))
-        )
-      );
+      dispatch(setOnlineUsers(users?.map((obj) => obj.userId)));
     });
-  }, [user, dispatch, socket]);
+  }, [user._id, dispatch, socket]);
 
   useEffect(() => {
     const fetchMessages = async () => {

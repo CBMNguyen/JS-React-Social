@@ -39,9 +39,10 @@ export const showToastError = (error) => {
   });
 };
 
-export const showToast = (message) => {
+export const showToast = (message, toastId) => {
   toast.info(message, {
     ...PRODUCT_TOAST_OPTIONS,
+    toastId,
   });
 };
 

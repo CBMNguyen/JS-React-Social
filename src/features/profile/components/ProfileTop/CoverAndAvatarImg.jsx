@@ -31,11 +31,19 @@ function CoverAndAvatarImg({ user, currentUser }) {
         Chỉnh sửa ảnh bìa
       </Button>
 
-      <Box sx={style.profileTopAvatarContainer}>
+      <Box
+        sx={{
+          ...style.profileTopAvatarContainer,
+          pointerEvents: currentUser.user._id === user._id ? "all" : "none",
+        }}
+      >
         <Box sx={style.profileTopAvatarWrapper}>
           <Avatar
             id={user._id}
-            sx={{ width: "100%", height: "100%" }}
+            sx={{
+              width: "100%",
+              height: "100%",
+            }}
             src={
               user?.profilePicture?.length > 0
                 ? `${process.env.REACT_APP_API_URL}/${

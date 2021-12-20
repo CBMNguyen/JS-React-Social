@@ -22,7 +22,7 @@ function Feed({ posts, socket }) {
 
   return (
     <Box sx={{ flex: 5.5 }}>
-      <Box sx={{ padding: "0 20px" }}>
+      <Box sx={{ padding: "20px" }}>
         {(!userId || userId === user._id) && <Share socket={socket} />}
         {posts.length > 0 &&
           posts
@@ -37,7 +37,7 @@ function Feed({ posts, socket }) {
               />
             ))}
         {posts.length === 0 && (
-          <Alert sx={{ mt: "20px" }} severity="info">
+          <Alert severity="info">
             <AlertTitle>Facebook</AlertTitle>
             hiện tại chưa có dòng trạng thái nào 😥
           </Alert>

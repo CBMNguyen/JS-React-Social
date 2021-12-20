@@ -15,7 +15,12 @@ import {
 } from "app/postSlice";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { showToastError, showToastSuccess } from "utils/common";
+import {
+  capitalizeFirstLetter,
+  showToast,
+  showToastError,
+  showToastSuccess,
+} from "utils/common";
 import CardActionn from "./components/CardAction";
 import CardBottom from "./components/CardBottom";
 import CardHeaderr from "./components/CardHeader";
@@ -44,6 +49,37 @@ function Post({ post, currentUser, socket }) {
     fetchUser(post.userId);
   }, [post.userId]);
 
+  const showNotification = async (senderId, message) => {
+    try {
+      const { user } = await userApi.getUserById(senderId);
+      showToast(
+        `${capitalizeFirstLetter(user.username || "")} ${message}`,
+        senderId
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getStateNotification = (number, name) => {
+    switch (number) {
+      case 0:
+        return `Vừa mới like bài ${name} của bạn`;
+      case 1:
+        return `Vừa mới yêu thích bài ${name} của bạn`;
+      case 2:
+        return `Vừa mới thương thương bài ${name} của bạn`;
+      case 3:
+        return `Vừa mới haha bài ${name} của bạn`;
+      case 4:
+        return `Vừa mới wow bài ${name} của bạn`;
+      case 5:
+        return `Vừa mới buồn bài ${name} của bạn`;
+      default:
+        return `Vừa mới phẩn nộ bài ${name} của bạn`;
+    }
+  };
+
   useEffect(() => {
     const fetchUserLikeBox = async () => {
       try {
@@ -69,19 +105,26 @@ function Post({ post, currentUser, socket }) {
 
   // Get comment realtime
   useEffect(() => {
-    socket?.on("getComment", ({ postId, comment }) => {
+    socket?.on("getComment", ({ postId, comment, senderId }) => {
       if (comment.userId !== currentUser._id && post._id === postId)
         dispatch(createCommentSocket({ postId, comment }));
+      if (post.userId === currentUser._id && senderId !== currentUser._id) {
+        showNotification(senderId, "vừa mới bình luận bài viết của bạn");
+      }
     });
-  }, [socket, currentUser._id, dispatch, post._id]);
+  }, [socket, currentUser._id, dispatch, post._id, post.userId]);
 
   // Get like realtime
   useEffect(() => {
     socket?.on("getLike", ({ postId, state, senderId }) => {
       if (senderId !== currentUser._id && post._id === postId)
         dispatch(createLikeSocket({ postId, state, userId: senderId }));
+      if (post.userId === currentUser._id && senderId !== currentUser._id) {
+        const message = getStateNotification(state, "post");
+        showNotification(senderId, message);
+      }
     });
-  }, [socket, currentUser._id, dispatch, post._id]);
+  }, [socket, currentUser._id, dispatch, post._id, post.userId]);
 
   // Get LikeComment realtime
   useEffect(() => {
@@ -90,6 +133,20 @@ function Post({ post, currentUser, socket }) {
         dispatch(
           createLikeCommentSocket({ postId, commentId, state, senderId })
         );
+
+      if (post._id === postId) {
+        const currentComment = post.comments.find(
+          (comment) => comment._id === commentId
+        );
+
+        if (
+          currentUser._id === currentComment.userId &&
+          currentComment.userId !== senderId
+        ) {
+          const message = getStateNotification(state, "comment");
+          showNotification(senderId, message);
+        }
+      }
     });
   }, [socket, currentUser._id, dispatch, post._id]);
 
@@ -165,6 +222,7 @@ function Post({ post, currentUser, socket }) {
 
       socket.emit("addComment", {
         // add comment with socket
+        senderId: currentUser._id,
         postId,
         comment,
       });

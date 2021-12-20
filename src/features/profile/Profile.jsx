@@ -55,7 +55,7 @@ function Profile({ socket }) {
       }
     };
     fetchUser(userId);
-  }, [userId]);
+  }, [userId, currentUser]);
 
   useEffect(() => {
     const fetchPosts = async (id) => {
@@ -118,8 +118,14 @@ function Profile({ socket }) {
         await dispatch(removeRequiredFriend(user._id));
       }
 
-      !currentUser.user.followings.includes(user?._id) &&
-        dispatch(follow(user._id));
+      if (!currentUser.user.followings.includes(user?._id)) {
+        await dispatch(follow(user._id));
+        socket.emit("addFollowNotification", {
+          senderId: currentUser.user._id,
+          receiverId: user._id,
+          type: 1,
+        });
+      }
     } catch (error) {
       console.log(error);
     }

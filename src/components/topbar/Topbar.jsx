@@ -28,12 +28,12 @@ import ShowConversations from "components/showConversations/ShowConversations";
 import ShowFriendRequest from "components/showFriendRequest/ShowFriendRequest";
 import { BlackTooltip } from "constants/mui";
 import {
-  addFollowSocket,
+  addFollowerSocket,
   addFriend,
   addFriendSocket,
   addNotificationSocket,
   follow,
-  removeFollowSocket,
+  removeFollowerSocket,
   removeFriendSocket,
   removeNotification,
   removeNotificationSocket,
@@ -68,7 +68,10 @@ function Topbar({ socket }) {
   const fetchUser = async (senderId, message) => {
     try {
       const { user } = await userApi.getUserById(senderId);
-      showToast(`${capitalizeFirstLetter(user.username || "")} ${message}`);
+      showToast(
+        `${capitalizeFirstLetter(user.username || "")} ${message}`,
+        senderId
+      );
     } catch (error) {
       console.log(error);
     }
@@ -77,15 +80,17 @@ function Topbar({ socket }) {
   // get follow Notification
   useEffect(() => {
     socket?.on("getFollowNotification", ({ senderId, type }) => {
-      if (type > 0) {
-        dispatch(addFollowSocket(senderId));
+      if (type === 9) {
+        dispatch(addFollowerSocket(senderId));
         fetchUser(senderId, "đã bắt đầu theo dõi bạn!");
+      } else if (type === 1) {
+        dispatch(addFollowerSocket(senderId));
       } else {
-        dispatch(removeFollowSocket(senderId));
+        dispatch(removeFollowerSocket(senderId));
         fetchUser(senderId, "đã hủy theo dõi bạn!");
       }
     });
-  }, [socket, dispatch, user._id]);
+  }, [socket, dispatch]);
 
   // get add friend Notification
   useEffect(() => {

@@ -163,12 +163,12 @@ const userSlice = createSlice({
       return state;
     },
 
-    addFollowSocket: (state, action) => {
-      state.user.followings.push(action.payload);
+    addFollowerSocket: (state, action) => {
+      state.user.followers.push(action.payload);
     },
 
-    removeFollowSocket: (state, action) => {
-      state.user.followings = state.user.followings.filter(
+    removeFollowerSocket: (state, action) => {
+      state.user.followers = state.user.followers.filter(
         (id) => id !== action.payload
       );
       return state;
@@ -265,8 +265,8 @@ export const {
   removeNotificationSocket,
   addFriendSocket,
   removeFriendSocket,
-  addFollowSocket,
-  removeFollowSocket,
+  addFollowerSocket,
+  removeFollowerSocket,
 } = userSlice.actions;
 
 const { reducer } = userSlice;
