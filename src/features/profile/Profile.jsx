@@ -174,6 +174,7 @@ function Profile({ socket }) {
           infoTabValue={infoTabValue}
           setInfoTabValue={setInfoTabValue}
           user={user}
+          currentUser={currentUser.user}
           posts={posts}
           openImg={openImg}
           setOpenImg={setOpenImg}

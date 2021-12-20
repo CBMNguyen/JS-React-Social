@@ -11,10 +11,16 @@ import NotComplete from "../NotComplete/NotComplete";
 import FriendTabItems from "./FriendTabItems";
 import { style } from "./friendTabStyle";
 
-function FriendTab({ user }) {
+function FriendTab({ user, currentUser }) {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const mutualFriends = (currentUser, user) => {
+    return currentUser.friends.filter((userId) =>
+      user?.friends?.includes(userId)
+    );
   };
 
   return (
@@ -55,12 +61,14 @@ function FriendTab({ user }) {
           value={0}
           label="Tất cả bạn bè"
         />
-        <Tab
-          sx={profileTopTabStyle(value, 1)}
-          disableRipple
-          value={1}
-          label="Bạn chung"
-        />
+        {currentUser._id !== user?._id && (
+          <Tab
+            sx={profileTopTabStyle(value, 1)}
+            disableRipple
+            value={1}
+            label="Bạn chung"
+          />
+        )}
         <Tab
           sx={profileTopTabStyle(value, 2)}
           disableRipple
@@ -90,15 +98,30 @@ function FriendTab({ user }) {
       <TabPanel value={value} index={0}>
         <Grid container spacing={2}>
           {user?.friends?.map((userId) => (
-            <FriendTabItems key={userId} userId={userId} currentUser={user} />
+            <FriendTabItems
+              key={userId}
+              userId={userId}
+              currentUser={currentUser}
+              mutualFriends={mutualFriends}
+            />
           ))}
         </Grid>
       </TabPanel>
 
-      <TabPanel value={value} index={1}>
-        <NotComplete />
-      </TabPanel>
-
+      {currentUser._id !== user?._id && (
+        <TabPanel value={value} index={1}>
+          <Grid container spacing={2}>
+            {mutualFriends(currentUser, user).map((userId) => (
+              <FriendTabItems
+                key={userId}
+                userId={userId}
+                currentUser={currentUser}
+                mutualFriends={mutualFriends}
+              />
+            ))}
+          </Grid>
+        </TabPanel>
+      )}
       <TabPanel value={value} index={2}>
         <NotComplete />
       </TabPanel>
@@ -110,7 +133,12 @@ function FriendTab({ user }) {
       <TabPanel value={value} index={4}>
         <Grid container spacing={2}>
           {user?.followers?.map((userId) => (
-            <FriendTabItems key={userId} userId={userId} currentUser={user} />
+            <FriendTabItems
+              key={userId}
+              userId={userId}
+              currentUser={currentUser}
+              mutualFriends={mutualFriends}
+            />
           ))}
         </Grid>
       </TabPanel>
@@ -118,7 +146,12 @@ function FriendTab({ user }) {
       <TabPanel value={value} index={5}>
         <Grid container spacing={2}>
           {user?.followings?.map((userId) => (
-            <FriendTabItems key={userId} userId={userId} currentUser={user} />
+            <FriendTabItems
+              key={userId}
+              userId={userId}
+              currentUser={currentUser}
+              mutualFriends={mutualFriends}
+            />
           ))}
         </Grid>
       </TabPanel>

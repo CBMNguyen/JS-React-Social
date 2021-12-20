@@ -13,7 +13,13 @@ import LiveIn from "./LiveIn";
 import Overview from "./Overview";
 import RelationShip from "./RelationShip";
 import WorkAndEducation from "./WorkAndEducation";
-function InfoTab({ user, friends, infoTabValue, setInfoTabValue }) {
+function InfoTab({
+  user,
+  currentUser,
+  friends,
+  infoTabValue,
+  setInfoTabValue,
+}) {
   const handleChange = (event, newValue) => {
     setInfoTabValue(newValue);
   };
@@ -143,7 +149,7 @@ function InfoTab({ user, friends, infoTabValue, setInfoTabValue }) {
         </Box>
       </Paper>
 
-      <FriendTab user={user} friends={friends} />
+      <FriendTab currentUser={currentUser} user={user} friends={friends} />
     </Box>
   );
 }

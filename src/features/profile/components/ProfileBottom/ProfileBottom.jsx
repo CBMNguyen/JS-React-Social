@@ -19,6 +19,7 @@ function ProfileBottom({
   value,
   setValue,
   user,
+  currentUser,
   posts,
   openImg,
   setOpenImg,
@@ -96,11 +97,12 @@ function ProfileBottom({
           setInfoTabValue={setInfoTabValue}
           user={user}
           friends={user?.friends}
+          currentUser={currentUser}
         />
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        <FriendTab user={user} />
+        <FriendTab currentUser={currentUser} user={user} />
       </TabPanel>
 
       <TabPanel value={value} index={3}>
