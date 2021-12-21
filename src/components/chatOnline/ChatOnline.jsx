@@ -34,7 +34,7 @@ function ChatOnline({ onlineUsers, currentUser, friendId }) {
       }
     };
     fetchUser(friendId);
-  }, [friendId]);
+  }, [friendId, onlineUsers]);
 
   const handleClick = async (friendId) => {
     try {

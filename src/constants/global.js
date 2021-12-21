@@ -21,7 +21,9 @@ import TagFacesIcon from "@mui/icons-material/TagFaces";
 import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import WebAssetOffOutlinedIcon from "@mui/icons-material/WebAssetOffOutlined";
+import userApi from "api/user";
 import { Zoom } from "react-toastify";
+import { capitalizeFirstLetter, showToast } from "utils/common";
 import BackPackImg from "../assets/backpack.png";
 import CalendarImg from "../assets/calendar.png";
 import ClockImg from "../assets/clock.png";
@@ -193,4 +195,35 @@ export const PRODUCT_TOAST_OPTIONS = {
   hideProgressBar: true,
   transition: Zoom,
   position: "bottom-left",
+};
+
+export const getStateNotification = (number, name) => {
+  switch (number) {
+    case 0:
+      return `Vừa mới like bài ${name} của bạn`;
+    case 1:
+      return `Vừa mới yêu thích bài ${name} của bạn`;
+    case 2:
+      return `Vừa mới thương thương bài ${name} của bạn`;
+    case 3:
+      return `Vừa mới haha bài ${name} của bạn`;
+    case 4:
+      return `Vừa mới wow bài ${name} của bạn`;
+    case 5:
+      return `Vừa mới buồn bài ${name} của bạn`;
+    default:
+      return `Vừa mới phẩn nộ bài ${name} của bạn`;
+  }
+};
+
+export const showNotification = async (senderId, message) => {
+  try {
+    const { user } = await userApi.getUserById(senderId);
+    showToast(
+      `${capitalizeFirstLetter(user.username || "")} ${message}`,
+      senderId
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };

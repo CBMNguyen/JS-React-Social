@@ -6,6 +6,7 @@ import { states } from "constants/global";
 import { BlackTooltip } from "constants/mui";
 import React from "react";
 import { capitalizeFirstLetter, countState, currentState } from "utils/common";
+import { style } from "./ShowStateHeader";
 
 function ShowStateHeader({
   post,
@@ -15,15 +16,9 @@ function ShowStateHeader({
 }) {
   return post.likes.length > 0 || post.comments.length > 0 ? (
     <CardContent sx={{ py: 1.5 }}>
-      <Stack
-        sx={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <AvatarGroup sx={{ "&:hover": { cursor: "pointer" } }} max={10}>
+      <Stack sx={style.container}>
+        <Box sx={style.stateAndUserLike}>
+          <AvatarGroup sx={style.avatarGroup} max={10}>
             {states.map((item, index) => {
               return (
                 <BlackTooltip

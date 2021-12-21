@@ -18,8 +18,8 @@ function Conversation({ conversation, currentUser }) {
     const fetchMessages = async () => {
       try {
         const { messages } = await messengerApi.getMessages(conversation._id);
-        const { text, senderId, createdAt } = messages[messages.length - 1];
-        setLastMessage({ text, senderId, createdAt });
+        const message = { ...messages[messages.length - 1] };
+        setLastMessage(message);
       } catch (error) {
         console.log(error);
       }

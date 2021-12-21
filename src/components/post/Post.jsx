@@ -13,18 +13,14 @@ import {
   likeAndDislike,
   likeAndDislikeComment,
 } from "app/postSlice";
+import { getStateNotification, showNotification } from "constants/global";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  capitalizeFirstLetter,
-  showToast,
-  showToastError,
-  showToastSuccess,
-} from "utils/common";
-import CardActionn from "./components/CardAction";
-import CardBottom from "./components/CardBottom";
+import { showToastError, showToastSuccess } from "utils/common";
+import CardActionn from "./components/CardAction/CardAction.jsx";
+import CardBottom from "./components/CardBottom/CardBottom.jsx";
 import CardHeaderr from "./components/CardHeader";
-import ShowStateHeader from "./components/ShowStateHeader";
+import ShowStateHeader from "./components/ShowStateHeader/ShowStateHeader.jsx";
 
 function Post({ post, currentUser, socket }) {
   const dispatch = useDispatch();
@@ -37,6 +33,7 @@ function Post({ post, currentUser, socket }) {
   const [showEmoji, setShowEmoji] = useState(false);
   const [cursorPosition, setCursorPosition] = useState();
 
+  // Fetch User of Post
   useEffect(() => {
     const fetchUser = async (id) => {
       try {
@@ -49,37 +46,7 @@ function Post({ post, currentUser, socket }) {
     fetchUser(post.userId);
   }, [post.userId]);
 
-  const showNotification = async (senderId, message) => {
-    try {
-      const { user } = await userApi.getUserById(senderId);
-      showToast(
-        `${capitalizeFirstLetter(user.username || "")} ${message}`,
-        senderId
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getStateNotification = (number, name) => {
-    switch (number) {
-      case 0:
-        return `Vừa mới like bài ${name} của bạn`;
-      case 1:
-        return `Vừa mới yêu thích bài ${name} của bạn`;
-      case 2:
-        return `Vừa mới thương thương bài ${name} của bạn`;
-      case 3:
-        return `Vừa mới haha bài ${name} của bạn`;
-      case 4:
-        return `Vừa mới wow bài ${name} của bạn`;
-      case 5:
-        return `Vừa mới buồn bài ${name} của bạn`;
-      default:
-        return `Vừa mới phẩn nộ bài ${name} của bạn`;
-    }
-  };
-
+  // Fetch User Like post
   useEffect(() => {
     const fetchUserLikeBox = async () => {
       try {
@@ -148,8 +115,9 @@ function Post({ post, currentUser, socket }) {
         }
       }
     });
-  }, [socket, currentUser._id, dispatch, post._id]);
+  }, [socket, currentUser._id, dispatch, post._id, post.comments]);
 
+  // Handle when click like post
   const handleLikeClick = async (postId, state, userId) => {
     try {
       await showToastSuccess(
@@ -173,6 +141,7 @@ function Post({ post, currentUser, socket }) {
     }
   };
 
+  // handle when click like comment
   const handleCommentClick = async (state, commentId, userId) => {
     try {
       await showToastSuccess(
@@ -209,6 +178,7 @@ function Post({ post, currentUser, socket }) {
   };
   // =====================================================
 
+  // handle when create comment
   const handleCreateComment = async (e) => {
     e.preventDefault();
     if (!inputRef.current.value || !inputRef.current.value.trim("")) return;

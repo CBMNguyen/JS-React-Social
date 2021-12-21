@@ -9,6 +9,7 @@ import { states } from "constants/global";
 import { TransparentTooltip } from "constants/mui";
 import React from "react";
 import { currentStateAvatar } from "utils/common";
+import { style } from "./CardAction";
 
 function CardActionn({
   openStates,
@@ -20,40 +21,21 @@ function CardActionn({
 }) {
   return (
     <CardActions sx={{ py: 0.5 }} disableSpacing>
-      <Stack
-        onMouseLeave={() => setOpenStates(false)}
-        sx={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          width: "100%",
-        }}
-      >
+      <Stack onMouseLeave={() => setOpenStates(false)} sx={style.container}>
         <TransparentTooltip
           open={openStates}
           placement="top"
           title={
-            <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+            <Stack sx={style.emojiWrapper}>
               {states.map((item, index) => (
                 <Box
+                  sx={style.emojiImg}
                   className="animate__animated animate__pulse animate__infinite	infinite"
                   onClick={() => {
                     handleLikeClick(post._id, index, currentUser._id);
                     setOpenStates(false);
                   }}
                   key={index}
-                  sx={{
-                    width: "34px",
-                    height: "34px",
-                    paddingX: "4px",
-                    mt: "2px",
-
-                    transition: "all 0.5s easy-in-out 0s",
-                    "&:hover": {
-                      position: "relative",
-                      marginTop: "-10px",
-                      cursor: "pointer",
-                    },
-                  }}
                   component="img"
                   src={item}
                 />
@@ -62,16 +44,7 @@ function CardActionn({
           }
         >
           <Button
-            sx={{
-              width: 1 / 3,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "38px",
-              "&:hover": {
-                backgroundColor: "#eee",
-              },
-            }}
+            sx={style.Button}
             onClick={() => handleLikeClick(post._id, 0, currentUser._id)}
             onMouseEnter={() => setOpenStates(true)}
             color="inherit"
@@ -90,7 +63,7 @@ function CardActionn({
               />
             ) : (
               <Avatar
-                sx={{ width: "20px", height: "20px" }}
+                sx={style.avatarInButton}
                 src={
                   currentStateAvatar(
                     post.likes.find((like) => like.userId === currentUser._id)
@@ -131,38 +104,13 @@ function CardActionn({
           </Button>
         </TransparentTooltip>
 
-        <Button
-          sx={{
-            width: 1 / 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "38px",
-            "&:hover": {
-              backgroundColor: "#eee",
-            },
-          }}
-          color="inherit"
-          onClick={handleExpandClick}
-        >
+        <Button sx={style.Button} color="inherit" onClick={handleExpandClick}>
           <ChatBubbleOutlineIcon />
 
           <Box sx={{ pl: 1 }}>Bình Luận</Box>
         </Button>
 
-        <Button
-          sx={{
-            width: 1 / 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "38px",
-            "&:hover": {
-              backgroundColor: "#eee",
-            },
-          }}
-          color="inherit"
-        >
+        <Button sx={style.Button} color="inherit">
           <ShareIcon />
           <Box sx={{ pl: 1 }}>Chia sẻ</Box>
         </Button>
