@@ -189,7 +189,7 @@ export const messengerToolTip = [
 ];
 
 export const PRODUCT_TOAST_OPTIONS = {
-  autoClose: 3000,
+  autoClose: 2000,
   hideProgressBar: true,
   transition: Zoom,
   position: "bottom-left",
