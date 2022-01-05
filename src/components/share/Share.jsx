@@ -68,16 +68,14 @@ function Share({ socket }) {
   };
 
   return (
-    <Paper elevation={1} sx={{ mb: "25px", mt: "20px", borderRadius: "8px" }}>
+    <Paper elevation={1} sx={{ mb: "25px", borderRadius: "8px" }}>
       <Box sx={{ padding: "10px", paddingTop: "20px" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={{ width: "42px", height: "42px", mr: "10px" }}
             src={
               user?.profilePicture?.length > 0
-                ? `${process.env.REACT_APP_API_URL}/${
-                    user?.profilePicture[user?.profilePicture?.length - 1]
-                  }`
+                ? user?.profilePicture[user?.profilePicture?.length - 1]
                 : noAvatarImg
             }
             alt="avatar"
@@ -206,9 +204,7 @@ function Share({ socket }) {
                   sx={{ width: "40px", height: "40px", mr: 1 / 2 }}
                   src={
                     user?.profilePicture?.length > 0
-                      ? `${process.env.REACT_APP_API_URL}/${
-                          user?.profilePicture[user?.profilePicture?.length - 1]
-                        }`
+                      ? user?.profilePicture[user?.profilePicture?.length - 1]
                       : noAvatarImg
                   }
                   alt="avatar"

@@ -107,8 +107,8 @@ function Post({ post, currentUser, socket }) {
         );
 
         if (
-          currentUser._id === currentComment.userId &&
-          currentComment.userId !== senderId
+          currentUser?._id === currentComment?.userId &&
+          currentComment?.userId !== senderId
         ) {
           const message = getStateNotification(state, "comment");
           showNotification(senderId, message);
@@ -214,7 +214,7 @@ function Post({ post, currentUser, socket }) {
       {post.img && (
         <CardMedia
           component="img"
-          image={`${process.env.REACT_APP_API_URL}/${post.img}`}
+          image={post.img}
           alt="Paella dish"
           sx={{ objectFit: "contain", maxHeight: 500 }}
         />

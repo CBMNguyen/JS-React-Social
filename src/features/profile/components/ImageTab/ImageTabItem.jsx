@@ -43,7 +43,7 @@ function ImageTabItem({ src, index, setOpenImg, setPhotoIndex }) {
           mr: "6px",
           mb: "6px",
         }}
-        src={`${process.env.REACT_APP_API_URL}/${src}`}
+        src={src}
         alt={src}
         loading="lazy"
       />

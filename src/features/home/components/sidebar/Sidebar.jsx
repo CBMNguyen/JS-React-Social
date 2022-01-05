@@ -25,9 +25,7 @@ function Sidebar({ user }) {
     name: capitalizeFirstLetter(user?.username) || "",
     img:
       user?.profilePicture?.length > 0
-        ? `${process.env.REACT_APP_API_URL}/${
-            user?.profilePicture[user?.profilePicture?.length - 1]
-          }`
+        ? user?.profilePicture[user?.profilePicture?.length - 1]
         : NoAvatarImg,
   });
 

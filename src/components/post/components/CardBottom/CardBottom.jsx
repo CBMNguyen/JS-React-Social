@@ -50,10 +50,10 @@ function CardBottom({
             <Avatar
               sx={style.avatar}
               src={
-                user?.profilePicture?.length > 0
-                  ? `${process.env.REACT_APP_API_URL}/${
-                      user?.profilePicture[user?.profilePicture?.length - 1]
-                    }`
+                currentUser?.profilePicture?.length > 0
+                  ? currentUser?.profilePicture[
+                      user?.profilePicture?.length - 1
+                    ]
                   : NoAvatarImg
               }
             />

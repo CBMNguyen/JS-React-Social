@@ -32,16 +32,12 @@ function ProfileBottomFriendListItem({ handleFriendClick, userId }) {
           }}
           src={
             user?.profilePicture?.length > 0
-              ? `${process.env.REACT_APP_API_URL}/${
-                  user?.profilePicture[user?.profilePicture?.length - 1]
-                }`
+              ? user?.profilePicture[user?.profilePicture?.length - 1]
               : NoAvatarImg
           }
           srcSet={
             user?.profilePicture?.length > 0
-              ? `${process.env.REACT_APP_API_URL}/${
-                  user?.profilePicture[user?.profilePicture?.length - 1]
-                }`
+              ? user?.profilePicture[user?.profilePicture?.length - 1]
               : NoAvatarImg
           }
           alt={user?.username}

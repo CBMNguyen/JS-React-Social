@@ -71,7 +71,7 @@ function ProfileBottomImageList({
                     cursor: "pointer",
                     marginBottom: 1 / 2,
                   }}
-                  src={`${process.env.REACT_APP_API_URL}/${item}`}
+                  src={item}
                   alt={item}
                   loading="lazy"
                 />

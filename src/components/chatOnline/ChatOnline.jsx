@@ -73,11 +73,7 @@ function ChatOnline({ onlineUsers, currentUser, friendId }) {
                 sx={{ width: "100px", height: "100px" }}
                 src={
                   friend?.profilePicture?.length > 0
-                    ? `${process.env.REACT_APP_API_URL}/${
-                        friend?.profilePicture[
-                          friend?.profilePicture?.length - 1
-                        ]
-                      }`
+                    ? friend?.profilePicture[friend?.profilePicture?.length - 1]
                     : noAvatarImg
                 }
               />
@@ -121,11 +117,9 @@ function ChatOnline({ onlineUsers, currentUser, friendId }) {
                 <Avatar
                   src={
                     friend?.profilePicture?.length > 0
-                      ? `${process.env.REACT_APP_API_URL}/${
-                          friend?.profilePicture[
-                            friend?.profilePicture?.length - 1
-                          ]
-                        }`
+                      ? friend?.profilePicture[
+                          friend?.profilePicture?.length - 1
+                        ]
                       : noAvatarImg
                   }
                 />

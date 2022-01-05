@@ -85,11 +85,7 @@ function TopBarLeftPopover({
                       sx={{ mr: 2 }}
                       src={
                         u?.profilePicture?.length > 0
-                          ? `${process.env.REACT_APP_API_URL}/${
-                              user?.profilePicture[
-                                user?.profilePicture?.length - 1
-                              ]
-                            }`
+                          ? u?.profilePicture[u?.profilePicture?.length - 1]
                           : noAvatarImg
                       }
                     />

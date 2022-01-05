@@ -52,9 +52,7 @@ function TopBarRight({
   // Check profile picture of current user
   const src =
     user?.profilePicture?.length > 0
-      ? `${process.env.REACT_APP_API_URL}/${
-          user?.profilePicture[user?.profilePicture?.length - 1]
-        }`
+      ? user?.profilePicture[user?.profilePicture?.length - 1]
       : noAvatarImg;
 
   return (

@@ -198,13 +198,11 @@ function Profile({ socket }) {
 
       {openImg && (
         <Lightbox
-          mainSrc={`${process.env.REACT_APP_API_URL}/${imageList[photoIndex]}`}
-          nextSrc={`${process.env.REACT_APP_API_URL}/${[
-            (photoIndex + 1) % imageList.length,
-          ]}`}
-          prevSrc={`${process.env.REACT_APP_API_URL}/${[
-            (photoIndex + imageList.length - 1) % imageList.length,
-          ]}`}
+          mainSrc={imageList[photoIndex]}
+          nextSrc={imageList[(photoIndex + 1) % imageList.length]}
+          prevSrc={
+            imageList[(photoIndex + imageList.length - 1) % imageList.length]
+          }
           onCloseRequest={() => setOpenImg(false)}
           onMovePrevRequest={() =>
             setPhotoIndex(
