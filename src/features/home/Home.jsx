@@ -15,7 +15,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { posts } = useSelector((state) => state.posts);
+  const { posts, loading } = useSelector((state) => state.posts);
   const { onlineUsers } = useSelector((state) => state.notification);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function Home({ socket }) {
       <Topbar socket={socket} />
       <Box sx={{ display: "flex", width: "100%", backgroundColor: "#f0f2f5" }}>
         <Sidebar user={user} />
-        <Feed posts={posts} socket={socket} />
+        <Feed posts={posts} socket={socket} loading={loading} />
         <Rightbar currentUser={user} onlineUsers={onlineUsers} />
       </Box>
 

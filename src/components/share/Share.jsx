@@ -4,7 +4,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import PeopleIcon from "@mui/icons-material/People";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
-import { Avatar, Divider, IconButton, Paper } from "@mui/material";
+import {
+  Avatar,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Paper,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { createPost } from "app/postSlice";
@@ -21,7 +27,7 @@ import BoxColorImg from "../../assets/BoxColorImg.png";
 import noAvatarImg from "../../assets/person/noAvatar.png";
 import { shareList, shareListIcon } from "../../constants/global";
 
-function Share({ socket }) {
+function Share({ socket, loading }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const inputRef = useRef();
@@ -55,7 +61,7 @@ function Share({ socket }) {
     data.append("desc", value);
     try {
       const { post } = await showToastSuccess(dispatch(createPost(data)));
-
+      setOpenModal(false);
       socket.emit("addPost", {
         post,
       });
@@ -427,16 +433,30 @@ function Share({ socket }) {
               }}
             >
               <Button
-                disabled={!file && !value}
+                disabled={(!file && !value) || loading}
                 onClick={(e) => {
                   handlePostSubmit(e);
-                  setOpenModal(false);
                 }}
                 color="primary"
                 variant="contained"
                 fullWidth
               >
-                Đăng
+                <Box>Đăng</Box>
+                {loading && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "20%",
+                      top: "10px",
+                      ml: 8,
+                    }}
+                  >
+                    <CircularProgress
+                      sx={{ position: "absolute", color: "white" }}
+                      size={14}
+                    />
+                  </Box>
+                )}
               </Button>
             </Box>
           </Box>

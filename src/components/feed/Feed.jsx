@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 import Post from "../post/Post";
 import Share from "../share/Share";
 
-function Feed({ posts, socket }) {
+function Feed({ posts, socket, loading }) {
   const dispatch = useDispatch();
   const { userId } = useParams();
   const { user } = useSelector((state) => state.user);
@@ -23,7 +23,9 @@ function Feed({ posts, socket }) {
   return (
     <Box sx={{ flex: 5.5 }}>
       <Box sx={{ padding: "20px" }}>
-        {(!userId || userId === user._id) && <Share socket={socket} />}
+        {(!userId || userId === user._id) && (
+          <Share socket={socket} loading={loading} />
+        )}
         {posts.length > 0 &&
           posts
             .slice()

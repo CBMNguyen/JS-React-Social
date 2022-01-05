@@ -110,11 +110,11 @@ const postSlice = createSlice({
       const postIndex = State.posts.findIndex((post) => post._id === postId);
       const currentPost = State.posts[postIndex];
 
-      if (!currentPost.likes.some((like) => like.userId === userId)) {
+      if (!currentPost?.likes.some((like) => like.userId === userId)) {
         currentPost.likes.push({ userId, state });
       } else {
         if (
-          currentPost.likes.some(
+          currentPost?.likes.some(
             (like) => like.userId === userId && like.state === state
           )
         ) {
