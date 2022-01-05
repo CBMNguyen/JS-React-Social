@@ -13,6 +13,7 @@ import {
   checkConfirmPassword,
   checkEmail,
   checkPassWord,
+  checkPhone,
   checkStringRequired,
 } from "utils/validate-field";
 import * as yup from "yup";
@@ -26,6 +27,7 @@ function Register(props) {
   const defaultValues = {
     username: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   };
@@ -33,6 +35,7 @@ function Register(props) {
   const schema = yup.object().shape({
     username: checkStringRequired(yup),
     email: checkEmail(yup),
+    phone: checkPhone(yup),
     password: checkPassWord(yup),
     confirmPassword: checkConfirmPassword(yup),
   });
@@ -48,6 +51,7 @@ function Register(props) {
       await showToastSuccess(dispatch(register(other)));
       history.push("/login");
     } catch (error) {
+      console.log(error);
       showToastError(error);
     }
   };
@@ -80,7 +84,7 @@ function Register(props) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack
               justifyContent="space-between"
-              height="480px"
+              height="560px"
               padding="20px"
               bgcolor="#fff"
               borderRadius="10px"
@@ -89,6 +93,8 @@ function Register(props) {
               <InputField name="username" control={control} />
 
               <InputField name="email" control={control} />
+
+              <InputField name="phone" control={control} />
 
               <InputField name="password" control={control} type="password" />
 
@@ -101,6 +107,7 @@ function Register(props) {
               <Button
                 variant="contained"
                 type="submit"
+                disabled={loading}
                 sx={{
                   height: "50px",
                   borderRadius: "10px",

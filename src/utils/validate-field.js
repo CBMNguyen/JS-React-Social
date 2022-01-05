@@ -16,6 +16,12 @@ export const checkConfirmPassword = (yup) =>
     .required("This field is required")
     .oneOf([yup.ref("password"), null], "Passwords must match");
 
+export const checkPhone = (yup) =>
+  yup
+    .string()
+    .required("this field is require.")
+    .matches(/^0[0-9]{9}$/, "Please enter correct phone number!");
+
 export const checkPassWord = (yup) =>
   yup
     .string()
