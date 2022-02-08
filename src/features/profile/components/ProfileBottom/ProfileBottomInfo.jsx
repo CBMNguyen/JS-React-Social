@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 import { default as React } from "react";
 import { PersonalInformation } from "../../../../constants/global";
 
-function ProfileBottomInfo({ user, setOpenModal, profileState }) {
+function ProfileBottomInfo({ user, currentUser, setOpenModal, profileState }) {
   return (
     <Paper
       elevation={2}
@@ -54,6 +54,7 @@ function ProfileBottomInfo({ user, setOpenModal, profileState }) {
         variant="contained"
         color="inherit"
         onClick={() => setOpenModal(true)}
+        disabled={user?._id !== currentUser._id}
         sx={{
           width: "100%",
           marginTop: "10px",

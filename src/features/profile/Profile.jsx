@@ -24,7 +24,7 @@ function Profile({ socket }) {
   const { userId } = useParams();
   const scrollTopRef = useRef();
   const dispatch = useDispatch();
-  const { posts } = useSelector((state) => state.posts);
+  const { posts, loading } = useSelector((state) => state.posts);
   const currentUser = useSelector((state) => state.user);
   const [user, setUser] = useState({});
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -174,6 +174,7 @@ function Profile({ socket }) {
           infoTabValue={infoTabValue}
           setInfoTabValue={setInfoTabValue}
           user={user}
+          loading={loading}
           currentUser={currentUser.user}
           posts={posts}
           openImg={openImg}

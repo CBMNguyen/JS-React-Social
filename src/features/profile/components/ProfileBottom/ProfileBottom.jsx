@@ -19,6 +19,7 @@ function ProfileBottom({
   value,
   setValue,
   user,
+  loading,
   currentUser,
   posts,
   openImg,
@@ -57,6 +58,7 @@ function ProfileBottom({
             {/* Profile Left Bottom Info */}
             <ProfileBottomInfo
               profileState={profileState}
+              currentUser={currentUser}
               user={user}
               setValue={setValue}
               setOpenModal={setOpenModal}
@@ -86,7 +88,7 @@ function ProfileBottom({
           </Box>
           {/* Profile Right Bottom Post */}
           <Box sx={{ flex: 6 }}>
-            <Feed posts={posts} socket={socket} />
+            <Feed loading={loading} posts={posts} socket={socket} />
           </Box>
         </Box>
       </TabPanel>
